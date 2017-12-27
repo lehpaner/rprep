@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using RufaPoint.Core.Configuration;
-using RedLock;
+//using RedLock;
 using StackExchange.Redis;
 
 namespace RufaPoint.Core.Caching
@@ -18,7 +18,7 @@ namespace RufaPoint.Core.Caching
 
         private readonly Lazy<string> _connectionString;
         private volatile ConnectionMultiplexer _connection;
-        private volatile RedisLockFactory _redisLockFactory;
+//Pekmez        private volatile RedisLockFactory _redisLockFactory;
         private readonly object _lock = new object();
 
         #endregion
@@ -33,7 +33,7 @@ namespace RufaPoint.Core.Caching
         {
             this._config = config;
             this._connectionString = new Lazy<string>(GetConnectionString);
-            this._redisLockFactory = CreateRedisLockFactory();
+ //Pekmez           this._redisLockFactory = CreateRedisLockFactory();
         }
 
         #endregion
@@ -70,7 +70,7 @@ namespace RufaPoint.Core.Caching
 
             return _connection;
         }
-
+/* //Pekmez
         /// <summary>
         /// Create instance of RedisLockFactory
         /// </summary>
@@ -101,7 +101,7 @@ namespace RufaPoint.Core.Caching
                 Ssl = useSsl
             }));
         }
-
+        */
         #endregion
 
         #region Methods
@@ -159,6 +159,7 @@ namespace RufaPoint.Core.Caching
         public bool PerformActionWithLock(string resource, TimeSpan expirationTime, Action action)
         {
             //use RedLock library
+            /* //Pekmez
             using (var redisLock = _redisLockFactory.Create(resource, expirationTime))
             {
                 //ensure that lock is acquired
@@ -170,6 +171,8 @@ namespace RufaPoint.Core.Caching
 
                 return true;
             }
+            */
+            return true;
         }
 
         /// <summary>
@@ -181,7 +184,7 @@ namespace RufaPoint.Core.Caching
             _connection?.Dispose();
 
             //dispose RedisLockFactory
-            _redisLockFactory?.Dispose();
+//Pekmez            _redisLockFactory?.Dispose();
         }
 
         #endregion
