@@ -428,7 +428,7 @@ namespace RufaPoint.Services.Localization
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("Language");
             xmlWriter.WriteAttributeString("Name", language.Name);
-            xmlWriter.WriteAttributeString("SupportedVersion", NopVersion.CurrentVersion);
+            xmlWriter.WriteAttributeString("SupportedVersion", CoreVersion.CurrentVersion);
 
             var resources = GetAllResources(language.Id);
             foreach (var resource in resources)

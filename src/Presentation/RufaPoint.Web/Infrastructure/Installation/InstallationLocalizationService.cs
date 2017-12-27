@@ -190,13 +190,13 @@ namespace RufaPoint.Web.Infrastructure.Installation
                     var resValueNode = resNode.SelectSingleNode("Value");
 
                     if (resNameAttribute == null)
-                        throw new NopException("All installation resources must have an attribute Name=\"Value\".");
+                        throw new CoreException("All installation resources must have an attribute Name=\"Value\".");
                     var resourceName = resNameAttribute.Value.Trim();
                     if (string.IsNullOrEmpty(resourceName))
-                        throw new NopException("All installation resource attributes 'Name' must have a value.'");
+                        throw new CoreException("All installation resource attributes 'Name' must have a value.'");
 
                     if (resValueNode == null)
-                        throw new NopException("All installation resources must have an element \"Value\".");
+                        throw new CoreException("All installation resources must have an element \"Value\".");
                     var resourceValue = resValueNode.InnerText.Trim();
 
                     language.Resources.Add(new InstallationLocaleResource

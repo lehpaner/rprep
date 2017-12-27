@@ -1016,7 +1016,7 @@ namespace RufaPoint.Services.Forums
             var customerTo = _customerService.GetCustomerById(privateMessage.ToCustomerId);
             if (customerTo == null)
             {
-                throw new NopException("Recipient could not be loaded");
+                throw new CoreException("Recipient could not be loaded");
             }
 
             //UI notification

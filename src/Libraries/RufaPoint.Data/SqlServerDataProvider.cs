@@ -87,7 +87,7 @@ namespace RufaPoint.Data
         /// </summary>
         public virtual void InitConnectionFactory()
         {
-            //Pekmez var connectionFactory = new SqlConnectionFactory();
+         //   var connectionFactory = new SqlConnectionFactory();
             //TODO fix compilation warning (below)
 #pragma warning disable 0618
             //Pekmez Database.DefaultConnectionFactory = connectionFactory;
@@ -116,7 +116,7 @@ namespace RufaPoint.Data
             customCommands.AddRange(ParseCommands(CommonHelper.MapPath("~/App_Data/Install/SqlServer.Indexes.sql"), false));
             customCommands.AddRange(ParseCommands(CommonHelper.MapPath("~/App_Data/Install/SqlServer.StoredProcedures.sql"), false));
 
-            var initializer = new CreateTablesIfNotExist<NopObjectContext>(tablesToValidate, customCommands.ToArray());
+            var initializer = new CreateTablesIfNotExist<AppObjectContext>(tablesToValidate, customCommands.ToArray());
             //Pekmez Database.SetInitializer(initializer);
         }
 

@@ -89,7 +89,7 @@ namespace RufaPoint.Services.Tests.ExportImport
             _customerAttributeFormatter = new Mock<ICustomerAttributeFormatter>();
 
             var httpContextAccessor = new Mock<IHttpContextAccessor>();
-            var nopEngine = new Mock<NopEngine>();
+            var nopEngine = new Mock<CoreAppEngine>();
             var serviceProvider = new Mock<IServiceProvider>();
             var urlRecordService = new Mock<IUrlRecordService>();
             var picture = new Picture
@@ -196,7 +196,7 @@ namespace RufaPoint.Services.Tests.ExportImport
             // get the first worksheet in the workbook
             var worksheet = xlPackage.Workbook.Worksheets.FirstOrDefault();
             if (worksheet == null)
-                throw new NopException("No worksheet found");
+                throw new CoreException("No worksheet found");
 
             return worksheet;
         }

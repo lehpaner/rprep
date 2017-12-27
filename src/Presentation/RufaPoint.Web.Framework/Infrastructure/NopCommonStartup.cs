@@ -20,7 +20,7 @@ namespace RufaPoint.Web.Framework.Infrastructure
     /// <summary>
     /// Represents object for the configuring common features and middleware on application startup
     /// </summary>
-    public class NopCommonStartup : INopStartup
+    public class NopCommonStartup : ICoreAppStartup
     {
         /// <summary>
         /// Add and configure any of the middleware
@@ -63,7 +63,7 @@ namespace RufaPoint.Web.Framework.Infrastructure
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public void Configure(IApplicationBuilder application)
         {
-            var nopConfig = EngineContext.Current.Resolve<RufaPointConfig>();
+            var nopConfig = EngineContext.Current.Resolve<CoreAppConfig>();
 
             //compression
             if (nopConfig.UseResponseCompression)

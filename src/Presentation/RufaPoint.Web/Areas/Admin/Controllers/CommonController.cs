@@ -111,7 +111,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
 
             var model = new SystemInfoModel
             {
-                NopVersion = NopVersion.CurrentVersion
+                NopVersion = CoreVersion.CurrentVersion
             };
             try
             {

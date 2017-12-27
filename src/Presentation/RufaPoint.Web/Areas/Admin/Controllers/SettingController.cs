@@ -76,7 +76,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
         private readonly IReturnRequestService _returnRequestService;
         private readonly ILanguageService _languageService;
         private readonly ILocalizedEntityService _localizedEntityService;
-        private readonly RufaPointConfig _config;
+        private readonly CoreAppConfig _config;
 
         #endregion
 
@@ -105,7 +105,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             IReturnRequestService returnRequestService,
             ILanguageService languageService,
             ILocalizedEntityService localizedEntityService,
-            RufaPointConfig config)
+            CoreAppConfig config)
         {
             this._settingService = settingService;
             this._countryService = countryService;
@@ -2097,11 +2097,11 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
 
                 var newEncryptionPrivateKey = model.SecuritySettings.EncryptionKey;
                 if (string.IsNullOrEmpty(newEncryptionPrivateKey) || newEncryptionPrivateKey.Length != 16)
-                    throw new NopException(_localizationService.GetResource("Admin.Configuration.Settings.GeneralCommon.EncryptionKey.TooShort"));
+                    throw new CoreException(_localizationService.GetResource("Admin.Configuration.Settings.GeneralCommon.EncryptionKey.TooShort"));
 
                 var oldEncryptionPrivateKey = securitySettings.EncryptionKey;
                 if (oldEncryptionPrivateKey == newEncryptionPrivateKey)
-                    throw new NopException(_localizationService.GetResource("Admin.Configuration.Settings.GeneralCommon.EncryptionKey.TheSame"));
+                    throw new CoreException(_localizationService.GetResource("Admin.Configuration.Settings.GeneralCommon.EncryptionKey.TheSame"));
 
                 //update encrypted order info
                 var orders = _orderService.SearchOrders();
@@ -2169,7 +2169,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             try
             {
                 if (! _fulltextService.IsFullTextSupported())
-                    throw new NopException(_localizationService.GetResource("Admin.Configuration.Settings.GeneralCommon.FullTextSettings.NotSupported"));
+                    throw new CoreException(_localizationService.GetResource("Admin.Configuration.Settings.GeneralCommon.FullTextSettings.NotSupported"));
 
                 if (commonSettings.UseFullTextSearch)
                 {

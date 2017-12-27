@@ -85,7 +85,7 @@ namespace RufaPoint.Services.Orders
                 var product= sci.Product;
                 if (product == null)
                 {
-                    throw new NopException($"Product (Id={sci.ProductId}) cannot be loaded");
+                    throw new CoreException($"Product (Id={sci.ProductId}) cannot be loaded");
                 }
 
                 if (product.IsRecurring)

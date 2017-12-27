@@ -659,7 +659,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 model.AvailableVersions.Add(new SelectListItem{ Text = version.Name, Value = version.Id.ToString()});
             //pre-select current version
             //current version name and named on official site do not match. that's why we use "Contains"
-            var currentVersionItem = model.AvailableVersions.FirstOrDefault(x => x.Text.Contains(NopVersion.CurrentVersion));
+            var currentVersionItem = model.AvailableVersions.FirstOrDefault(x => x.Text.Contains(CoreVersion.CurrentVersion));
             if (currentVersionItem != null)
             {
                 model.SearchVersionId = int.Parse(currentVersionItem.Value);

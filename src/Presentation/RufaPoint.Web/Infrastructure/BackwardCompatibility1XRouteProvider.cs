@@ -19,7 +19,7 @@ namespace RufaPoint.Web.Infrastructure
         /// <param name="routeBuilder">Route builder</param>
         public void RegisterRoutes(IRouteBuilder routeBuilder)
         {
-            if (!EngineContext.Current.Resolve<RufaPointConfig>().SupportPreviousNopcommerceVersions)
+            if (!EngineContext.Current.Resolve<CoreAppConfig>().SupportPreviousNopcommerceVersions)
                 return;
 
             //all old aspx URLs

@@ -113,8 +113,8 @@ namespace RufaPoint.Services.Plugins
                                 descriptor = PluginManager.GetPluginDescriptorFromText(reader.ReadToEnd());
 
                                 //ensure that the plugin current version is supported
-                                if (!(descriptor as PluginDescriptor).SupportedVersions.Contains(NopVersion.CurrentVersion))
-                                    throw new Exception($"This plugin doesn't support the current version - {NopVersion.CurrentVersion}");
+                                if (!(descriptor as PluginDescriptor).SupportedVersions.Contains(CoreVersion.CurrentVersion))
+                                    throw new Exception($"This plugin doesn't support the current version - {CoreVersion.CurrentVersion}");
                             }
 
                             //or whether a theme is upload 
@@ -175,7 +175,7 @@ namespace RufaPoint.Services.Plugins
                         continue;
 
                     //ensure that the current version of nopCommerce is supported
-                    if (!item.SupportedVersions?.Contains(NopVersion.CurrentVersion) ?? true)
+                    if (!item.SupportedVersions?.Contains(CoreVersion.CurrentVersion) ?? true)
                         continue;
 
                     //the item path should end with a slash
@@ -213,7 +213,7 @@ namespace RufaPoint.Services.Plugins
                         continue;
 
                     //ensure that the plugin current version is supported
-                    if (descriptor is PluginDescriptor pluginDescriptor && !pluginDescriptor.SupportedVersions.Contains(NopVersion.CurrentVersion))
+                    if (descriptor is PluginDescriptor pluginDescriptor && !pluginDescriptor.SupportedVersions.Contains(CoreVersion.CurrentVersion))
                         continue;
                     
                     //get path to upload

@@ -15,9 +15,9 @@ namespace RufaPoint.Core.Infrastructure
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static IEngine Create()
         {
-            //create NopEngine as engine
+            //create CoreAppEngine as engine
             if (Singleton<IEngine>.Instance == null)
-                Singleton<IEngine>.Instance = new NopEngine();
+                Singleton<IEngine>.Instance = new CoreAppEngine();
 
             return Singleton<IEngine>.Instance;
         }

@@ -25,13 +25,13 @@ namespace RufaPoint.Web.Controllers
         #region Fields
 
         private readonly IInstallationLocalizationService _locService;
-        private readonly RufaPointConfig _config;
+        private readonly CoreAppConfig _config;
         
         #endregion
         
         #region Ctor
 
-        public InstallController(IInstallationLocalizationService locService, RufaPointConfig config)
+        public InstallController(IInstallationLocalizationService locService, CoreAppConfig config)
         {
             this._locService = locService;
             this._config = config;

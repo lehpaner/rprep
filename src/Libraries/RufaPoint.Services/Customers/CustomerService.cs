@@ -154,7 +154,7 @@ namespace RufaPoint.Services.Customers
         {
             var guestRole = GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
             if (guestRole == null)
-                throw new NopException("'Guests' role could not be loaded");
+                throw new CoreException("'Guests' role could not be loaded");
 
             var query = _customerRepository.Table;
             if (createdFromUtc.HasValue)
@@ -479,7 +479,7 @@ namespace RufaPoint.Services.Customers
                 throw new ArgumentNullException(nameof(customer));
 
             if (customer.IsSystemAccount)
-                throw new NopException($"System customer account ({customer.SystemName}) could not be deleted");
+                throw new CoreException($"System customer account ({customer.SystemName}) could not be deleted");
 
             customer.Deleted = true;
 
@@ -624,7 +624,7 @@ namespace RufaPoint.Services.Customers
             //add to 'Guests' role
             var guestRole = GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
             if (guestRole == null)
-                throw new NopException("'Guests' role could not be loaded");
+                throw new CoreException("'Guests' role could not be loaded");
             customer.CustomerRoles.Add(guestRole);
 
             _customerRepository.Insert(customer);
@@ -750,7 +750,7 @@ namespace RufaPoint.Services.Customers
                 throw new ArgumentNullException(nameof(customerRole));
 
             if (customerRole.IsSystemRole)
-                throw new NopException("System role could not be deleted");
+                throw new CoreException("System role could not be deleted");
 
             _customerRoleRepository.Delete(customerRole);
 

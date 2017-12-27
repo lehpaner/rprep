@@ -40,7 +40,7 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public static void UseNopExceptionHandler(this IApplicationBuilder application)
         {
-            var nopConfig = EngineContext.Current.Resolve<RufaPointConfig>();
+            var nopConfig = EngineContext.Current.Resolve<CoreAppConfig>();
             var hostingEnvironment = EngineContext.Current.Resolve<IHostingEnvironment>();
             var useDetailedExceptionPage = nopConfig.DisplayFullErrorStack || hostingEnvironment.IsDevelopment();
             if (useDetailedExceptionPage)

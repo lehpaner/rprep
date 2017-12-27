@@ -38,7 +38,7 @@ namespace RufaPoint.Web.Areas.Admin.Components
         {
             try
             {
-                var feedUrl = $"http://www.nopCommerce.com/NewsRSS.aspx?Version={NopVersion.CurrentVersion}&Localhost={_webHelper.IsLocalRequest(Request)}&HideAdvertisements={_adminAreaSettings.HideAdvertisementsOnAdminArea}&StoreURL={_storeContext.CurrentStore.Url}"
+                var feedUrl = $"http://www.nopCommerce.com/NewsRSS.aspx?Version={CoreVersion.CurrentVersion}&Localhost={_webHelper.IsLocalRequest(Request)}&HideAdvertisements={_adminAreaSettings.HideAdvertisementsOnAdminArea}&StoreURL={_storeContext.CurrentStore.Url}"
                         .ToLowerInvariant();
 
                 var rssData = _cacheManager.Get(ModelCacheEventConsumer.OFFICIAL_NEWS_MODEL_KEY, () =>

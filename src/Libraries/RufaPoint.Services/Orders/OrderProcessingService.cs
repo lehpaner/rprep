@@ -427,7 +427,7 @@ namespace RufaPoint.Services.Orders
 
             //check whether customer is guest
             if (details.Customer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed)
-                throw new NopException("Anonymous checkout is not allowed");
+                throw new CoreException("Anonymous checkout is not allowed");
 
             //customer currency
             var currencyTmp = _currencyService.GetCurrencyById(
@@ -445,14 +445,14 @@ namespace RufaPoint.Services.Orders
 
             //billing address
             if (details.Customer.BillingAddress == null)
-                throw new NopException("Billing address is not provided");
+                throw new CoreException("Billing address is not provided");
 
             if (!CommonHelper.IsValidEmail(details.Customer.BillingAddress.Email))
-                throw new NopException("Email is not valid");
+                throw new CoreException("Email is not valid");
 
             details.BillingAddress = (Address)details.Customer.BillingAddress.Clone();
             if (details.BillingAddress.Country != null && !details.BillingAddress.Country.AllowsBilling)
-                throw new NopException($"Country '{details.BillingAddress.Country.Name}' is not allowed for billing");
+                throw new CoreException($"Country '{details.BillingAddress.Country.Name}' is not allowed for billing");
 
             //checkout attributes
             details.CheckoutAttributesXml = details.Customer.GetAttribute<string>(SystemCustomerAttributeNames.CheckoutAttributes, processPaymentRequest.StoreId);
@@ -463,12 +463,12 @@ namespace RufaPoint.Services.Orders
                 .LimitPerStore(processPaymentRequest.StoreId).ToList();
 
             if (!details.Cart.Any())
-                throw new NopException("Cart is empty");
+                throw new CoreException("Cart is empty");
 
             //validate the entire shopping cart
             var warnings = _shoppingCartService.GetShoppingCartWarnings(details.Cart, details.CheckoutAttributesXml, true);
             if (warnings.Any())
-                throw new NopException(warnings.Aggregate(string.Empty, (current, next) => $"{current}{next};"));
+                throw new CoreException(warnings.Aggregate(string.Empty, (current, next) => $"{current}{next};"));
 
             //validate individual cart items
             foreach (var sci in details.Cart)
@@ -477,21 +477,21 @@ namespace RufaPoint.Services.Orders
                     sci.ShoppingCartType, sci.Product, processPaymentRequest.StoreId, sci.AttributesXml,
                     sci.CustomerEnteredPrice, sci.RentalStartDateUtc, sci.RentalEndDateUtc, sci.Quantity, false);
                 if (sciWarnings.Any())
-                    throw new NopException(sciWarnings.Aggregate(string.Empty, (current, next) => $"{current}{next};"));
+                    throw new CoreException(sciWarnings.Aggregate(string.Empty, (current, next) => $"{current}{next};"));
             }
 
             //min totals validation
             if (!ValidateMinOrderSubtotalAmount(details.Cart))
             {
                 var minOrderSubtotalAmount = _currencyService.ConvertFromPrimaryStoreCurrency(_orderSettings.MinOrderSubtotalAmount, _workContext.WorkingCurrency);
-                throw new NopException(string.Format(_localizationService.GetResource("Checkout.MinOrderSubtotalAmount"),
+                throw new CoreException(string.Format(_localizationService.GetResource("Checkout.MinOrderSubtotalAmount"),
                     _priceFormatter.FormatPrice(minOrderSubtotalAmount, true, false)));
             }
 
             if (!ValidateMinOrderTotalAmount(details.Cart))
             {
                 var minOrderTotalAmount = _currencyService.ConvertFromPrimaryStoreCurrency(_orderSettings.MinOrderTotalAmount, _workContext.WorkingCurrency);
-                throw new NopException(string.Format(_localizationService.GetResource("Checkout.MinOrderTotalAmount"),
+                throw new CoreException(string.Format(_localizationService.GetResource("Checkout.MinOrderTotalAmount"),
                     _priceFormatter.FormatPrice(minOrderTotalAmount, true, false)));
             }
 
@@ -540,15 +540,15 @@ namespace RufaPoint.Services.Orders
                 else
                 {
                     if (details.Customer.ShippingAddress == null)
-                        throw new NopException("Shipping address is not provided");
+                        throw new CoreException("Shipping address is not provided");
 
                     if (!CommonHelper.IsValidEmail(details.Customer.ShippingAddress.Email))
-                        throw new NopException("Email is not valid");
+                        throw new CoreException("Email is not valid");
 
                     //clone shipping address
                     details.ShippingAddress = (Address)details.Customer.ShippingAddress.Clone();
                     if (details.ShippingAddress.Country != null && !details.ShippingAddress.Country.AllowsShipping)
-                        throw new NopException($"Country '{details.ShippingAddress.Country.Name}' is not allowed for shipping");
+                        throw new CoreException($"Country '{details.ShippingAddress.Country.Name}' is not allowed for shipping");
                 }
 
                 var shippingOption = details.Customer.GetAttribute<ShippingOption>(SystemCustomerAttributeNames.SelectedShippingOption, processPaymentRequest.StoreId);
@@ -567,7 +567,7 @@ namespace RufaPoint.Services.Orders
             var orderShippingTotalInclTax = _orderTotalCalculationService.GetShoppingCartShippingTotal(details.Cart, true, out decimal _, out List<DiscountForCaching> shippingTotalDiscounts);
             var orderShippingTotalExclTax = _orderTotalCalculationService.GetShoppingCartShippingTotal(details.Cart, false);
             if (!orderShippingTotalInclTax.HasValue || !orderShippingTotalExclTax.HasValue)
-                throw new NopException("Shipping total couldn't be calculated");
+                throw new CoreException("Shipping total couldn't be calculated");
 
             details.OrderShippingTotalInclTax = orderShippingTotalInclTax.Value;
             details.OrderShippingTotalExclTax = orderShippingTotalExclTax.Value;
@@ -596,7 +596,7 @@ namespace RufaPoint.Services.Orders
             //order total (and applied discounts, gift cards, reward points)
             var orderTotal = _orderTotalCalculationService.GetShoppingCartTotal(details.Cart, out decimal orderDiscountAmount, out List<DiscountForCaching> orderAppliedDiscounts, out List<AppliedGiftCard> appliedGiftCards, out int redeemedRewardPoints, out decimal redeemedRewardPointsAmount);
             if (!orderTotal.HasValue)
-                throw new NopException("Order total couldn't be calculated");
+                throw new CoreException("Order total couldn't be calculated");
 
             details.OrderDiscountAmount = orderDiscountAmount;
             details.RedeemedRewardPoints = redeemedRewardPoints;
@@ -617,7 +617,7 @@ namespace RufaPoint.Services.Orders
             {
                 var recurringCyclesError = details.Cart.GetRecurringCycleInfo(_localizationService, out int recurringCycleLength, out RecurringProductCyclePeriod recurringCyclePeriod, out int recurringTotalCycles);
                 if (!string.IsNullOrEmpty(recurringCyclesError))
-                    throw new NopException(recurringCyclesError);
+                    throw new CoreException(recurringCyclesError);
 
                 processPaymentRequest.RecurringCycleLength = recurringCycleLength;
                 processPaymentRequest.RecurringCyclePeriod = recurringCyclePeriod;
@@ -658,7 +658,7 @@ namespace RufaPoint.Services.Orders
 
             //check whether customer is guest
             if (details.Customer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed)
-                throw new NopException("Anonymous checkout is not allowed");
+                throw new CoreException("Anonymous checkout is not allowed");
 
             //customer currency
             details.CustomerCurrencyCode = details.InitialOrder.CustomerCurrencyCode;
@@ -671,11 +671,11 @@ namespace RufaPoint.Services.Orders
 
             //billing address
             if (details.InitialOrder.BillingAddress == null)
-                throw new NopException("Billing address is not available");
+                throw new CoreException("Billing address is not available");
             
             details.BillingAddress = (Address)details.InitialOrder.BillingAddress.Clone();
             if (details.BillingAddress.Country != null && !details.BillingAddress.Country.AllowsBilling)
-                throw new NopException($"Country '{details.BillingAddress.Country.Name}' is not allowed for billing");
+                throw new CoreException($"Country '{details.BillingAddress.Country.Name}' is not allowed for billing");
 
             //checkout attributes
             details.CheckoutAttributesXml = details.InitialOrder.CheckoutAttributesXml;
@@ -697,12 +697,12 @@ namespace RufaPoint.Services.Orders
                 if (!details.PickUpInStore)
                 {
                     if (details.InitialOrder.ShippingAddress == null)
-                        throw new NopException("Shipping address is not available");
+                        throw new CoreException("Shipping address is not available");
 
                     //clone shipping address
                     details.ShippingAddress = (Address)details.InitialOrder.ShippingAddress.Clone();
                     if (details.ShippingAddress.Country != null && !details.ShippingAddress.Country.AllowsShipping)
-                        throw new NopException($"Country '{details.ShippingAddress.Country.Name}' is not allowed for shipping");
+                        throw new CoreException($"Country '{details.ShippingAddress.Country.Name}' is not allowed for shipping");
                 }
                 else
                     if (details.InitialOrder.PickupAddress != null)
@@ -1362,11 +1362,11 @@ namespace RufaPoint.Services.Orders
                 var paymentMethod =
                     _paymentService.LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
                 if (paymentMethod == null)
-                    throw new NopException("Payment method couldn't be loaded");
+                    throw new CoreException("Payment method couldn't be loaded");
 
                 //ensure that payment method is active
                 if (!paymentMethod.IsPaymentMethodActive(_paymentSettings))
-                    throw new NopException("Payment method is not active");
+                    throw new CoreException("Payment method is not active");
 
                 if (details.IsRecurringShoppingCart)
                 {
@@ -1374,13 +1374,13 @@ namespace RufaPoint.Services.Orders
                     switch (_paymentService.GetRecurringPaymentType(processPaymentRequest.PaymentMethodSystemName))
                     {
                         case RecurringPaymentType.NotSupported:
-                            throw new NopException("Recurring payments are not supported by selected payment method");
+                            throw new CoreException("Recurring payments are not supported by selected payment method");
                         case RecurringPaymentType.Manual:
                         case RecurringPaymentType.Automatic:
                             processPaymentResult = _paymentService.ProcessRecurringPayment(processPaymentRequest);
                             break;
                         default:
-                            throw new NopException("Not supported recurring payment type");
+                            throw new CoreException("Not supported recurring payment type");
                     }
                 }
                 else
@@ -1535,7 +1535,7 @@ namespace RufaPoint.Services.Orders
                 var processPaymentResult = GetProcessPaymentResult(processPaymentRequest, details);
 
                 if (processPaymentResult == null)
-                    throw new NopException("processPaymentResult is not available");
+                    throw new CoreException("processPaymentResult is not available");
 
                 if (processPaymentResult.Success)
                 {
@@ -1759,19 +1759,19 @@ namespace RufaPoint.Services.Orders
             try
             {
                 if (!recurringPayment.IsActive)
-                    throw new NopException("Recurring payment is not active");
+                    throw new CoreException("Recurring payment is not active");
 
                 var initialOrder = recurringPayment.InitialOrder;
                 if (initialOrder == null)
-                    throw new NopException("Initial order could not be loaded");
+                    throw new CoreException("Initial order could not be loaded");
 
                 var customer = initialOrder.Customer;
                 if (customer == null)
-                    throw new NopException("Customer could not be loaded");
+                    throw new CoreException("Customer could not be loaded");
 
                 var nextPaymentDate = recurringPayment.NextPaymentDate;
                 if (!nextPaymentDate.HasValue)
-                    throw new NopException("Next payment date could not be calculated");
+                    throw new CoreException("Next payment date could not be calculated");
 
                 //payment info
                 var processPaymentRequest = new ProcessPaymentRequest
@@ -1796,10 +1796,10 @@ namespace RufaPoint.Services.Orders
                 {
                     var paymentMethod = _paymentService.LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
                     if (paymentMethod == null)
-                        throw new NopException("Payment method couldn't be loaded");
+                        throw new CoreException("Payment method couldn't be loaded");
 
                     if (!paymentMethod.IsPaymentMethodActive(_paymentSettings))
-                        throw new NopException("Payment method is not active");
+                        throw new CoreException("Payment method is not active");
 
                     //Old credit card info
                     if (details.InitialOrder.AllowStoringCreditCardNumber)
@@ -1820,7 +1820,7 @@ namespace RufaPoint.Services.Orders
                     switch (_paymentService.GetRecurringPaymentType(processPaymentRequest.PaymentMethodSystemName))
                     {
                         case RecurringPaymentType.NotSupported:
-                            throw new NopException("Recurring payments are not supported by selected payment method");
+                            throw new CoreException("Recurring payments are not supported by selected payment method");
                         case RecurringPaymentType.Manual:
                             processPaymentResult = _paymentService.ProcessRecurringPayment(processPaymentRequest);
                             break;
@@ -1829,14 +1829,14 @@ namespace RufaPoint.Services.Orders
                             processPaymentResult = paymentResult ?? new ProcessPaymentResult();
                             break;
                         default:
-                            throw new NopException("Not supported recurring payment type");
+                            throw new CoreException("Not supported recurring payment type");
                     }
                 }
                 else
                     processPaymentResult = paymentResult ?? new ProcessPaymentResult { NewPaymentStatus = PaymentStatus.Paid };
 
                 if (processPaymentResult == null)
-                    throw new NopException("processPaymentResult is not available");
+                    throw new CoreException("processPaymentResult is not available");
 
                 if (processPaymentResult.Success)
                 {
@@ -2204,7 +2204,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanCancelOrder(order))
-                throw new NopException("Cannot do cancel for order.");
+                throw new CoreException("Cannot do cancel for order.");
 
             //cancel order
             SetOrderStatus(order, OrderStatus.Cancelled, notifyCustomer);
@@ -2316,7 +2316,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanCapture(order))
-                throw new NopException("Cannot do capture for order.");
+                throw new CoreException("Cannot do capture for order.");
 
             var request = new CapturePaymentRequest();
             CapturePaymentResult result = null;
@@ -2408,7 +2408,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanMarkOrderAsPaid(order))
-                throw new NopException("You can't mark this order as paid");
+                throw new CoreException("You can't mark this order as paid");
 
             order.PaymentStatusId = (int)PaymentStatus.Paid;
             order.PaidDateUtc = DateTime.UtcNow;
@@ -2464,7 +2464,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanRefund(order))
-                throw new NopException("Cannot do refund for order.");
+                throw new CoreException("Cannot do refund for order.");
 
             var request = new RefundPaymentRequest();
             RefundPaymentResult result = null;
@@ -2571,7 +2571,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanRefundOffline(order))
-                throw new NopException("You can't refund this order");
+                throw new CoreException("You can't refund this order");
 
             //amout to refund
             var amountToRefund = order.OrderTotal;
@@ -2651,7 +2651,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanPartiallyRefund(order, amountToRefund))
-                throw new NopException("Cannot do partial refund for order.");
+                throw new CoreException("Cannot do partial refund for order.");
 
             var request = new RefundPaymentRequest();
             RefundPaymentResult result = null;
@@ -2768,7 +2768,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
             
             if (!CanPartiallyRefundOffline(order, amountToRefund))
-                throw new NopException("You can't partially refund (offline) this order");
+                throw new CoreException("You can't partially refund (offline) this order");
 
             //total amount refunded
             var totalAmountRefunded = order.RefundedAmount + amountToRefund;
@@ -2835,7 +2835,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanVoid(order))
-                throw new NopException("Cannot do void for order.");
+                throw new CoreException("Cannot do void for order.");
 
             var request = new VoidPaymentRequest();
             VoidPaymentResult result = null;
@@ -2918,7 +2918,7 @@ namespace RufaPoint.Services.Orders
                 throw new ArgumentNullException(nameof(order));
 
             if (!CanVoidOffline(order))
-                throw new NopException("You can't void this order");
+                throw new CoreException("You can't void this order");
 
             order.PaymentStatusId = (int)PaymentStatus.Voided;
             _orderService.UpdateOrder(order);

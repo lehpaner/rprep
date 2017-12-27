@@ -16,7 +16,7 @@ namespace RufaPoint.Web.MVC.Tests.Events
 
         public EventsTests()
         {
-            PluginManager.Initialize(new ApplicationPartManager(), new RufaPointConfig());
+            PluginManager.Initialize(new ApplicationPartManager(), new CoreAppConfig());
             var subscriptionService = new Mock<ISubscriptionService>();
             var consumers = new List<IConsumer<DateTime>> {new DateTimeConsumer()};
             subscriptionService.Setup(c => c.GetSubscriptions<DateTime>()).Returns(consumers);

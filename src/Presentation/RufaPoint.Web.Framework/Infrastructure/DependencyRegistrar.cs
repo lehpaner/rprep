@@ -66,7 +66,7 @@ namespace RufaPoint.Web.Framework.Infrastructure
         /// <param name="builder">Container builder</param>
         /// <param name="typeFinder">Type finder</param>
         /// <param name="config">Config</param>
-        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, RufaPointConfig config)
+        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, CoreAppConfig config)
         {
             //web helper
             builder.RegisterType<WebHelper>().As<IWebHelper>().InstancePerLifetimeScope();
@@ -88,10 +88,10 @@ namespace RufaPoint.Web.Framework.Infrastructure
                 var dataProvider = efDataProviderManager.LoadDataProvider();
                 dataProvider.InitConnectionFactory();
 
-                builder.Register<IDbContext>(c => new NopObjectContext(dataProviderSettings.DataConnectionString)).InstancePerLifetimeScope();
+                builder.Register<IDbContext>(c => new AppObjectContext(dataProviderSettings.DataConnectionString)).InstancePerLifetimeScope();
             }
             else
-                builder.Register<IDbContext>(c => new NopObjectContext(dataSettingsManager.LoadSettings().DataConnectionString)).InstancePerLifetimeScope();
+                builder.Register<IDbContext>(c => new AppObjectContext(dataSettingsManager.LoadSettings().DataConnectionString)).InstancePerLifetimeScope();
 
             //repositories
             builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();

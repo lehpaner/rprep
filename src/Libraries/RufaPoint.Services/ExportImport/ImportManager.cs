@@ -722,7 +722,7 @@ namespace RufaPoint.Services.ExportImport
                 // get the first worksheet in the workbook
                 var worksheet = xlPackage.Workbook.Worksheets.FirstOrDefault();
                 if (worksheet == null)
-                    throw new NopException("No worksheet found");
+                    throw new CoreException("No worksheet found");
 
                 //the columns
                 var properties = GetPropertiesByExcelCells<Product>(worksheet);
@@ -1476,7 +1476,7 @@ namespace RufaPoint.Services.ExportImport
                         storeId = int.Parse(tmp[2].Trim());
                     }
                     else
-                        throw new NopException("Wrong file format");
+                        throw new CoreException("Wrong file format");
 
                     //import
                     var subscription = _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmailAndStoreId(email, storeId);
@@ -1524,7 +1524,7 @@ namespace RufaPoint.Services.ExportImport
                     var tmp = line.Split(',');
 
                     if (tmp.Length != 5)
-                        throw new NopException("Wrong file format");
+                        throw new CoreException("Wrong file format");
 
                     //parse
                     var countryTwoLetterIsoCode = tmp[0].Trim();
@@ -1585,7 +1585,7 @@ namespace RufaPoint.Services.ExportImport
                 // get the first worksheet in the workbook
                 var worksheet = xlPackage.Workbook.Worksheets.FirstOrDefault();
                 if (worksheet == null)
-                    throw new NopException("No worksheet found");
+                    throw new CoreException("No worksheet found");
 
                 //the columns
                 var properties = GetPropertiesByExcelCells<Manufacturer>(worksheet);
@@ -1708,7 +1708,7 @@ namespace RufaPoint.Services.ExportImport
                 // get the first worksheet in the workbook
                 var worksheet = xlPackage.Workbook.Worksheets.FirstOrDefault();
                 if (worksheet == null)
-                    throw new NopException("No worksheet found");
+                    throw new CoreException("No worksheet found");
 
                 //the columns
                 var properties = GetPropertiesByExcelCells<Category>(worksheet);

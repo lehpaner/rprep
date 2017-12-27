@@ -144,7 +144,7 @@ namespace RufaPoint.Web.Framework.Mvc.Filters
                         //do nothing
                         break;
                     default:
-                        throw new NopException("Not supported SslRequirement parameter");
+                        throw new CoreException("Not supported SslRequirement parameter");
                 }
             }
 

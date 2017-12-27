@@ -18,7 +18,7 @@ namespace RufaPoint.Web.Infrastructure
         /// <param name="builder">Container builder</param>
         /// <param name="typeFinder">Type finder</param>
         /// <param name="config">Config</param>
-        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, RufaPointConfig config)
+        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, CoreAppConfig config)
         {
             //installation localization service
             builder.RegisterType<InstallationLocalizationService>().As<IInstallationLocalizationService>().InstancePerLifetimeScope();

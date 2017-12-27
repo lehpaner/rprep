@@ -855,7 +855,7 @@ namespace RufaPoint.Services.Shipping
                     .ToList();
             }
             if (!shippingRateComputationMethods.Any())
-                //throw new NopException("Shipping rate computation method could not be loaded");
+                //throw new CoreException("Shipping rate computation method could not be loaded");
                 return result;
 
 

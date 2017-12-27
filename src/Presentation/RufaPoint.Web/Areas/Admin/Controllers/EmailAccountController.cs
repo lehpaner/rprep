@@ -214,7 +214,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             try
             {
                 if (string.IsNullOrWhiteSpace(model.SendTestEmailTo))
-                    throw new NopException("Enter test email address");
+                    throw new CoreException("Enter test email address");
 
                 var subject = _storeContext.CurrentStore.Name + ". Testing email functionality.";
                 var body = "Email works fine.";

@@ -306,7 +306,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             try
             {
                 if (_addressService.GetAddressTotalByCountryId(country.Id) > 0)
-                    throw new NopException("The country can't be deleted. It has associated addresses");
+                    throw new CoreException("The country can't be deleted. It has associated addresses");
 
                 _countryService.DeleteCountry(country);
 

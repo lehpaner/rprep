@@ -194,14 +194,14 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     if (customerRole.IsSystemRole && !model.Active)
-                        throw new NopException(_localizationService.GetResource("Admin.Customers.CustomerRoles.Fields.Active.CantEditSystem"));
+                        throw new CoreException(_localizationService.GetResource("Admin.Customers.CustomerRoles.Fields.Active.CantEditSystem"));
 
                     if (customerRole.IsSystemRole && !customerRole.SystemName.Equals(model.SystemName, StringComparison.InvariantCultureIgnoreCase))
-                        throw new NopException(_localizationService.GetResource("Admin.Customers.CustomerRoles.Fields.SystemName.CantEditSystem"));
+                        throw new CoreException(_localizationService.GetResource("Admin.Customers.CustomerRoles.Fields.SystemName.CantEditSystem"));
 
                     if (SystemCustomerRoleNames.Registered.Equals(customerRole.SystemName, StringComparison.InvariantCultureIgnoreCase) &&
                         model.PurchasedWithProductId > 0)
-                        throw new NopException(_localizationService.GetResource("Admin.Customers.CustomerRoles.Fields.PurchasedWithProduct.Registered"));
+                        throw new CoreException(_localizationService.GetResource("Admin.Customers.CustomerRoles.Fields.PurchasedWithProduct.Registered"));
                     
                     customerRole = model.ToEntity(customerRole);
                     _customerService.UpdateCustomerRole(customerRole);

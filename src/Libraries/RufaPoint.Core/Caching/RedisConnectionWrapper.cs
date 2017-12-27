@@ -14,7 +14,7 @@ namespace RufaPoint.Core.Caching
     {
         #region Fields
 
-        private readonly RufaPointConfig _config;
+        private readonly CoreAppConfig _config;
 
         private readonly Lazy<string> _connectionString;
         private volatile ConnectionMultiplexer _connection;
@@ -29,7 +29,7 @@ namespace RufaPoint.Core.Caching
         /// Ctor
         /// </summary>
         /// <param name="config">Config</param>
-        public RedisConnectionWrapper(RufaPointConfig config)
+        public RedisConnectionWrapper(CoreAppConfig config)
         {
             this._config = config;
             this._connectionString = new Lazy<string>(GetConnectionString);

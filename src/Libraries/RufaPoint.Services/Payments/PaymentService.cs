@@ -170,7 +170,7 @@ namespace RufaPoint.Services.Payments
             }
             var paymentMethod = LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             return paymentMethod.ProcessPayment(processPaymentRequest);
         }
 
@@ -186,7 +186,7 @@ namespace RufaPoint.Services.Payments
 
             var paymentMethod = LoadPaymentMethodBySystemName(postProcessPaymentRequest.Order.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             paymentMethod.PostProcessPayment(postProcessPaymentRequest);
         }
 
@@ -269,7 +269,7 @@ namespace RufaPoint.Services.Payments
         {
             var paymentMethod = LoadPaymentMethodBySystemName(capturePaymentRequest.Order.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             return paymentMethod.Capture(capturePaymentRequest);
         }
         
@@ -308,7 +308,7 @@ namespace RufaPoint.Services.Payments
         {
             var paymentMethod = LoadPaymentMethodBySystemName(refundPaymentRequest.Order.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             return paymentMethod.Refund(refundPaymentRequest);
         }
         
@@ -334,7 +334,7 @@ namespace RufaPoint.Services.Payments
         {
             var paymentMethod = LoadPaymentMethodBySystemName(voidPaymentRequest.Order.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             return paymentMethod.Void(voidPaymentRequest);
         }
         
@@ -369,7 +369,7 @@ namespace RufaPoint.Services.Payments
 
             var paymentMethod = LoadPaymentMethodBySystemName(processPaymentRequest.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             return paymentMethod.ProcessRecurringPayment(processPaymentRequest);
         }
 
@@ -385,7 +385,7 @@ namespace RufaPoint.Services.Payments
 
             var paymentMethod = LoadPaymentMethodBySystemName(cancelPaymentRequest.Order.PaymentMethodSystemName);
             if (paymentMethod == null)
-                throw new NopException("Payment method couldn't be loaded");
+                throw new CoreException("Payment method couldn't be loaded");
             return paymentMethod.CancelRecurringPayment(cancelPaymentRequest);
         }
 

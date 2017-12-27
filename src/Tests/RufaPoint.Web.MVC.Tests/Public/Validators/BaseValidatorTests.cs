@@ -15,7 +15,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators
         protected Mock<ILocalizationService> _localizationService;
         public BaseValidatorTests()
         {
-            var nopEngine = new Mock<NopEngine>();
+            var nopEngine = new Mock<CoreAppEngine>();
             var serviceProvider = new Mock<IServiceProvider>();
             var httpContextAccessor = new Mock<IHttpContextAccessor>();
             serviceProvider.Setup(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Returns(httpContextAccessor);

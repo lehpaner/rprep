@@ -153,7 +153,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 {
                     var primaryExchangeCurrency = _currencyService.GetCurrencyById(_currencySettings.PrimaryExchangeRateCurrencyId, false);
                     if (primaryExchangeCurrency == null)
-                        throw new NopException("Primary exchange rate currency is not set");
+                        throw new CoreException("Primary exchange rate currency is not set");
                     
                     //filter by existing currencies
                     var currencies = _currencyService.GetAllCurrencies(true, loadCacheableCopy: false);
@@ -413,10 +413,10 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             try
             {
                 if (currency.Id == _currencySettings.PrimaryStoreCurrencyId)
-                    throw new NopException(_localizationService.GetResource("Admin.Configuration.Currencies.CantDeletePrimary"));
+                    throw new CoreException(_localizationService.GetResource("Admin.Configuration.Currencies.CantDeletePrimary"));
 
                 if (currency.Id == _currencySettings.PrimaryExchangeRateCurrencyId)
-                    throw new NopException(_localizationService.GetResource("Admin.Configuration.Currencies.CantDeleteExchange"));
+                    throw new CoreException(_localizationService.GetResource("Admin.Configuration.Currencies.CantDeleteExchange"));
 
                 //ensure we have at least one published currency
                 var allCurrencies = _currencyService.GetAllCurrencies(loadCacheableCopy: false);

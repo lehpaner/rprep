@@ -1810,7 +1810,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             {
                 var amountToRefund = model.AmountToRefund;
                 if (amountToRefund <= decimal.Zero)
-                    throw new NopException("Enter amount to refund");
+                    throw new CoreException("Enter amount to refund");
 
                 var maxAmountToRefund = order.OrderTotal - order.RefundedAmount;
                 if (amountToRefund > maxAmountToRefund)

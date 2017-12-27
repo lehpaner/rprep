@@ -19,7 +19,7 @@ namespace RufaPoint.Web.Areas.Admin.Models.Common
         [NopResourceDisplayName("Admin.System.SystemInfo.IsFullTrust")]
         public string IsFullTrust { get; set; }
 
-        [NopResourceDisplayName("Admin.System.SystemInfo.NopVersion")]
+        [NopResourceDisplayName("Admin.System.SystemInfo.CoreVersion")]
         public string NopVersion { get; set; }
 
         [NopResourceDisplayName("Admin.System.SystemInfo.OperatingSystem")]

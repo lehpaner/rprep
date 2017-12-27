@@ -38,8 +38,8 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
         /// <returns>Configured service provider</returns>
         public static IServiceProvider ConfigureApplicationServices(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            //add RufaPointConfig configuration parameters
-            services.ConfigureStartupConfig<RufaPointConfig>(configuration.GetSection("RufaPoint"));
+            //add CoreAppConfig configuration parameters
+            services.ConfigureStartupConfig<CoreAppConfig>(configuration.GetSection("RufaPoint"));
             //add hosting configuration parameters
             services.ConfigureStartupConfig<HostingConfig>(configuration.GetSection("Hosting"));
             //add accessor to HttpContext
@@ -149,7 +149,7 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
         public static void AddNopDataProtection(this IServiceCollection services)
         {
             //check whether to persist data protection in Redis
-            var nopConfig = services.BuildServiceProvider().GetRequiredService<RufaPointConfig>();
+            var nopConfig = services.BuildServiceProvider().GetRequiredService<CoreAppConfig>();
             /*Pekmez Redis
             if (nopConfig.RedisCachingEnabled && nopConfig.PersistDataProtectionKeysToRedis)
             {

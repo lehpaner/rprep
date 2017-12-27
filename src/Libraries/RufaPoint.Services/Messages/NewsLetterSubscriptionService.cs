@@ -259,7 +259,7 @@ namespace RufaPoint.Services.Messages
             //filter by customer role
             var guestRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
             if (guestRole == null)
-                throw new NopException("'Guests' role could not be loaded");
+                throw new CoreException("'Guests' role could not be loaded");
 
             if (guestRole.Id == customerRoleId)
             {

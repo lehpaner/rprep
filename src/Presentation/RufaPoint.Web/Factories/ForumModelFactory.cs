@@ -769,7 +769,7 @@ namespace RufaPoint.Web.Factories
 
                     if (searchterms.Length < searchTermMinimumLength)
                     {
-                        throw new NopException(string.Format(_localizationService.GetResource("Forum.SearchTermMinimumLengthIsNCharacters"),
+                        throw new CoreException(string.Format(_localizationService.GetResource("Forum.SearchTermMinimumLengthIsNCharacters"),
                             searchTermMinimumLength));
                     }
 

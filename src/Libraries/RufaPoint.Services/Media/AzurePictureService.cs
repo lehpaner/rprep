@@ -44,7 +44,7 @@ namespace RufaPoint.Services.Media
         private static CloudBlobContainer _container;
         private readonly IStaticCacheManager _cacheManager;
         private readonly MediaSettings _mediaSettings;
-        private readonly RufaPointConfig _config;
+        private readonly CoreAppConfig _config;
 
         #endregion
 
@@ -74,7 +74,7 @@ namespace RufaPoint.Services.Media
             IEventPublisher eventPublisher,
             IStaticCacheManager cacheManager,
             MediaSettings mediaSettings,
-            RufaPointConfig config,
+            CoreAppConfig config,
             IDataProvider dataProvider,
             IHostingEnvironment hostingEnvironment)
             : base(pictureRepository,

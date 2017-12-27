@@ -187,7 +187,7 @@ namespace RufaPoint.Core.Plugins
         /// <param name="applicationPartManager">Application part manager</param>
         /// <param name="config">Config</param>
         /// <returns>Assembly</returns>
-        private static Assembly PerformFileDeploy(FileInfo plug, ApplicationPartManager applicationPartManager, RufaPointConfig config)
+        private static Assembly PerformFileDeploy(FileInfo plug, ApplicationPartManager applicationPartManager, CoreAppConfig config)
         {
             if (plug.Directory == null || plug.Directory.Parent == null)
                 throw new InvalidOperationException("The plugin directory for the " + plug.Name + " file exists in a folder outside of the allowed nopCommerce folder hierarchy");
@@ -311,7 +311,7 @@ namespace RufaPoint.Core.Plugins
         /// </summary>
         /// <param name="applicationPartManager">Application part manager</param>
         /// <param name="config">Config</param>
-        public static void Initialize(ApplicationPartManager applicationPartManager, RufaPointConfig config)
+        public static void Initialize(ApplicationPartManager applicationPartManager, CoreAppConfig config)
         {
             if (applicationPartManager == null)
                 throw new ArgumentNullException(nameof(applicationPartManager));
@@ -372,7 +372,7 @@ namespace RufaPoint.Core.Plugins
                         var pluginDescriptor = dfd.Value;
 
                         //ensure that version of plugin is valid
-                        if (!pluginDescriptor.SupportedVersions.Contains(NopVersion.CurrentVersion, StringComparer.InvariantCultureIgnoreCase))
+                        if (!pluginDescriptor.SupportedVersions.Contains(CoreVersion.CurrentVersion, StringComparer.InvariantCultureIgnoreCase))
                         {
                             incompatiblePlugins.Add(pluginDescriptor.SystemName);
                             continue;

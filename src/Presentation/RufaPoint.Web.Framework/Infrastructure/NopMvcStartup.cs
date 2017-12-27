@@ -9,7 +9,7 @@ namespace RufaPoint.Web.Framework.Infrastructure
     /// <summary>
     /// Represents object for the configuring MVC on application startup
     /// </summary>
-    public class NopMvcStartup : INopStartup
+    public class NopMvcStartup : ICoreAppStartup
     {
         /// <summary>
         /// Add and configure any of the middleware

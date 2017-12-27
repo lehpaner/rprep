@@ -24,7 +24,7 @@ namespace RufaPoint.Data
         {
             var providerName = Settings.DataProvider;
             if (string.IsNullOrWhiteSpace(providerName))
-                throw new NopException("Data Settings doesn't contain a providerName");
+                throw new CoreException("Data Settings doesn't contain a providerName");
 
             switch (providerName.ToLowerInvariant())
             {
@@ -33,7 +33,7 @@ namespace RufaPoint.Data
                 case "sqlce":
                     return new SqlCeDataProvider();
                 default:
-                    throw new NopException($"Not supported dataprovider name: {providerName}");
+                    throw new CoreException($"Not supported dataprovider name: {providerName}");
             }
         }
     }

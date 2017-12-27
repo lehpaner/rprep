@@ -37,7 +37,7 @@ namespace RufaPoint.Data
         /// </summary>
         public virtual void SetDatabaseInitializer()
         {
-            var initializer = new CreateCeDatabaseIfNotExists<NopObjectContext>();
+            var initializer = new CreateCeDatabaseIfNotExists<AppObjectContext>();
             //PekmezDatabase.SetInitializer(initializer);
         }
 

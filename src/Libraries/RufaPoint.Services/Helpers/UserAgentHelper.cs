@@ -16,7 +16,7 @@ namespace RufaPoint.Services.Helpers
     {
         #region Fields
 
-        private readonly RufaPointConfig _nopConfig;
+        private readonly CoreAppConfig _nopConfig;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private static readonly object _locker = new object();
 
@@ -29,7 +29,7 @@ namespace RufaPoint.Services.Helpers
         /// </summary>
         /// <param name="nopConfig">Config</param>
         /// <param name="httpContextAccessor">HTTP context accessor</param>
-        public UserAgentHelper(RufaPointConfig nopConfig, IHttpContextAccessor httpContextAccessor)
+        public UserAgentHelper(CoreAppConfig nopConfig, IHttpContextAccessor httpContextAccessor)
         {
             this._nopConfig = nopConfig;
             this._httpContextAccessor = httpContextAccessor;

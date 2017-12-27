@@ -272,7 +272,7 @@ namespace RufaPoint.Services.Customers
             //add to 'Registered' role
             var registeredRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Registered);
             if (registeredRole == null)
-                throw new NopException("'Registered' role could not be loaded");
+                throw new CoreException("'Registered' role could not be loaded");
             request.Customer.CustomerRoles.Add(registeredRole);
             //remove from 'Guests' role
             var guestRole = request.Customer.CustomerRoles.FirstOrDefault(cr => cr.SystemName == SystemCustomerRoleNames.Guests);
@@ -393,20 +393,20 @@ namespace RufaPoint.Services.Customers
                 throw new ArgumentNullException(nameof(customer));
 
             if (newEmail == null)
-                throw new NopException("Email cannot be null");
+                throw new CoreException("Email cannot be null");
 
             newEmail = newEmail.Trim();
             var oldEmail = customer.Email;
 
             if (!CommonHelper.IsValidEmail(newEmail))
-                throw new NopException(_localizationService.GetResource("Account.EmailUsernameErrors.NewEmailIsNotValid"));
+                throw new CoreException(_localizationService.GetResource("Account.EmailUsernameErrors.NewEmailIsNotValid"));
 
             if (newEmail.Length > 100)
-                throw new NopException(_localizationService.GetResource("Account.EmailUsernameErrors.EmailTooLong"));
+                throw new CoreException(_localizationService.GetResource("Account.EmailUsernameErrors.EmailTooLong"));
 
             var customer2 = _customerService.GetCustomerByEmail(newEmail);
             if (customer2 != null && customer.Id != customer2.Id)
-                throw new NopException(_localizationService.GetResource("Account.EmailUsernameErrors.EmailAlreadyExists"));
+                throw new CoreException(_localizationService.GetResource("Account.EmailUsernameErrors.EmailAlreadyExists"));
 
             if (requireValidation)
             {
@@ -450,16 +450,16 @@ namespace RufaPoint.Services.Customers
                 throw new ArgumentNullException(nameof(customer));
 
             if (!_customerSettings.UsernamesEnabled)
-                throw new NopException("Usernames are disabled");
+                throw new CoreException("Usernames are disabled");
 
             newUsername = newUsername.Trim();
 
             if (newUsername.Length > 100)
-                throw new NopException(_localizationService.GetResource("Account.EmailUsernameErrors.UsernameTooLong"));
+                throw new CoreException(_localizationService.GetResource("Account.EmailUsernameErrors.UsernameTooLong"));
 
             var user2 = _customerService.GetCustomerByUsername(newUsername);
             if (user2 != null && customer.Id != user2.Id)
-                throw new NopException(_localizationService.GetResource("Account.EmailUsernameErrors.UsernameAlreadyExists"));
+                throw new CoreException(_localizationService.GetResource("Account.EmailUsernameErrors.UsernameAlreadyExists"));
 
             customer.Username = newUsername;
             _customerService.UpdateCustomer(customer);

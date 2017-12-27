@@ -275,7 +275,7 @@ namespace RufaPoint.Services.Catalog
                     result = string.Format(_localizationService.GetResource("Products.Price.Rental.Years"), price, product.RentalPriceLength);
                     break;
                 default:
-                    throw new NopException("Not supported rental period");
+                    throw new CoreException("Not supported rental period");
             }
 
             return result;

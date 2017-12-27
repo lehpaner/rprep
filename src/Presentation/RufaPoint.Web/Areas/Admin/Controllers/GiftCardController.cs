@@ -252,9 +252,9 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             try
             {
                 if (!CommonHelper.IsValidEmail(giftCard.RecipientEmail))
-                    throw new NopException("Recipient email is not valid");
+                    throw new CoreException("Recipient email is not valid");
                 if (!CommonHelper.IsValidEmail(giftCard.SenderEmail))
-                    throw new NopException("Sender email is not valid");
+                    throw new CoreException("Sender email is not valid");
 
                 var languageId = 0;
                 var order = giftCard.PurchasedWithOrderItem != null ? giftCard.PurchasedWithOrderItem.Order : null;

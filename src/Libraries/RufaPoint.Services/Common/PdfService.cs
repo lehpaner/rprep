@@ -918,7 +918,7 @@ namespace RufaPoint.Services.Common
                 if (!order.PickUpInStore)
                 {
                     if (order.ShippingAddress == null)
-                        throw new NopException($"Shipping is required, but address is not available. Order ID = {order.Id}");
+                        throw new CoreException($"Shipping is required, but address is not available. Order ID = {order.Id}");
                     
                     shippingAddress.AddCell(GetParagraph("PDFInvoice.ShippingInformation", lang, titleFont));
                     if (!string.IsNullOrEmpty(order.ShippingAddress.Company))
@@ -1280,7 +1280,7 @@ namespace RufaPoint.Services.Common
                 if (!order.PickUpInStore)
                 {
                     if (order.ShippingAddress == null)
-                        throw new NopException($"Shipping is required, but address is not available. Order ID = {order.Id}");
+                        throw new CoreException($"Shipping is required, but address is not available. Order ID = {order.Id}");
 
                     if (_addressSettings.CompanyEnabled && !string.IsNullOrEmpty(order.ShippingAddress.Company))
                         addressTable.AddCell(GetParagraph("PDFPackagingSlip.Company", lang, font, order.ShippingAddress.Company));

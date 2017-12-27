@@ -312,7 +312,7 @@ namespace RufaPoint.Services.Directory
             {
                 var exchangeRate = sourceCurrencyCode.Rate;
                 if (exchangeRate == decimal.Zero)
-                    throw new NopException($"Exchange rate not found for currency [{sourceCurrencyCode.Name}]");
+                    throw new CoreException($"Exchange rate not found for currency [{sourceCurrencyCode.Name}]");
                 result = result / exchangeRate;
             }
             return result;
@@ -338,7 +338,7 @@ namespace RufaPoint.Services.Directory
             {
                 var exchangeRate = targetCurrencyCode.Rate;
                 if (exchangeRate == decimal.Zero)
-                    throw new NopException($"Exchange rate not found for currency [{targetCurrencyCode.Name}]");
+                    throw new CoreException($"Exchange rate not found for currency [{targetCurrencyCode.Name}]");
                 result = result * exchangeRate;
             }
             return result;

@@ -22,7 +22,7 @@ namespace RufaPoint.Web.Framework.Mvc.ModelBinding
             foreach (var additionalValue in additionalValues)
             {
                 if (context.DisplayMetadata.AdditionalValues.ContainsKey(additionalValue.Name))
-                    throw new NopException("There is already an attribute with the name '{0}' on this model", additionalValue.Name);
+                    throw new CoreException("There is already an attribute with the name '{0}' on this model", additionalValue.Name);
 
                 context.DisplayMetadata.AdditionalValues.Add(additionalValue.Name, additionalValue);
             }

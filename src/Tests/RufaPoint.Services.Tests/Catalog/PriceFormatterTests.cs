@@ -85,7 +85,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceFormatter = new PriceFormatter(_workContext.Object, _currencyService,_localizationService.Object, 
                 _taxSettings, _currencySettings);
 
-            var nopEngine = new Mock<NopEngine>();
+            var nopEngine = new Mock<CoreAppEngine>();
             var serviceProvider = new Mock<IServiceProvider>();
             var httpContextAccessor =new Mock<IHttpContextAccessor>();
             serviceProvider.Setup(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Returns(httpContextAccessor);

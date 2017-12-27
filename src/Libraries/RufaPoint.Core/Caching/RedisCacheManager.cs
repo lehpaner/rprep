@@ -31,7 +31,7 @@ namespace RufaPoint.Core.Caching
         /// <param name="config">Config</param>
         public RedisCacheManager(ICacheManager perRequestCacheManager,
             IRedisConnectionWrapper connectionWrapper, 
-            RufaPointConfig config)
+            CoreAppConfig config)
         {
             if (string.IsNullOrEmpty(config.RedisCachingConnectionString))
                 throw new Exception("Redis connection string is empty");

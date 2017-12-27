@@ -132,7 +132,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 ?? _emailAccountService.GetEmailAccountById(_emailAccountSettings.DefaultEmailAccountId);
 
             if (emailAccount == null)
-                throw new NopException("Email account could not be loaded");
+                throw new CoreException("Email account could not be loaded");
 
             return emailAccount;
         }

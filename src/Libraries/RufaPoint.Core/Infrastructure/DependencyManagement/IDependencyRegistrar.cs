@@ -14,7 +14,7 @@ namespace RufaPoint.Core.Infrastructure.DependencyManagement
         /// <param name="builder">Container builder</param>
         /// <param name="typeFinder">Type finder</param>
         /// <param name="config">Config</param>
-        void Register(ContainerBuilder builder, ITypeFinder typeFinder, RufaPointConfig config);
+        void Register(ContainerBuilder builder, ITypeFinder typeFinder, CoreAppConfig config);
 
         /// <summary>
         /// Gets order of this dependency registrar implementation

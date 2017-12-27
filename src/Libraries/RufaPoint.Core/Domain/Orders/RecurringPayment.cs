@@ -116,7 +116,7 @@ namespace RufaPoint.Core.Domain.Orders
                 //                result = latestPayment.CreatedOnUtc.AddYears(this.CycleLength);
                 //                break;
                 //            default:
-                //                throw new NopException("Not supported cycle period");
+                //                throw new CoreException("Not supported cycle period");
                 //        }
                 //    }
                 //    else
@@ -144,7 +144,7 @@ namespace RufaPoint.Core.Domain.Orders
                                 result = StartDateUtc.AddYears(CycleLength * historyCollection.Count);
                                 break;
                             default:
-                                throw new NopException("Not supported cycle period");
+                                throw new CoreException("Not supported cycle period");
                         }
                     }
                     else

@@ -7,15 +7,15 @@ namespace RufaPoint.Data.Tests
 
     public abstract class PersistenceTest
     {
-        protected NopObjectContext context;
+        protected AppObjectContext context;
 
         public PersistenceTest()
         {
-            var options = new DbContextOptionsBuilder<NopObjectContext>()
+            var options = new DbContextOptionsBuilder<AppObjectContext>()
                      .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
                      .UseInMemoryDatabase(System.Guid.NewGuid().ToString())
                      .Options;
-            context = new NopObjectContext(options);
+            context = new AppObjectContext(options);
         }
 
         protected string GetTestDbName()
@@ -40,7 +40,7 @@ namespace RufaPoint.Data.Tests
             if (disposeContext)
             {
                 context.Dispose();
-                context = new NopObjectContext(GetTestDbName());
+                context = new AppObjectContext(GetTestDbName());
             }
 
             var fromDb = context.Set<T>().Find(id);

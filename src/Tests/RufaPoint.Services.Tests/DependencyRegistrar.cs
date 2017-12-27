@@ -17,7 +17,7 @@ namespace RufaPoint.Services.Tests
         /// <param name="builder">Container builder</param>
         /// <param name="typeFinder">Type finder</param>
         /// <param name="config">Config</param>
-        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, RufaPointConfig config)
+        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, CoreAppConfig config)
         {
             //cache managers
             builder.RegisterType<DummyCacheManager>().As<ICacheManager>().Named<ICacheManager>("nop_cache_static").SingleInstance();

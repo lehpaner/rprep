@@ -48,7 +48,7 @@ namespace RufaPoint.Core
 
             if (!IsValidEmail(output))
             {
-                throw new NopException("Email is not valid.");
+                throw new CoreException("Email is not valid.");
             }
 
             return output;
@@ -205,9 +205,9 @@ namespace RufaPoint.Core
             var instanceType = instance.GetType();
             var pi = instanceType.GetProperty(propertyName);
             if (pi == null)
-                throw new NopException("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
+                throw new CoreException("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
             if (!pi.CanWrite)
-                throw new NopException("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType);
+                throw new CoreException("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType);
             if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
                 value = To(value, pi.PropertyType);
             pi.SetValue(instance, value, new object[0]);

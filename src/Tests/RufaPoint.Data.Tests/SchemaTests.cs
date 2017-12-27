@@ -8,8 +8,8 @@ namespace RufaPoint.Data.Tests
         [Fact]
         public void Can_generate_schema()
         {
-            //Database.SetInitializer<NopObjectContext>(null);
-            var ctx = new NopObjectContext("Test");
+            //Database.SetInitializer<AppObjectContext>(null);
+            var ctx = new AppObjectContext("Test");
             var result = ctx.CreateDatabaseScript();
             result.ShouldNotBeNull();
         }

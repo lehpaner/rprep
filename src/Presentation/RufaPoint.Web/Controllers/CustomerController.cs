@@ -1389,7 +1389,7 @@ namespace RufaPoint.Web.Controllers
                     {
                         var avatarMaxSize = _customerSettings.AvatarMaximumSizeBytes;
                         if (uploadedFile.Length > avatarMaxSize)
-                            throw new NopException(string.Format(_localizationService.GetResource("Account.Avatar.MaximumUploadedFileSize"), avatarMaxSize));
+                            throw new CoreException(string.Format(_localizationService.GetResource("Account.Avatar.MaximumUploadedFileSize"), avatarMaxSize));
 
                         var customerPictureBinary = uploadedFile.GetPictureBits();
                         if (customerAvatar != null)

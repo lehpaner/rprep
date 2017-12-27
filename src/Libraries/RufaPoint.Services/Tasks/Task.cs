@@ -133,7 +133,7 @@ namespace RufaPoint.Services.Tasks
 
             try
             {
-                var nopConfig = EngineContext.Current.Resolve<RufaPointConfig>();
+                var nopConfig = EngineContext.Current.Resolve<CoreAppConfig>();
                 if (nopConfig.RedisCachingEnabled)
                 {
                     //get expiration time
