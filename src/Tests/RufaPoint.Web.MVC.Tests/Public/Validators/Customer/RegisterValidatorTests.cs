@@ -3,27 +3,25 @@ using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Services.Directory;
 using RufaPoint.Web.Models.Customer;
 using RufaPoint.Web.Validators.Customer;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 {
-    [TestFixture]
     public class RegisterValidatorTests : BaseValidatorTests
     {
         private RegisterValidator _validator;
-        private IStateProvinceService _stateProvinceService;
+        private Mock<IStateProvinceService> _stateProvinceService;
         private CustomerSettings _customerSettings;
         
-        [SetUp]
-        public new void Setup()
+        public RegisterValidatorTests()
         {
             _customerSettings = new CustomerSettings();
-            _stateProvinceService = MockRepository.GenerateMock<IStateProvinceService>();
-            _validator = new RegisterValidator(_localizationService, _stateProvinceService, _customerSettings);
+            _stateProvinceService = new Mock<IStateProvinceService>();
+            _validator = new RegisterValidator(_localizationService.Object, _stateProvinceService.Object, _customerSettings);
         }
         
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_null_or_empty()
         {
             var model = new RegisterModel
@@ -35,7 +33,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_wrong_format()
         {
             var model = new RegisterModel
@@ -45,7 +43,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_email_is_correct_format()
         {
             var model = new RegisterModel
@@ -55,7 +53,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_firstName_is_null_or_empty()
         {
             var model = new RegisterModel
@@ -67,7 +65,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.FirstName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_firstName_is_specified()
         {
             var model = new RegisterModel
@@ -77,7 +75,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.FirstName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_lastName_is_null_or_empty()
         {
             var model = new RegisterModel
@@ -89,7 +87,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.LastName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_lastName_is_specified()
         {
             var model = new RegisterModel
@@ -99,7 +97,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.LastName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_password_is_null_or_empty()
         {
             var model = new RegisterModel
@@ -115,7 +113,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.Password, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_password_is_specified()
         {
             var model = new RegisterModel
@@ -127,7 +125,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.Password, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_confirmPassword_is_null_or_empty()
         {
             var model = new RegisterModel
@@ -139,7 +137,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.ConfirmPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_confirmPassword_is_specified()
         {
             var model = new RegisterModel
@@ -151,7 +149,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.ConfirmPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_password_doesnot_equal_confirmationPassword()
         {
             var model = new RegisterModel
@@ -162,7 +160,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.ConfirmPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_password_equals_confirmationPassword()
         {
             var model = new RegisterModel
@@ -173,11 +171,11 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.Password, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_validate_password_is_length()
         {
             _customerSettings.PasswordMinLength = 5;
-            _validator = new RegisterValidator(_localizationService, _stateProvinceService, _customerSettings);
+            _validator = new RegisterValidator(_localizationService.Object, _stateProvinceService.Object, _customerSettings);
 
             var model = new RegisterModel
             {

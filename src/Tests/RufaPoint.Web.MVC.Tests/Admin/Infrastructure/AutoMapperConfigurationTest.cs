@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using RufaPoint.Web.Areas.Admin.Infrastructure.Mapper;
 using RufaPoint.Core.Infrastructure.Mapper;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Admin.Infrastructure
 {
-    [TestFixture]
+
     public class AutoMapperConfigurationTest
     {
-        [Test]
+        [Fact]
         public void Configuration_is_valid()
         {
             var config = new MapperConfiguration(cfg => {

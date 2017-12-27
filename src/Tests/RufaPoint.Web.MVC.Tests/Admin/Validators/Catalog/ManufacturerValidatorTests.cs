@@ -2,22 +2,20 @@
 using RufaPoint.Web.Areas.Admin.Models.Catalog;
 using RufaPoint.Web.Areas.Admin.Validators.Catalog;
 using RufaPoint.Web.MVC.Tests.Public.Validators;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Admin.Validators.Catalog
 {
-    [TestFixture]
+
     public class ManufacturerValidatorTests : BaseValidatorTests
     {
         private ManufacturerValidator _validator;
-
-        [SetUp]
-        public new void Setup()
+        public ManufacturerValidatorTests()
         {
-            _validator = new ManufacturerValidator(_localizationService, null);
+            _validator = new ManufacturerValidator(_localizationService.Object, null);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_pageSizeOptions_has_duplicate_items()
         {
             var model = new ManufacturerModel
@@ -27,7 +25,7 @@ namespace RufaPoint.Web.MVC.Tests.Admin.Validators.Catalog
             _validator.ShouldHaveValidationErrorFor(x => x.PageSizeOptions, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_pageSizeOptions_has_not_duplicate_items()
         {
             var model = new ManufacturerModel
@@ -37,7 +35,7 @@ namespace RufaPoint.Web.MVC.Tests.Admin.Validators.Catalog
             _validator.ShouldNotHaveValidationErrorFor(x => x.PageSizeOptions, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_pageSizeOptions_is_null_or_empty()
         {
             var model = new ManufacturerModel

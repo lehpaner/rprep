@@ -1,22 +1,20 @@
 ﻿using FluentValidation.TestHelper;
 using RufaPoint.Web.Models.ShoppingCart;
 using RufaPoint.Web.Validators.ShoppingCart;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.ShoppingCart
 {
-    [TestFixture]
+
     public class WishlistEmailAFriendValidatorTests : BaseValidatorTests
     {
         private WishlistEmailAFriendValidator _validator;
-        
-        [SetUp]
-        public new void Setup()
+        public WishlistEmailAFriendValidatorTests()
         {
-            _validator = new WishlistEmailAFriendValidator(_localizationService);
+            _validator = new WishlistEmailAFriendValidator(_localizationService.Object);
         }
         
-        [Test]
+        [Fact]
         public void Should_have_error_when_friendEmail_is_null_or_empty()
         {
             var model = new WishlistEmailAFriendModel
@@ -28,7 +26,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.ShoppingCart
             _validator.ShouldHaveValidationErrorFor(x => x.FriendEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_friendEmail_is_wrong_format()
         {
             var model = new WishlistEmailAFriendModel
@@ -38,7 +36,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.ShoppingCart
             _validator.ShouldHaveValidationErrorFor(x => x.FriendEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_friendEmail_is_correct_format()
         {
             var model = new WishlistEmailAFriendModel
@@ -48,7 +46,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.ShoppingCart
             _validator.ShouldNotHaveValidationErrorFor(x => x.FriendEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_yourEmailAddress_is_null_or_empty()
         {
             var model = new WishlistEmailAFriendModel
@@ -60,7 +58,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.ShoppingCart
             _validator.ShouldHaveValidationErrorFor(x => x.YourEmailAddress, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_yourEmailAddress_is_wrong_format()
         {
             var model = new WishlistEmailAFriendModel
@@ -70,7 +68,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.ShoppingCart
             _validator.ShouldHaveValidationErrorFor(x => x.YourEmailAddress, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_yourEmailAddress_is_correct_format()
         {
             var model = new WishlistEmailAFriendModel

@@ -1,22 +1,21 @@
 ﻿using FluentValidation.TestHelper;
 using RufaPoint.Web.Models.Catalog;
 using RufaPoint.Web.Validators.Catalog;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
 {
-    [TestFixture]
+
     public class ProductEmailAFriendValidatorTests : BaseValidatorTests
     {
         private ProductEmailAFriendValidator _validator;
         
-        [SetUp]
-        public new void Setup()
+        public ProductEmailAFriendValidatorTests()
         {
-            _validator = new ProductEmailAFriendValidator(_localizationService);
+            _validator = new ProductEmailAFriendValidator(_localizationService.Object);
         }
         
-        [Test]
+        [Fact]
         public void Should_have_error_when_friendEmail_is_null_or_empty()
         {
             var model = new ProductEmailAFriendModel
@@ -28,7 +27,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
             _validator.ShouldHaveValidationErrorFor(x => x.FriendEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_friendEmail_is_wrong_format()
         {
             var model = new ProductEmailAFriendModel
@@ -38,7 +37,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
             _validator.ShouldHaveValidationErrorFor(x => x.FriendEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_friendEmail_is_correct_format()
         {
             var model = new ProductEmailAFriendModel
@@ -48,7 +47,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
             _validator.ShouldNotHaveValidationErrorFor(x => x.FriendEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_yourEmailAddress_is_null_or_empty()
         {
             var model = new ProductEmailAFriendModel
@@ -60,7 +59,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
             _validator.ShouldHaveValidationErrorFor(x => x.YourEmailAddress, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_yourEmailAddress_is_wrong_format()
         {
             var model = new ProductEmailAFriendModel
@@ -70,7 +69,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
             _validator.ShouldHaveValidationErrorFor(x => x.YourEmailAddress, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_yourEmailAddress_is_correct_format()
         {
             var model = new ProductEmailAFriendModel

@@ -2,28 +2,25 @@
 using RufaPoint.Web.Infrastructure.Installation;
 using RufaPoint.Web.Models.Install;
 using RufaPoint.Web.Validators.Install;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
 {
-    [TestFixture]
     public class InstallValidatorTests : BaseValidatorTests
     {
-        protected IInstallationLocalizationService _ilService;
+        protected Mock<IInstallationLocalizationService> _ilService;
         private InstallValidator _validator;
-
-        [SetUp]
-        public new void Setup()
+        public InstallValidatorTests()
         {
             //set up localziation service used by almost all validators
-            _ilService = MockRepository.GenerateMock<IInstallationLocalizationService>();
-            _ilService.Expect(l => l.GetResource("")).Return("Invalid").IgnoreArguments();
+            _ilService = new Mock<IInstallationLocalizationService>();
+            _ilService.Setup(l => l.GetResource("")).Returns("Invalid");//.IgnoreArguments();
 
-            _validator = new InstallValidator(_ilService);
+            _validator = new InstallValidator(_ilService.Object);
         }
         
-        [Test]
+        [Fact]
         public void Should_have_error_when_adminEmail_is_null_or_empty()
         {
             var model = new InstallModel
@@ -35,7 +32,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldHaveValidationErrorFor(x => x.AdminEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_adminEmail_is_wrong_format()
         {
             var model = new InstallModel
@@ -45,7 +42,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldHaveValidationErrorFor(x => x.AdminEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_adminEmail_is_correct_format()
         {
             var model = new InstallModel
@@ -55,7 +52,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldNotHaveValidationErrorFor(x => x.AdminEmail, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_password_is_null_or_empty()
         {
             var model = new InstallModel
@@ -71,7 +68,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldHaveValidationErrorFor(x => x.AdminPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_password_is_specified()
         {
             var model = new InstallModel
@@ -83,7 +80,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldNotHaveValidationErrorFor(x => x.AdminPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_confirmPassword_is_null_or_empty()
         {
             var model = new InstallModel
@@ -95,7 +92,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldHaveValidationErrorFor(x => x.ConfirmPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_confirmPassword_is_specified()
         {
             var model = new InstallModel
@@ -105,7 +102,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldNotHaveValidationErrorFor(x => x.ConfirmPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_password_doesnot_equal_confirmationPassword()
         {
             var model = new InstallModel
@@ -116,7 +113,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Install
             _validator.ShouldHaveValidationErrorFor(x => x.AdminPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_password_equals_confirmationPassword()
         {
             var model = new InstallModel

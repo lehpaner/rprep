@@ -1,22 +1,21 @@
 ﻿using FluentValidation.TestHelper;
 using RufaPoint.Web.Models.PrivateMessages;
 using RufaPoint.Web.Validators.PrivateMessages;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.PrivateMessages
 {
-    [TestFixture]
+
     public class SendPrivateMessageValidatorTests : BaseValidatorTests
     {
         private SendPrivateMessageValidator _validator;
         
-        [SetUp]
-        public new void Setup()
+        public SendPrivateMessageValidatorTests()
         {
-            _validator = new SendPrivateMessageValidator(_localizationService);
+            _validator = new SendPrivateMessageValidator(_localizationService.Object);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_subject_is_null_or_empty()
         {
             var model = new SendPrivateMessageModel
@@ -28,7 +27,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.PrivateMessages
             _validator.ShouldHaveValidationErrorFor(x => x.Subject, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_subject_is_specified()
         {
             var model = new SendPrivateMessageModel
@@ -38,7 +37,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.PrivateMessages
             _validator.ShouldNotHaveValidationErrorFor(x => x.Subject, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_message_is_null_or_empty()
         {
             var model = new SendPrivateMessageModel
@@ -50,7 +49,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.PrivateMessages
             _validator.ShouldHaveValidationErrorFor(x => x.Message, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_message_is_specified()
         {
             var model = new SendPrivateMessageModel

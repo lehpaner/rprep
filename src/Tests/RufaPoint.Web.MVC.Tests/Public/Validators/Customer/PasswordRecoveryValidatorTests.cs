@@ -1,22 +1,20 @@
 ﻿using FluentValidation.TestHelper;
 using RufaPoint.Web.Models.Customer;
 using RufaPoint.Web.Validators.Customer;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 {
-    [TestFixture]
     public class PasswordRecoveryValidatorTests : BaseValidatorTests
     {
         private PasswordRecoveryValidator _validator;
-        
-        [SetUp]
-        public new void Setup()
+    
+        public PasswordRecoveryValidatorTests()
         {
-            _validator = new PasswordRecoveryValidator(_localizationService);
+            _validator = new PasswordRecoveryValidator(_localizationService.Object);
         }
         
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_null_or_empty()
         {
             var model = new PasswordRecoveryModel
@@ -28,7 +26,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_wrong_format()
         {
             var model = new PasswordRecoveryModel
@@ -38,7 +36,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_email_is_correct_format()
         {
             var model = new PasswordRecoveryModel

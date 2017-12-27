@@ -2,24 +2,23 @@
 using RufaPoint.Core.Domain.Common;
 using RufaPoint.Web.Models.Common;
 using RufaPoint.Web.Validators.Common;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
 {
-    [TestFixture]
+
     public class ContactVendorValidatorTests : BaseValidatorTests
     {
         private ContactVendorValidator _validator;
         private CommonSettings _commonSettings;
         
-        [SetUp]
-        public new void Setup()
+        public ContactVendorValidatorTests()
         {
             _commonSettings = new CommonSettings();
-            _validator = new ContactVendorValidator(_localizationService, _commonSettings);
+            _validator = new ContactVendorValidator(_localizationService.Object, _commonSettings);
         }
         
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_null_or_empty()
         {
             var model = new ContactVendorModel
@@ -31,7 +30,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
             _validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_wrong_format()
         {
             var model = new ContactVendorModel
@@ -41,7 +40,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
             _validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_email_is_correct_format()
         {
             var model = new ContactVendorModel
@@ -51,7 +50,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
             _validator.ShouldNotHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_fullName_is_null_or_empty()
         {
             var model = new ContactVendorModel
@@ -63,7 +62,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
             _validator.ShouldHaveValidationErrorFor(x => x.FullName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_fullName_is_specified()
         {
             var model = new ContactVendorModel
@@ -73,7 +72,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
             _validator.ShouldNotHaveValidationErrorFor(x => x.FullName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_enquiry_is_null_or_empty()
         {
             var model = new ContactVendorModel
@@ -85,7 +84,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Common
             _validator.ShouldHaveValidationErrorFor(x => x.Enquiry, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_enquiry_is_specified()
         {
             var model = new ContactVendorModel

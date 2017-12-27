@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Admin.Controllers
 {
-    [TestFixture]
+
     public class CategoryControllerTests : RufaPoint.Tests.TestsBase
     {
         //TODO also test MVC views.
@@ -11,9 +11,9 @@ namespace RufaPoint.Web.MVC.Tests.Admin.Controllers
 
         //TODO ASP.NET MVC Outbound URL tests with NSubstitute.
         //Find more info here: http://blogs.planetcloud.co.uk/mygreatdiscovery/post/ASPNET-MVC-Outbound-Url-tests-with-NSubstitute.aspx
-        public override void SetUp()
+        public CategoryControllerTests()
         {
-            base.SetUp();
+          
         }
 
         //TODO test URLs.

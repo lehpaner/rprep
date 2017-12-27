@@ -1,14 +1,14 @@
 ﻿using System;
 using RufaPoint.Tests;
 using RufaPoint.Web.Models.News;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Models.News
 {
-    [TestFixture]
+
     public class HomePageNewsItemsModelTests
     {
-        [Test]
+        [Fact]
         public void Can_clone()
         {	    
             //create

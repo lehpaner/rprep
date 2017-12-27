@@ -2,17 +2,16 @@
 using System.Threading;
 using RufaPoint.Tests;
 using RufaPoint.Web.Framework.Validators;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators
 {
-    [TestFixture]
+
     public class CreditCardValidatorTests
     {
         TestValidator _validator;
         
-        [SetUp]
-        public void Setup()
+        public CreditCardValidatorTests()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
@@ -21,7 +20,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators
 			};
         }
 
-        [Test]
+        [Fact]
         public void IsValidTests()
         {
             // Optional value is not valid

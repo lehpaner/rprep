@@ -2,22 +2,21 @@
 using RufaPoint.Web.Areas.Admin.Models.Vendors;
 using RufaPoint.Web.Areas.Admin.Validators.Vendors;
 using RufaPoint.Web.MVC.Tests.Public.Validators;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Admin.Validators.Vendors
 {
-    [TestFixture]
+
     public class VendorValidatorTests : BaseValidatorTests
     {
         private VendorValidator _validator;
 
-        [SetUp]
-        public new void Setup()
+        public VendorValidatorTests()
         {
-            _validator = new VendorValidator(_localizationService, null);
+            _validator = new VendorValidator(_localizationService.Object, null);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_pageSizeOptions_has_duplicate_items()
         {
             var model = new VendorModel
@@ -27,7 +26,7 @@ namespace RufaPoint.Web.MVC.Tests.Admin.Validators.Vendors
             _validator.ShouldHaveValidationErrorFor(x => x.PageSizeOptions, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_pageSizeOptions_has_not_duplicate_items()
         {
             var model = new VendorModel
@@ -37,7 +36,7 @@ namespace RufaPoint.Web.MVC.Tests.Admin.Validators.Vendors
             _validator.ShouldNotHaveValidationErrorFor(x => x.PageSizeOptions, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_pageSizeOptions_is_null_or_empty()
         {
             var model = new VendorModel

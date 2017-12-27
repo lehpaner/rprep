@@ -1,13 +1,13 @@
 ﻿using RufaPoint.Tests;
 using RufaPoint.Web.Models.Polls;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Models.Polls
 {
-    [TestFixture]
+
     public class PollModelTests
     {
-        [Test]
+        [Fact]
         public void Can_clone()
         {	    
             //create

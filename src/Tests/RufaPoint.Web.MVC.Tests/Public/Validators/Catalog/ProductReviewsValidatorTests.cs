@@ -1,17 +1,16 @@
 ﻿using RufaPoint.Web.Validators.Catalog;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Catalog
 {
-    [TestFixture]
+
     public class ProductReviewsValidatorTests : BaseValidatorTests
     {
         private ProductReviewsValidator _validator;
 
-        [SetUp]
-        public new void Setup()
+        public ProductReviewsValidatorTests()
         {
-            _validator = new ProductReviewsValidator(_localizationService);
+            _validator = new ProductReviewsValidator(_localizationService.Object);
         }
 
         //TODO uncomment tests when the following FluentVlidation issue is fixed http://fluentvalidation.codeplex.com/workitem/7095

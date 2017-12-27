@@ -3,22 +3,21 @@ using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Services.Directory;
 using RufaPoint.Web.Models.Customer;
 using RufaPoint.Web.Validators.Customer;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 {
-    [TestFixture]
     public class CustomerInfoValidatorTests : BaseValidatorTests
     {
-        private IStateProvinceService _stateProvinceService;
+        private Mock<IStateProvinceService> _stateProvinceService;
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_null_or_empty()
         {
-            _stateProvinceService = MockRepository.GenerateMock<IStateProvinceService>();
+            _stateProvinceService = new Mock<IStateProvinceService>();
 
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, new CustomerSettings());
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, new CustomerSettings());
 
             var model = new CustomerInfoModel
             {
@@ -28,10 +27,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.Email = "";
             validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
-        [Test]
+        [Fact]
         public void Should_have_error_when_email_is_wrong_format()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings());
 
             var model = new CustomerInfoModel
@@ -40,10 +39,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             };
             validator.ShouldHaveValidationErrorFor(x => x.Email, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_email_is_correct_format()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings());
 
             var model = new CustomerInfoModel
@@ -53,10 +52,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.Email, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_firstName_is_null_or_empty()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings());
 
             var model = new CustomerInfoModel
@@ -67,10 +66,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.FirstName = "";
             validator.ShouldHaveValidationErrorFor(x => x.FirstName, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_firstName_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings());
 
             var model = new CustomerInfoModel
@@ -80,10 +79,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.FirstName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_lastName_is_null_or_empty()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings());
 
             var model = new CustomerInfoModel
@@ -94,10 +93,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.LastName = "";
             validator.ShouldHaveValidationErrorFor(x => x.LastName, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_lastName_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings());
 
             var model = new CustomerInfoModel
@@ -107,13 +106,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.LastName, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_company_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     CompanyEnabled = true,
@@ -126,7 +125,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     CompanyEnabled = true,
@@ -137,10 +136,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.Company = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.Company, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_company_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings
                 {
                     CompanyEnabled = true
@@ -153,13 +152,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.Company, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_streetaddress_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     StreetAddressEnabled = true,
@@ -171,7 +170,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldHaveValidationErrorFor(x => x.StreetAddress, model);
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     StreetAddressEnabled = true,
@@ -182,10 +181,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.StreetAddress = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.StreetAddress, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_streetaddress_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     StreetAddressEnabled = true
@@ -198,13 +197,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.StreetAddress, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_streetaddress2_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     StreetAddress2Enabled = true,
@@ -216,7 +215,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldHaveValidationErrorFor(x => x.StreetAddress2, model);
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     StreetAddress2Enabled = true,
@@ -227,10 +226,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.StreetAddress2 = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.StreetAddress2, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_streetaddress2_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings
                 {
                     StreetAddress2Enabled = true
@@ -243,13 +242,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.StreetAddress2, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_zippostalcode_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     ZipPostalCodeEnabled = true,
@@ -262,7 +261,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     ZipPostalCodeEnabled = true,
@@ -273,10 +272,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.ZipPostalCode = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.ZipPostalCode, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_zippostalcode_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings
                 {
                     StreetAddress2Enabled = true
@@ -289,13 +288,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.ZipPostalCode, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_city_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     CityEnabled = true,
@@ -308,7 +307,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     CityEnabled = true,
@@ -319,10 +318,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.City = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.City, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_city_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings
                 {
                     CityEnabled = true
@@ -335,13 +334,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.City, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_phone_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     PhoneEnabled = true,
@@ -353,7 +352,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldHaveValidationErrorFor(x => x.Phone, model);
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     PhoneEnabled = true,
@@ -364,10 +363,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.Phone = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.Phone, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_phone_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService, 
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object, 
                 new CustomerSettings
                 {
                     PhoneEnabled = true
@@ -380,13 +379,13 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             validator.ShouldNotHaveValidationErrorFor(x => x.Phone, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_fax_is_null_or_empty_based_on_required_setting()
         {
             var model = new CustomerInfoModel();
 
             //required
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     FaxEnabled = true,
@@ -399,7 +398,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 
 
             //not required
-            validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     FaxEnabled = true,
@@ -410,10 +409,10 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             model.Fax = "";
             validator.ShouldNotHaveValidationErrorFor(x => x.Fax, model);
         }
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_fax_is_specified()
         {
-            var validator = new CustomerInfoValidator(_localizationService, _stateProvinceService,
+            var validator = new CustomerInfoValidator(_localizationService.Object, _stateProvinceService.Object,
                 new CustomerSettings
                 {
                     FaxEnabled = true

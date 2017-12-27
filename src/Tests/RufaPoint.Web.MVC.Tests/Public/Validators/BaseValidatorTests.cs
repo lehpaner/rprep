@@ -4,30 +4,28 @@ using Microsoft.Extensions.DependencyInjection;
 using RufaPoint.Core.Infrastructure;
 using RufaPoint.Services.Localization;
 using RufaPoint.Web.Areas.Admin.Validators.Common;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators
 {
-    [TestFixture]
+
     public abstract class BaseValidatorTests
     {
-        protected ILocalizationService _localizationService;
-        
-        [SetUp]
-        public void Setup()
+        protected Mock<ILocalizationService> _localizationService;
+        public BaseValidatorTests()
         {
-            var nopEngine = MockRepository.GenerateMock<NopEngine>();
-            var serviceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var httpContextAccessor = MockRepository.GenerateMock<IHttpContextAccessor>();
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Return(httpContextAccessor);
+            var nopEngine = new Mock<NopEngine>();
+            var serviceProvider = new Mock<IServiceProvider>();
+            var httpContextAccessor = new Mock<IHttpContextAccessor>();
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Returns(httpContextAccessor);
             //set up localziation service used by almost all validators
-            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
-            _localizationService.Expect(l => l.GetResource("")).Return("Invalid").IgnoreArguments();
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(ILocalizationService))).Return(_localizationService);
-            nopEngine.Expect(x => x.ServiceProvider).Return(serviceProvider);
-            nopEngine.Expect(x => x.ResolveUnregistered(typeof(AddressValidator))).Return(new AddressValidator(_localizationService));
-            EngineContext.Replace(nopEngine);
+            _localizationService = new Mock<ILocalizationService>();
+            _localizationService.Setup(l => l.GetResource("")).Returns("Invalid");//Pekmez.IgnoreArguments();
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(ILocalizationService))).Returns(_localizationService.Object);
+            nopEngine.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            nopEngine.Setup(x => x.ResolveUnregistered(typeof(AddressValidator))).Returns(new AddressValidator(_localizationService.Object));
+            EngineContext.Replace(nopEngine.Object);
         }
     }
 }

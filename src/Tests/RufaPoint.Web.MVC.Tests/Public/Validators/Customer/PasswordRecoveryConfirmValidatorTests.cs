@@ -2,24 +2,22 @@
 using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Web.Models.Customer;
 using RufaPoint.Web.Validators.Customer;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
 {
-    [TestFixture]
     public class PasswordRecoveryConfirmValidatorTests : BaseValidatorTests
     {
         private PasswordRecoveryConfirmValidator _validator;
         private CustomerSettings _customerSettings;
         
-        [SetUp]
-        public new void Setup()
+        public PasswordRecoveryConfirmValidatorTests()
         {
             _customerSettings = new CustomerSettings();
-            _validator = new PasswordRecoveryConfirmValidator(_localizationService, _customerSettings);
+            _validator = new PasswordRecoveryConfirmValidator(_localizationService.Object, _customerSettings);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_newPassword_is_null_or_empty()
         {
             var model = new PasswordRecoveryConfirmModel
@@ -35,7 +33,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.NewPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_newPassword_is_specified()
         {
             var model = new PasswordRecoveryConfirmModel
@@ -47,7 +45,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.NewPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_confirmNewPassword_is_null_or_empty()
         {
             var model = new PasswordRecoveryConfirmModel
@@ -59,7 +57,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.ConfirmNewPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_confirmNewPassword_is_specified()
         {
             var model = new PasswordRecoveryConfirmModel
@@ -71,7 +69,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.ConfirmNewPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_have_error_when_newPassword_doesnot_equal_confirmationPassword()
         {
             var model = new PasswordRecoveryConfirmModel
@@ -82,7 +80,7 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldHaveValidationErrorFor(x => x.ConfirmNewPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_have_error_when_newPassword_equals_confirmationPassword()
         {
             var model = new PasswordRecoveryConfirmModel
@@ -93,11 +91,11 @@ namespace RufaPoint.Web.MVC.Tests.Public.Validators.Customer
             _validator.ShouldNotHaveValidationErrorFor(x => x.NewPassword, model);
         }
 
-        [Test]
+        [Fact]
         public void Should_validate_newPassword_is_length()
         {
             _customerSettings.PasswordMinLength = 5;
-            _validator = new PasswordRecoveryConfirmValidator(_localizationService, _customerSettings);
+            _validator = new PasswordRecoveryConfirmValidator(_localizationService.Object, _customerSettings);
 
             var model = new PasswordRecoveryConfirmModel
             {

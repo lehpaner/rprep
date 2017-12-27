@@ -1,17 +1,16 @@
 ﻿using RufaPoint.Web.Validators.Blogs;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Web.MVC.Tests.Public.Validators.Blogs
 {
-    [TestFixture]
+
     public class BlogPostValidatorTests : BaseValidatorTests
     {
         private BlogPostValidator _validator;
         
-        [SetUp]
-        public new void Setup()
+        public BlogPostValidatorTests()
         {
-            _validator = new BlogPostValidator(_localizationService);
+            _validator = new BlogPostValidator(_localizationService.Object);
         }
         //TODO uncomment tests when the following FluentVlidation issue is fixed http://fluentvalidation.codeplex.com/workitem/7095
         //[Test]
