@@ -9,33 +9,32 @@ using RufaPoint.Services.Common;
 using RufaPoint.Services.Configuration;
 using RufaPoint.Services.Helpers;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Helpers
 {
-    [TestFixture]
+
     public class DateTimeHelperTests : ServiceTest
     {
-        private IWorkContext _workContext;
-        private IStoreContext _storeContext;
-        private IGenericAttributeService _genericAttributeService;
-        private ISettingService _settingService;
+        private Mock<IWorkContext> _workContext;
+        private Mock<IStoreContext> _storeContext;
+        private Mock<IGenericAttributeService> _genericAttributeService;
+        private Mock<ISettingService> _settingService;
         private DateTimeSettings _dateTimeSettings;
         private IDateTimeHelper _dateTimeHelper;
         private Store _store;
 
-        [SetUp]
-        public new void SetUp()
+        public DateTimeHelperTests()
         {
-            _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
-            _settingService = MockRepository.GenerateMock<ISettingService>();
+            _genericAttributeService = new Mock<IGenericAttributeService>();
+            _settingService = new Mock<ISettingService>();
 
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
+            _workContext = new Mock<IWorkContext>();
 
             _store = new Store { Id = 1 };
-            _storeContext = MockRepository.GenerateMock<IStoreContext>();
-            _storeContext.Expect(x => x.CurrentStore).Return(_store);
+            _storeContext = new Mock<IStoreContext>();
+            _storeContext.Setup(x => x.CurrentStore).Returns(_store);
 
             _dateTimeSettings = new DateTimeSettings
             {
@@ -43,11 +42,11 @@ namespace RufaPoint.Services.Tests.Helpers
                 DefaultStoreTimeZoneId = ""
             };
 
-            _dateTimeHelper = new DateTimeHelper(_workContext, _genericAttributeService,
-                _settingService, _dateTimeSettings);
+            _dateTimeHelper = new DateTimeHelper(_workContext.Object, _genericAttributeService.Object,
+                _settingService.Object, _dateTimeSettings);
         }
 
-        [Test]
+        [Fact]
         public void Can_find_systemTimeZone_by_id()
         {
             var timeZones = _dateTimeHelper.FindTimeZoneById("E. Europe Standard Time");
@@ -55,7 +54,7 @@ namespace RufaPoint.Services.Tests.Helpers
             timeZones.Id.ShouldEqual("E. Europe Standard Time");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_all_systemTimeZones()
         {
             var systemTimeZones = _dateTimeHelper.GetSystemTimeZones();
@@ -63,7 +62,7 @@ namespace RufaPoint.Services.Tests.Helpers
             (systemTimeZones.Any()).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_get_customer_timeZone_with_customTimeZones_enabled()
         {
             _dateTimeSettings.AllowCustomersToSetTimeZone = true;
@@ -74,8 +73,8 @@ namespace RufaPoint.Services.Tests.Helpers
                 Id = 10,
             };
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+                .Returns(new List<GenericAttribute>
                             {
                                 new GenericAttribute
                                     {
@@ -91,7 +90,7 @@ namespace RufaPoint.Services.Tests.Helpers
             timeZone.Id.ShouldEqual("Russian Standard Time");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_customer_timeZone_with_customTimeZones_disabled()
         {
             _dateTimeSettings.AllowCustomersToSetTimeZone = false;
@@ -102,8 +101,8 @@ namespace RufaPoint.Services.Tests.Helpers
                 Id = 10,
             };
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+                .Returns(new List<GenericAttribute>
                             {
                                 new GenericAttribute
                                     {
@@ -120,7 +119,7 @@ namespace RufaPoint.Services.Tests.Helpers
             timeZone.Id.ShouldEqual("E. Europe Standard Time");
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_dateTime_to_userTime()
         {
             var sourceDateTime = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time"); //(GMT+02:00) Minsk;
@@ -138,7 +137,7 @@ namespace RufaPoint.Services.Tests.Helpers
                 .ShouldEqual(new DateTime(2010, 01, 01, 5, 0, 0));
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_dateTime_to_utc_dateTime()
         {
             var sourceDateTime = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time"); //(GMT+02:00) Minsk;

@@ -9,24 +9,23 @@ using RufaPoint.Services.Directory;
 using RufaPoint.Services.Events;
 using RufaPoint.Services.Stores;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Directory
 {
-    [TestFixture]
+
     public class CurrencyServiceTests : ServiceTest
     {
-        private IRepository<Currency> _currencyRepository;
-        private IStoreMappingService _storeMappingService;
+        private Mock<IRepository<Currency>> _currencyRepository;
+        private Mock<IStoreMappingService> _storeMappingService;
         private CurrencySettings _currencySettings;
-        private IEventPublisher _eventPublisher;
+        private Mock<IEventPublisher> _eventPublisher;
         private ICurrencyService _currencyService;
 
         private Currency currencyUSD, currencyRUR, currencyEUR;
         
-        [SetUp]
-        public new void SetUp()
+        public CurrencyServiceTests()
         {
             currencyUSD = new Currency
             {
@@ -70,13 +69,13 @@ namespace RufaPoint.Services.Tests.Directory
                 UpdatedOnUtc = DateTime.UtcNow,
                 RoundingType = RoundingType.Rounding001
             };
-            _currencyRepository = MockRepository.GenerateMock<IRepository<Currency>>();
-            _currencyRepository.Expect(x => x.Table).Return(new List<Currency> { currencyUSD, currencyEUR, currencyRUR }.AsQueryable());
-            _currencyRepository.Expect(x => x.GetById(currencyUSD.Id)).Return(currencyUSD);
-            _currencyRepository.Expect(x => x.GetById(currencyEUR.Id)).Return(currencyEUR);
-            _currencyRepository.Expect(x => x.GetById(currencyRUR.Id)).Return(currencyRUR);
+            _currencyRepository = new Mock<IRepository<Currency>>();
+            _currencyRepository.Setup(x => x.Table).Returns(new List<Currency> { currencyUSD, currencyEUR, currencyRUR }.AsQueryable());
+            _currencyRepository.Setup(x => x.GetById(currencyUSD.Id)).Returns(currencyUSD);
+            _currencyRepository.Setup(x => x.GetById(currencyEUR.Id)).Returns(currencyEUR);
+            _currencyRepository.Setup(x => x.GetById(currencyRUR.Id)).Returns(currencyRUR);
 
-            _storeMappingService = MockRepository.GenerateMock<IStoreMappingService>();
+            _storeMappingService = new Mock<IStoreMappingService>();
 
             var cacheManager = new NopNullCache();
 
@@ -86,16 +85,17 @@ namespace RufaPoint.Services.Tests.Directory
                 PrimaryExchangeRateCurrencyId = currencyEUR.Id
             };
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
-            
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
+
+
             var pluginFinder = new PluginFinder();
             _currencyService = new CurrencyService(cacheManager,
-                _currencyRepository, _storeMappingService, 
-                _currencySettings, pluginFinder, _eventPublisher);
+                _currencyRepository.Object, _storeMappingService.Object, 
+                _currencySettings, pluginFinder, _eventPublisher.Object);
         }
         
-        [Test]
+        [Fact]
         public void Can_load_exchangeRateProviders()
         {
             var providers = _currencyService.LoadAllExchangeRateProviders();
@@ -103,21 +103,21 @@ namespace RufaPoint.Services.Tests.Directory
             (providers.Any()).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_load_exchangeRateProvider_by_systemKeyword()
         {
             var provider = _currencyService.LoadExchangeRateProviderBySystemName("CurrencyExchange.TestProvider");
             provider.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_load_active_exchangeRateProvider()
         {
             var provider = _currencyService.LoadActiveExchangeRateProvider();
             provider.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_currency_1()
         {
             _currencyService.ConvertCurrency(10.1M, 1.5M).ShouldEqual(15.15M);
@@ -126,7 +126,7 @@ namespace RufaPoint.Services.Tests.Directory
             _currencyService.ConvertCurrency(0, 5).ShouldEqual(0);
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_currency_2()
         {
             _currencyService.ConvertCurrency(10M, currencyEUR, currencyRUR).ShouldEqual(345M);

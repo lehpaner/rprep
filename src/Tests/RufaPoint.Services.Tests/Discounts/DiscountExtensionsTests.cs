@@ -2,7 +2,7 @@
 using RufaPoint.Core.Domain.Discounts;
 using RufaPoint.Services.Discounts;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Discounts
 {
@@ -17,10 +17,10 @@ namespace RufaPoint.Services.Tests.Discounts
         }
     }
 
-    [TestFixture]
+
     public class DiscountExtensionsTests : ServiceTest
     {
-        [Test]
+        [Fact]
         public void Can_calculate_discount_amount_percentage()
         {
             var discount = new Discount
@@ -35,7 +35,7 @@ namespace RufaPoint.Services.Tests.Discounts
             discount.GetDiscountAmount(200).ShouldEqual(120);
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_discount_amount_fixed()
         {
             var discount = new Discount
@@ -50,7 +50,7 @@ namespace RufaPoint.Services.Tests.Discounts
             discount.GetDiscountAmount(200).ShouldEqual(20);
         }
 
-        [Test]
+        [Fact]
         public void Maximum_discount_amount_is_used()
         {
             var discount = new Discount

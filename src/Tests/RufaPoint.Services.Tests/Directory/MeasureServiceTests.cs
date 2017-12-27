@@ -6,25 +6,22 @@ using RufaPoint.Core.Domain.Directory;
 using RufaPoint.Services.Directory;
 using RufaPoint.Services.Events;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Directory
 {
-    [TestFixture]
     public class MeasureServiceTests : ServiceTest
     {
-        private IRepository<MeasureDimension> _measureDimensionRepository;
-        private IRepository<MeasureWeight> _measureWeightRepository;
+        private Mock<IRepository<MeasureDimension>> _measureDimensionRepository;
+        private Mock<IRepository<MeasureWeight>> _measureWeightRepository;
         private MeasureSettings _measureSettings;
-        private IEventPublisher _eventPublisher;
+        private Mock<IEventPublisher> _eventPublisher;
         private IMeasureService _measureService;
 
         private MeasureDimension measureDimension1, measureDimension2, measureDimension3, measureDimension4;
         private MeasureWeight measureWeight1, measureWeight2, measureWeight3, measureWeight4;
-        
-        [SetUp]
-        public new void SetUp()
+        public MeasureServiceTests()
         {
             measureDimension1 = new MeasureDimension
             {
@@ -94,19 +91,19 @@ namespace RufaPoint.Services.Tests.Directory
                 DisplayOrder = 4,
             };
 
-            _measureDimensionRepository = MockRepository.GenerateMock<IRepository<MeasureDimension>>();
-            _measureDimensionRepository.Expect(x => x.Table).Return(new List<MeasureDimension> { measureDimension1, measureDimension2, measureDimension3, measureDimension4 }.AsQueryable());
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension1.Id)).Return(measureDimension1);
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension2.Id)).Return(measureDimension2);
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension3.Id)).Return(measureDimension3);
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension4.Id)).Return(measureDimension4);
+            _measureDimensionRepository = new Mock<IRepository<MeasureDimension>>();
+            _measureDimensionRepository.Setup(x => x.Table).Returns(new List<MeasureDimension> { measureDimension1, measureDimension2, measureDimension3, measureDimension4 }.AsQueryable());
+            _measureDimensionRepository.Setup(x => x.GetById(measureDimension1.Id)).Returns(measureDimension1);
+            _measureDimensionRepository.Setup(x => x.GetById(measureDimension2.Id)).Returns(measureDimension2);
+            _measureDimensionRepository.Setup(x => x.GetById(measureDimension3.Id)).Returns(measureDimension3);
+            _measureDimensionRepository.Setup(x => x.GetById(measureDimension4.Id)).Returns(measureDimension4);
 
-            _measureWeightRepository = MockRepository.GenerateMock<IRepository<MeasureWeight>>();
-            _measureWeightRepository.Expect(x => x.Table).Return(new List<MeasureWeight> { measureWeight1, measureWeight2, measureWeight3, measureWeight4 }.AsQueryable());
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight1.Id)).Return(measureWeight1);
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight2.Id)).Return(measureWeight2);
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight3.Id)).Return(measureWeight3);
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight4.Id)).Return(measureWeight4);
+            _measureWeightRepository = new Mock<IRepository<MeasureWeight>>();
+            _measureWeightRepository.Setup(x => x.Table).Returns(new List<MeasureWeight> { measureWeight1, measureWeight2, measureWeight3, measureWeight4 }.AsQueryable());
+            _measureWeightRepository.Setup(x => x.GetById(measureWeight1.Id)).Returns(measureWeight1);
+            _measureWeightRepository.Setup(x => x.GetById(measureWeight2.Id)).Returns(measureWeight2);
+            _measureWeightRepository.Setup(x => x.GetById(measureWeight3.Id)).Returns(measureWeight3);
+            _measureWeightRepository.Setup(x => x.GetById(measureWeight4.Id)).Returns(measureWeight4);
 
 
             var cacheManager = new NopNullCache();
@@ -117,16 +114,16 @@ namespace RufaPoint.Services.Tests.Directory
                 BaseWeightId = measureWeight2.Id //lb(s)
             };
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
             _measureService = new MeasureService(cacheManager,
-                _measureDimensionRepository,
-                _measureWeightRepository,
-                _measureSettings, _eventPublisher);
+                _measureDimensionRepository.Object,
+                _measureWeightRepository.Object,
+                _measureSettings, _eventPublisher.Object);
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_dimension()
         {
             //from meter(s) to feet
@@ -141,7 +138,7 @@ namespace RufaPoint.Services.Tests.Directory
             _measureService.ConvertDimension(10000, measureDimension4, measureDimension3, true).ShouldEqual(10);
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_weight()
         {
             //from ounce(s) to lb(s)

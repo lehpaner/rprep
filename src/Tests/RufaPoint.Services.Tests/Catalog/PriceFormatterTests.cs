@@ -18,30 +18,29 @@ using RufaPoint.Services.Directory;
 using RufaPoint.Services.Localization;
 using RufaPoint.Services.Stores;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Catalog
 {
-    [TestFixture]
     public class PriceFormatterTests : ServiceTest
     {
-        private IRepository<Currency> _currencyRepo;
-        private IStoreMappingService _storeMappingService;
+        private Mock<IRepository<Currency>> _currencyRepo;
+        private Mock<IStoreMappingService> _storeMappingService;
         private ICurrencyService _currencyService;
         private CurrencySettings _currencySettings;
-        private IWorkContext _workContext;
-        private ILocalizationService _localizationService;
+        private Mock<IWorkContext> _workContext;
+        private Mock<ILocalizationService> _localizationService;
         private TaxSettings _taxSettings;
         private IPriceFormatter _priceFormatter;
         
-        [SetUp]
-        public new void SetUp()
+
+        public PriceFormatterTests()
         {
             var cacheManager = new NopNullCache();
 
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
-            _workContext.Expect(w => w.WorkingCurrency).Return(new Currency { RoundingType = RoundingType.Rounding001 });
+            _workContext = new Mock<IWorkContext>();
+            _workContext.Setup(w => w.WorkingCurrency).Returns(new Currency { RoundingType = RoundingType.Rounding001 });
 
             _currencySettings = new CurrencySettings();
             var currency1 = new Currency
@@ -68,40 +67,40 @@ namespace RufaPoint.Services.Tests.Catalog
                 CreatedOnUtc = DateTime.UtcNow,
                 UpdatedOnUtc= DateTime.UtcNow
             };            
-            _currencyRepo = MockRepository.GenerateMock<IRepository<Currency>>();
-            _currencyRepo.Expect(x => x.Table).Return(new List<Currency> { currency1, currency2 }.AsQueryable());
+            _currencyRepo = new Mock<IRepository<Currency>>();
+            _currencyRepo.Setup(x => x.Table).Returns(new List<Currency> { currency1, currency2 }.AsQueryable());
 
-            _storeMappingService = MockRepository.GenerateMock<IStoreMappingService>();
+            _storeMappingService = new Mock<IStoreMappingService>();
 
             var pluginFinder = new PluginFinder();
-            _currencyService = new CurrencyService(cacheManager, _currencyRepo, _storeMappingService,
+            _currencyService = new CurrencyService(cacheManager, _currencyRepo.Object, _storeMappingService.Object,
                 _currencySettings, pluginFinder, null);
 
             _taxSettings = new TaxSettings();
 
-            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
-            _localizationService.Expect(x => x.GetResource("Products.InclTaxSuffix", 1, false)).Return("{0} incl tax");
-            _localizationService.Expect(x => x.GetResource("Products.ExclTaxSuffix", 1, false)).Return("{0} excl tax");
+            _localizationService = new Mock<ILocalizationService>();
+            _localizationService.Setup(x => x.GetResource("Products.InclTaxSuffix", 1, false, "Default value", true)).Returns("{0} incl tax");
+            _localizationService.Setup(x => x.GetResource("Products.ExclTaxSuffix", 1, false, "Default value", true)).Returns("{0} excl tax");
             
-            _priceFormatter = new PriceFormatter(_workContext, _currencyService,_localizationService, 
+            _priceFormatter = new PriceFormatter(_workContext.Object, _currencyService,_localizationService.Object, 
                 _taxSettings, _currencySettings);
 
-            var nopEngine = MockRepository.GenerateMock<NopEngine>();
-            var serviceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var httpContextAccessor = MockRepository.GenerateMock<IHttpContextAccessor>();
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Return(httpContextAccessor);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IWorkContext))).Return(_workContext);
-            nopEngine.Expect(x => x.ServiceProvider).Return(serviceProvider);
-            EngineContext.Replace(nopEngine);
+            var nopEngine = new Mock<NopEngine>();
+            var serviceProvider = new Mock<IServiceProvider>();
+            var httpContextAccessor =new Mock<IHttpContextAccessor>();
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Returns(httpContextAccessor);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IWorkContext))).Returns(_workContext);
+            nopEngine.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            EngineContext.Replace(nopEngine.Object);
         }
 
-        [OneTimeTearDown]
+      
         public void TearDown()
         {
             EngineContext.Replace(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_formatPrice_with_custom_currencyFormatting()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
@@ -123,7 +122,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceFormatter.FormatPrice(1234.5M, false, currency, language, false, false).ShouldEqual("€1234.50");
         }
 
-        [Test]
+        [Fact]
         public void Can_formatPrice_with_distinct_currencyDisplayLocale()
         {
             var usd_currency = new Currency
@@ -150,7 +149,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceFormatter.FormatPrice(1234.5M, false, gbp_currency, language, false, false).ShouldEqual("£1,234.50");
         }
 
-        [Test]
+        [Fact]
         public void Can_formatPrice_with_showTax()
         {
             var currency = new Currency
@@ -171,7 +170,7 @@ namespace RufaPoint.Services.Tests.Catalog
 
         }
 
-        [Test]
+        [Fact]
         public void Can_formatPrice_with_showCurrencyCode()
         {
             var currency = new Currency

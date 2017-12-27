@@ -2,11 +2,11 @@
 using System.Linq;
 using RufaPoint.Services.Configuration;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Configuration
 {
-    [TestFixture]
+
     public class ConfigFileSettingServiceTests : ServiceTest
     {
         // requires following settings to exist in app.config
@@ -16,13 +16,12 @@ namespace RufaPoint.Services.Tests.Configuration
 
         ISettingService config;
 
-        [SetUp]
-        public new void SetUp()
+        public ConfigFileSettingServiceTests()
         {
             config = new ConfigFileSettingService(null,null,null);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_all_settings()
         {
             var settings = config.GetAllSettings();
@@ -30,21 +29,21 @@ namespace RufaPoint.Services.Tests.Configuration
             (settings.Any()).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_get_setting_by_key()
         {
             var setting = config.GetSettingByKey<string>("Setting1");
             setting.ShouldEqual("SomeValue");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_typed_setting_value_by_key()
         {
             var setting = config.GetSettingByKey<DateTime>("Setting3");
             setting.ShouldEqual(new DateTime(2010, 12, 25));
         }
 
-        [Test]
+        [Fact]
         public void Default_value_returned_if_setting_does_not_exist()
         {
             var setting = config.GetSettingByKey("NonExistentKey", 100);

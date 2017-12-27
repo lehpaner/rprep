@@ -6,21 +6,21 @@ using RufaPoint.Core.Plugins;
 using RufaPoint.Services.Configuration;
 using RufaPoint.Services.Payments;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Payments
 {
-    [TestFixture]
+
     public class PaymentServiceTests : ServiceTest
     {
         private PaymentSettings _paymentSettings;
         private ShoppingCartSettings _shoppingCartSettings;
-        private ISettingService _settingService;
+        private Mock<ISettingService> _settingService;
         private IPaymentService _paymentService;
         
-        [SetUp]
-        public new void SetUp()
+
+        public PaymentServiceTests()
         {
             _paymentSettings = new PaymentSettings
             {
@@ -31,12 +31,12 @@ namespace RufaPoint.Services.Tests.Payments
             var pluginFinder = new PluginFinder();
 
             _shoppingCartSettings = new ShoppingCartSettings();
-            _settingService = MockRepository.GenerateMock<ISettingService>();
+            _settingService = new Mock<ISettingService>();
 
-            _paymentService = new PaymentService(_paymentSettings, pluginFinder, _settingService, _shoppingCartSettings);
+            _paymentService = new PaymentService(_paymentSettings, pluginFinder, _settingService.Object, _shoppingCartSettings);
         }
 
-        [Test]
+        [Fact]
         public void Can_load_paymentMethods()
         {
             var srcm = _paymentService.LoadAllPaymentMethods();
@@ -44,14 +44,14 @@ namespace RufaPoint.Services.Tests.Payments
             (srcm.Any()).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_load_paymentMethod_by_systemKeyword()
         {
             var srcm = _paymentService.LoadPaymentMethodBySystemName("Payments.TestMethod");
             srcm.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_load_active_paymentMethods()
         {
             var srcm = _paymentService.LoadActivePaymentMethods();
@@ -59,7 +59,7 @@ namespace RufaPoint.Services.Tests.Payments
             (srcm.Any()).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_get_masked_credit_card_number()
         {
             _paymentService.GetMaskedCreditCardNumber("").ShouldEqual("");

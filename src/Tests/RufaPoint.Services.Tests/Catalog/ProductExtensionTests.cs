@@ -2,20 +2,20 @@
 using RufaPoint.Core.Domain.Catalog;
 using RufaPoint.Services.Catalog;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Catalog
 {
-    [TestFixture]
+
     public class ProductExtensionTests : ServiceTest
     {
-        [SetUp]
-        public new void SetUp()
+
+        public ProductExtensionTests()
         {
 
         }
 
-        [Test]
+        [Fact]
         public void Can_parse_allowed_quantities()
         {
             var product = new Product
@@ -31,7 +31,7 @@ namespace RufaPoint.Services.Tests.Catalog
             result[3].ShouldEqual(10);
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_total_quantity_when_we_do_not_use_multiple_warehouses()
         {
             var product = new Product
@@ -60,7 +60,7 @@ namespace RufaPoint.Services.Tests.Catalog
             var result = product.GetTotalStockQuantity(true);
             result.ShouldEqual(6);
         }
-        [Test]
+        [Fact]
         public void Can_calculate_total_quantity_when_we_do_use_multiple_warehouses_with_reserved()
         {
             var product = new Product
@@ -90,7 +90,7 @@ namespace RufaPoint.Services.Tests.Catalog
             var result = product.GetTotalStockQuantity(true);
             result.ShouldEqual(8);
         }
-        [Test]
+        [Fact]
         public void Can_calculate_total_quantity_when_we_do_use_multiple_warehouses_without_reserved()
         {
             var product = new Product
@@ -120,7 +120,7 @@ namespace RufaPoint.Services.Tests.Catalog
             var result = product.GetTotalStockQuantity(false);
             result.ShouldEqual(13);
         }
-        [Test]
+        [Fact]
         public void Can_calculate_total_quantity_when_we_do_use_multiple_warehouses_with_warehouse_specified()
         {
             var product = new Product
@@ -151,7 +151,7 @@ namespace RufaPoint.Services.Tests.Catalog
             result.ShouldEqual(3);
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_rental_periods_for_days()
         {
             var product = new Product
@@ -183,7 +183,7 @@ namespace RufaPoint.Services.Tests.Catalog
             product.GetRentalPeriods(new DateTime(2014, 3, 5), new DateTime(2014, 3, 8)).ShouldEqual(2);
 
         }
-        [Test]
+        [Fact]
         public void Can_calculate_rental_periods_for_weeks()
         {
             var product = new Product
@@ -223,7 +223,7 @@ namespace RufaPoint.Services.Tests.Catalog
             product.GetRentalPeriods(new DateTime(2014, 3, 5), new DateTime(2014, 3, 26)).ShouldEqual(2);
 
         }
-        [Test]
+        [Fact]
         public void Can_calculate_rental_periods_for_months()
         {
             var product = new Product
@@ -277,7 +277,7 @@ namespace RufaPoint.Services.Tests.Catalog
             //3 months
             product.GetRentalPeriods(new DateTime(2014, 3, 5), new DateTime(2014, 5, 8)).ShouldEqual(2);
         }
-        [Test]
+        [Fact]
         public void Can_calculate_rental_periods_for_years()
         {
             var product = new Product

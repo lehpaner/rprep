@@ -2,19 +2,16 @@
 using RufaPoint.Core.Domain.Orders;
 using RufaPoint.Services.Orders;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Orders
 {
-    [TestFixture]
+
     public class CheckoutAttributeExtensionsTests : ServiceTest
     {
-        [SetUp]
-        public new void SetUp()
-        {
-        }
 
-        [Test]
+
+        [Fact]
         public void Can_remove_shippable_attributes()
         {
             var attributes = new List<CheckoutAttribute>();

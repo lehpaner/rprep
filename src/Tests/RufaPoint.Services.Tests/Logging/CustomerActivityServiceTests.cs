@@ -7,26 +7,26 @@ using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Core.Domain.Logging;
 using RufaPoint.Services.Logging;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Logging
 {
-    [TestFixture]
+
     public class CustomerActivityServiceTests : ServiceTest
     {
         private IStaticCacheManager _cacheManager;
-        private IRepository<ActivityLog> _activityLogRepository;
-        private IRepository<ActivityLogType> _activityLogTypeRepository;
-        private IWorkContext _workContext;
+        private Mock<IRepository<ActivityLog>> _activityLogRepository;
+        private Mock<IRepository<ActivityLogType>> _activityLogTypeRepository;
+        private Mock<IWorkContext> _workContext;
         private ICustomerActivityService _customerActivityService;
         private ActivityLogType _activityType1, _activityType2;
         private ActivityLog _activity1, _activity2;
         private Customer _customer1, _customer2;
-        private IWebHelper _webHelper;
+        private Mock<IWebHelper> _webHelper;
 
-        [SetUp]
-        public new void SetUp()
+
+        public CustomerActivityServiceTests()
         {
             _activityType1 = new ActivityLogType
             {
@@ -71,16 +71,16 @@ namespace RufaPoint.Services.Tests.Logging
                 Customer = _customer2
             };
             _cacheManager = new NopNullCache();
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
-            _webHelper = MockRepository.GenerateMock<IWebHelper>();
-            _activityLogRepository = MockRepository.GenerateMock<IRepository<ActivityLog>>();
-            _activityLogTypeRepository = MockRepository.GenerateMock<IRepository<ActivityLogType>>();
-            _activityLogTypeRepository.Expect(x => x.Table).Return(new List<ActivityLogType> { _activityType1, _activityType2 }.AsQueryable());
-            _activityLogRepository.Expect(x => x.Table).Return(new List<ActivityLog> { _activity1, _activity2 }.AsQueryable());
-            _customerActivityService = new CustomerActivityService(_cacheManager, _activityLogRepository, _activityLogTypeRepository, _workContext, null, null, null, _webHelper);
+            _workContext = new Mock<IWorkContext>();
+            _webHelper = new Mock<IWebHelper>();
+            _activityLogRepository = new Mock<IRepository<ActivityLog>>();
+            _activityLogTypeRepository = new Mock<IRepository<ActivityLogType>>();
+            _activityLogTypeRepository.Setup(x => x.Table).Returns(new List<ActivityLogType> { _activityType1, _activityType2 }.AsQueryable());
+            _activityLogRepository.Setup(x => x.Table).Returns(new List<ActivityLog> { _activity1, _activity2 }.AsQueryable());
+            _customerActivityService = new CustomerActivityService(_cacheManager, _activityLogRepository.Object, _activityLogTypeRepository.Object, _workContext.Object, null, null, null, _webHelper.Object);
         }
 
-        [Test]
+        [Fact]
         public void Can_Find_Activities()
         {
             var activities = _customerActivityService.GetAllActivities(null, null, 1, 0,0,10);

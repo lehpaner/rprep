@@ -5,17 +5,15 @@ using RufaPoint.Services.Tests.Discounts;
 using RufaPoint.Services.Tests.Payments;
 using RufaPoint.Services.Tests.Shipping;
 using RufaPoint.Services.Tests.Tax;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests
 {
-    [TestFixture]
+
     public abstract class ServiceTest
     {
-        [SetUp]
-        public void SetUp()
+        public ServiceTest()
         {
-            //init plugins
             InitPlugins();
         }
 

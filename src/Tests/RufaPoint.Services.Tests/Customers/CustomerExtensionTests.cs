@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace RufaPoint.Services.Tests.Customers
 {
-    [TestFixture]
+
     public class CustomerExtensionTests : ServiceTest
     {
         //[Test]

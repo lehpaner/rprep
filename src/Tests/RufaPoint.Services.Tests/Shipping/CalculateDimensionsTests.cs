@@ -16,32 +16,31 @@ using RufaPoint.Services.Logging;
 using RufaPoint.Services.Orders;
 using RufaPoint.Services.Shipping;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Shipping
 {
-    [TestFixture]
+
     public class CalculateDimensionsTests : ServiceTest
     {
-        private IRepository<ShippingMethod> _shippingMethodRepository;
-        private IRepository<Warehouse> _warehouseRepository;
+        private Mock<IRepository<ShippingMethod>> _shippingMethodRepository;
+        private Mock<IRepository<Warehouse>> _warehouseRepository;
         private ILogger _logger;
-        private IProductAttributeParser _productAttributeParser;
-        private ICheckoutAttributeParser _checkoutAttributeParser;
+        private Mock<IProductAttributeParser> _productAttributeParser;
+        private Mock<ICheckoutAttributeParser> _checkoutAttributeParser;
         private ShippingSettings _shippingSettings;
-        private IEventPublisher _eventPublisher;
-        private ILocalizationService _localizationService;
-        private IAddressService _addressService;
-        private IGenericAttributeService _genericAttributeService;
+        private Mock<IEventPublisher> _eventPublisher;
+        private Mock<ILocalizationService> _localizationService;
+        private Mock<IAddressService> _addressService;
+        private Mock<IGenericAttributeService> _genericAttributeService;
         private IShippingService _shippingService;
         private ShoppingCartSettings _shoppingCartSettings;
-        private IProductService _productService;
+        private Mock<IProductService> _productService;
         private Store _store;
-        private IStoreContext _storeContext;
+        private Mock<IStoreContext> _storeContext;
 
-        [SetUp]
-        public new void SetUp()
+        public CalculateDimensionsTests()
         {
             _shippingSettings = new ShippingSettings
             {
@@ -49,47 +48,47 @@ namespace RufaPoint.Services.Tests.Shipping
                 ConsiderAssociatedProductsDimensions = true
             };
 
-            _shippingMethodRepository = MockRepository.GenerateMock<IRepository<ShippingMethod>>();
-            _warehouseRepository = MockRepository.GenerateMock<IRepository<Warehouse>>();
+            _shippingMethodRepository = new Mock<IRepository<ShippingMethod>>();
+            _warehouseRepository = new Mock<IRepository<Warehouse>>();
             _logger = new NullLogger();
-            _productAttributeParser = MockRepository.GenerateMock<IProductAttributeParser>();
-            _checkoutAttributeParser = MockRepository.GenerateMock<ICheckoutAttributeParser>();
+            _productAttributeParser = new Mock<IProductAttributeParser>();
+            _checkoutAttributeParser = new Mock<ICheckoutAttributeParser>();
 
             var cacheManager = new NopNullCache();
 
             var pluginFinder = new PluginFinder();
-            _productService = MockRepository.GenerateMock<IProductService>();
+            _productService = new Mock<IProductService>();
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
-            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
-            _addressService = MockRepository.GenerateMock<IAddressService>();
-            _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
+            _localizationService = new Mock<ILocalizationService>();
+            _addressService = new Mock<IAddressService>();
+            _genericAttributeService = new Mock<IGenericAttributeService>();
 
             _store = new Store { Id = 1 };
-            _storeContext = MockRepository.GenerateMock<IStoreContext>();
-            _storeContext.Expect(x => x.CurrentStore).Return(_store);
+            _storeContext = new Mock<IStoreContext>();
+            _storeContext.Setup(x => x.CurrentStore).Returns(_store);
 
             _shoppingCartSettings = new ShoppingCartSettings();
-            _shippingService = new ShippingService(_shippingMethodRepository,
-                _warehouseRepository,
+            _shippingService = new ShippingService(_shippingMethodRepository.Object,
+                _warehouseRepository.Object,
                 _logger,
-                _productService,
-                _productAttributeParser,
-                _checkoutAttributeParser,
-                _genericAttributeService,
-                _localizationService,
-                _addressService,
+                _productService.Object,
+                _productAttributeParser.Object,
+                _checkoutAttributeParser.Object,
+                _genericAttributeService.Object,
+                _localizationService.Object,
+                _addressService.Object,
                 _shippingSettings,
                 pluginFinder,
-                _storeContext,
-                _eventPublisher,
+                _storeContext.Object,
+                _eventPublisher.Object,
                 _shoppingCartSettings,
                 cacheManager);
         }
 
-        [Test]
+        [Fact]
         public void should_return_zero_with_all_zero_dimensions()
         {
             var items = new List<GetShippingOptionRequest.PackageItem>
@@ -131,7 +130,7 @@ namespace RufaPoint.Services.Tests.Shipping
             height.ShouldEqual(0);
         }
         
-        [Test]
+        [Fact]
         public void can_calculate_with_single_item_and_qty_1_should_ignore_cubic_method()
         {
             var items = new List<GetShippingOptionRequest.PackageItem>
@@ -154,7 +153,7 @@ namespace RufaPoint.Services.Tests.Shipping
             height.ShouldEqual(4);
         }
 
-        [Test]
+        [Fact]
         public void can_calculate_with_single_item_and_qty_2()
         {
             var items = new List<GetShippingOptionRequest.PackageItem>
@@ -177,7 +176,7 @@ namespace RufaPoint.Services.Tests.Shipping
             height.ShouldEqual(4);
         }
 
-        [Test]
+        [Fact]
         public void can_calculate_with_cubic_item_and_multiple_qty()
         {
             var items = new List<GetShippingOptionRequest.PackageItem>
@@ -200,7 +199,7 @@ namespace RufaPoint.Services.Tests.Shipping
             Math.Round(height, 2).ShouldEqual(2.88);
         }
 
-        [Test]
+        [Fact]
         public void can_calculate_with_multiple_items_1()
         {
             var items = new List<GetShippingOptionRequest.PackageItem>
@@ -233,7 +232,7 @@ namespace RufaPoint.Services.Tests.Shipping
             Math.Round(height, 2).ShouldEqual(3.78);
         }
 
-        [Test]
+        [Fact]
         public void can_calculate_with_multiple_items_2()
         {
             //take 8 cubes of 1x1x1 which is "packed" as 2x2x2 

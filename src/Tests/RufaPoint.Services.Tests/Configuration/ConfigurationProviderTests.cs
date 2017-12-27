@@ -1,22 +1,20 @@
 ﻿using RufaPoint.Core.Configuration;
 using RufaPoint.Services.Configuration;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Configuration
 {
-    [TestFixture]
     public class ConfigurationProviderTests : ServiceTest
     {
         ISettingService _settingService;
 
-        [SetUp]
-        public new void SetUp()
+        public ConfigurationProviderTests()
         {
             _settingService = new ConfigFileSettingService(null, null, null);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_settings()
         {
             // requires settings to be set in app.config in format TestSettings.[PropertyName]

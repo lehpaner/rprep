@@ -18,38 +18,36 @@ using RufaPoint.Services.Orders;
 using RufaPoint.Services.Security;
 using RufaPoint.Services.Stores;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Customers
 {
-    [TestFixture]
     public class CustomerRegistrationServiceTests : ServiceTest
     {
-        private IRepository<Customer> _customerRepo;
-        private IRepository<CustomerPassword> _customerPasswordRepo;
-        private IRepository<CustomerRole> _customerRoleRepo;
-        private IRepository<GenericAttribute> _genericAttributeRepo;
-        private IRepository<Order> _orderRepo;
-        private IRepository<ForumPost> _forumPostRepo;
-        private IRepository<ForumTopic> _forumTopicRepo;
-        private IGenericAttributeService _genericAttributeService;
+        private Mock<IRepository<Customer>> _customerRepo;
+        private Mock<IRepository<CustomerPassword>> _customerPasswordRepo;
+        private Mock<IRepository<CustomerRole>> _customerRoleRepo;
+        private Mock<IRepository<GenericAttribute>> _genericAttributeRepo;
+        private Mock<IRepository<Order>> _orderRepo;
+        private Mock<IRepository<ForumPost>> _forumPostRepo;
+        private Mock<IRepository<ForumTopic>> _forumTopicRepo;
+        private Mock<IGenericAttributeService> _genericAttributeService;
         private IEncryptionService _encryptionService;
         private ICustomerService _customerService;
         private ICustomerRegistrationService _customerRegistrationService;
-        private ILocalizationService _localizationService;
+        private Mock<ILocalizationService> _localizationService;
         private CustomerSettings _customerSettings;
-        private INewsLetterSubscriptionService _newsLetterSubscriptionService;
-        private IEventPublisher _eventPublisher;
-        private IStoreService _storeService;
+        private Mock<INewsLetterSubscriptionService> _newsLetterSubscriptionService;
+        private Mock<IEventPublisher> _eventPublisher;
+        private Mock<IStoreService> _storeService;
         private RewardPointsSettings _rewardPointsSettings;
         private SecuritySettings _securitySettings;
-        private IRewardPointService _rewardPointService;
-        private IWorkContext _workContext;
-        private IWorkflowMessageService _workflowMessageService;
+        private Mock<IRewardPointService> _rewardPointService;
+        private Mock<IWorkContext> _workContext;
+        private Mock<IWorkflowMessageService> _workflowMessageService;
 
-        [SetUp]
-        public new void SetUp()
+        public CustomerRegistrationServiceTests()
         {
             _customerSettings = new CustomerSettings
             {
@@ -66,7 +64,7 @@ namespace RufaPoint.Services.Tests.Customers
             };
 
             _encryptionService = new EncryptionService(_securitySettings);
-            _customerRepo = MockRepository.GenerateMock<IRepository<Customer>>();
+            _customerRepo = new Mock<IRepository<Customer>>();
             var customer1 = new Customer
             {
                 Id = 1,
@@ -110,9 +108,9 @@ namespace RufaPoint.Services.Tests.Customers
                 Email = "notregistered@test.com",
                 Active = true
             };
-            _customerRepo.Expect(x => x.Table).Return(new List<Customer> { customer1, customer2, customer3, customer4, customer5 }.AsQueryable());
+            _customerRepo.Setup(x => x.Table).Returns(new List<Customer> { customer1, customer2, customer3, customer4, customer5 }.AsQueryable());
 
-            _customerPasswordRepo = MockRepository.GenerateMock<IRepository<CustomerPassword>>();
+            _customerPasswordRepo = new Mock<IRepository<CustomerPassword>>();
             var saltKey = _encryptionService.CreateSaltKey(5);
             var password = _encryptionService.CreatePasswordHash("password", saltKey, "SHA512");
             var password1 = new CustomerPassword
@@ -151,34 +149,35 @@ namespace RufaPoint.Services.Tests.Customers
                 Password = "password",
                 CreatedOnUtc = DateTime.UtcNow
             };
-            _customerPasswordRepo.Expect(x => x.Table).Return(new[] { password1, password2, password3, password4, password5 }.AsQueryable());
+            _customerPasswordRepo.Setup(x => x.Table).Returns(new[] { password1, password2, password3, password4, password5 }.AsQueryable());
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
-            _storeService = MockRepository.GenerateMock<IStoreService>();
-            _customerRoleRepo = MockRepository.GenerateMock<IRepository<CustomerRole>>();
-            _genericAttributeRepo = MockRepository.GenerateMock<IRepository<GenericAttribute>>();
-            _orderRepo = MockRepository.GenerateMock<IRepository<Order>>();
-            _forumPostRepo = MockRepository.GenerateMock<IRepository<ForumPost>>();
-            _forumTopicRepo = MockRepository.GenerateMock<IRepository<ForumTopic>>();
 
-            _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
-            _newsLetterSubscriptionService = MockRepository.GenerateMock<INewsLetterSubscriptionService>();
-            _rewardPointService = MockRepository.GenerateMock<IRewardPointService>();
+            _storeService = new Mock<IStoreService>();
+            _customerRoleRepo = new Mock<IRepository<CustomerRole>>();
+            _genericAttributeRepo = new Mock<IRepository<GenericAttribute>>();
+            _orderRepo = new Mock<IRepository<Order>>();
+            _forumPostRepo = new Mock<IRepository<ForumPost>>();
+            _forumTopicRepo = new Mock<IRepository<ForumTopic>>();
 
-            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
-            _workflowMessageService = MockRepository.GenerateMock<IWorkflowMessageService>();
+            _genericAttributeService = new Mock<IGenericAttributeService>();
+            _newsLetterSubscriptionService = new Mock<INewsLetterSubscriptionService>();
+            _rewardPointService = new Mock<IRewardPointService>();
 
-            _customerService = new CustomerService(new NopNullCache(), _customerRepo, _customerPasswordRepo, _customerRoleRepo,
-                _genericAttributeRepo, _orderRepo, _forumPostRepo, _forumTopicRepo,
+            _localizationService = new Mock<ILocalizationService>();
+            _workContext = new Mock<IWorkContext>();
+            _workflowMessageService = new Mock<IWorkflowMessageService>();
+
+            _customerService = new CustomerService(new NopNullCache(), _customerRepo.Object, _customerPasswordRepo.Object, _customerRoleRepo.Object,
+                _genericAttributeRepo.Object, _orderRepo.Object, _forumPostRepo.Object, _forumTopicRepo.Object,
                 null, null, null, null, null,
-                _genericAttributeService, null, null, _eventPublisher, _customerSettings, null);
+                _genericAttributeService.Object, null, null, _eventPublisher.Object, _customerSettings, null);
             _customerRegistrationService = new CustomerRegistrationService(_customerService,
-                _encryptionService, _newsLetterSubscriptionService, _localizationService,
-                _storeService, _rewardPointService, _workContext, _genericAttributeService,
-                _workflowMessageService, _eventPublisher, _rewardPointsSettings, _customerSettings);
+                _encryptionService, _newsLetterSubscriptionService.Object, _localizationService.Object,
+                _storeService.Object, _rewardPointService.Object, _workContext.Object, _genericAttributeService.Object,
+                _workflowMessageService.Object, _eventPublisher.Object, _rewardPointsSettings, _customerSettings);
         }
 
         //[Test]
@@ -204,7 +203,7 @@ namespace RufaPoint.Services.Tests.Customers
         //    result.Errors.Count.ShouldEqual(1);
         //}
 
-        [Test]
+        [Fact]
         public void Ensure_only_registered_customers_can_login()
         {
             var result = _customerRegistrationService.ValidateCustomer("registered@test.com", "password");
@@ -214,21 +213,21 @@ namespace RufaPoint.Services.Tests.Customers
             result.ShouldEqual(CustomerLoginResults.NotRegistered);
         }
 
-        [Test]
+        [Fact]
         public void Can_validate_a_hashed_password()
         {
             var result = _customerRegistrationService.ValidateCustomer("a@b.com", "password");
             result.ShouldEqual(CustomerLoginResults.Successful);
         }
 
-        [Test]
+        [Fact]
         public void Can_validate_a_clear_password()
         {
             var result = _customerRegistrationService.ValidateCustomer("test@test.com", "password");
             result.ShouldEqual(CustomerLoginResults.Successful); ;
         }
 
-        [Test]
+        [Fact]
         public void Can_validate_an_encrypted_password()
         {
             var result = _customerRegistrationService.ValidateCustomer("user@test.com", "password");
@@ -245,7 +244,7 @@ namespace RufaPoint.Services.Tests.Customers
             });
         }
 
-        [Test]
+        [Fact]
         public void Can_change_password()
         {
             var request = new ChangePasswordRequest("registered@test.com", true, PasswordFormat.Clear, "password", "password");

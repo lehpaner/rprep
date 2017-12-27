@@ -14,21 +14,21 @@ using RufaPoint.Core.Infrastructure;
 using RufaPoint.Services.Catalog;
 using RufaPoint.Services.Discounts;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Catalog
 {
-    [TestFixture]
+
     public class PriceCalculationServiceTests : ServiceTest
     {
-        private IWorkContext _workContext;
-        private IStoreContext _storeContext;
-        private IDiscountService _discountService;
-        private ICategoryService _categoryService;
-        private IManufacturerService _manufacturerService;
-        private IProductAttributeParser _productAttributeParser;
-        private IProductService _productService;
+        private Mock<IWorkContext> _workContext;
+        private Mock<IStoreContext> _storeContext;
+        private Mock<IDiscountService> _discountService;
+        private Mock<ICategoryService> _categoryService;
+        private Mock<IManufacturerService> _manufacturerService;
+        private Mock<IProductAttributeParser> _productAttributeParser;
+        private Mock<IProductService> _productService;
         private IPriceCalculationService _priceCalcService;
         private ShoppingCartSettings _shoppingCartSettings;
         private CatalogSettings _catalogSettings;
@@ -36,55 +36,55 @@ namespace RufaPoint.Services.Tests.Catalog
 
         private Store _store;
 
-        [SetUp]
-        public new void SetUp()
+        public PriceCalculationServiceTests()
         {
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
-            _workContext.Expect(w => w.WorkingCurrency).Return(new Currency { RoundingType = RoundingType.Rounding001 });
+
+            _workContext = new Mock<IWorkContext>();
+            _workContext.Setup(w => w.WorkingCurrency).Returns(new Currency { RoundingType = RoundingType.Rounding001 });
 
             _store = new Store { Id = 1 };
-            _storeContext = MockRepository.GenerateMock<IStoreContext>();
-            _storeContext.Expect(x => x.CurrentStore).Return(_store);
+            _storeContext = new Mock<IStoreContext>();
+            _storeContext.Setup(x => x.CurrentStore).Returns(_store);
 
-            _discountService = MockRepository.GenerateMock<IDiscountService>();
-            _categoryService = MockRepository.GenerateMock<ICategoryService>();
-            _manufacturerService = MockRepository.GenerateMock<IManufacturerService>();
-            _productService = MockRepository.GenerateMock<IProductService>();
+            _discountService = new Mock<IDiscountService>();
+            _categoryService = new Mock< ICategoryService >();
+            _manufacturerService = new Mock<IManufacturerService>();
+            _productService = new Mock<IProductService>();
 
-            _productAttributeParser = MockRepository.GenerateMock<IProductAttributeParser>();
+            _productAttributeParser = new Mock<IProductAttributeParser>();
 
             _shoppingCartSettings = new ShoppingCartSettings();
             _catalogSettings = new CatalogSettings();
 
             _cacheManager = new NopNullCache();
 
-            _priceCalcService = new PriceCalculationService(_workContext,
-                _storeContext, 
-                _discountService,
-                _categoryService,
-                _manufacturerService,
-                _productAttributeParser,
-                _productService,
+            _priceCalcService = new PriceCalculationService(_workContext.Object,
+                _storeContext.Object, 
+                _discountService.Object,
+                _categoryService.Object,
+                _manufacturerService.Object,
+                _productAttributeParser.Object,
+                _productService.Object,
                 _cacheManager,
                 _shoppingCartSettings, 
                 _catalogSettings);
 
-            var nopEngine = MockRepository.GenerateMock<NopEngine>();
-            var serviceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var httpContextAccessor = MockRepository.GenerateMock<IHttpContextAccessor>();
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Return(httpContextAccessor);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IWorkContext))).Return(_workContext);
-            nopEngine.Expect(x => x.ServiceProvider).Return(serviceProvider);
-            EngineContext.Replace(nopEngine);
+            var nopEngine = new Mock<NopEngine>();
+            var serviceProvider =new Mock<IServiceProvider>();
+            var httpContextAccessor = new Mock<IHttpContextAccessor>();
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Returns(httpContextAccessor);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IWorkContext))).Returns(_workContext);
+            nopEngine.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            EngineContext.Replace(nopEngine.Object);
         }
 
-        [OneTimeTearDown]
+
         public void TearDown()
         {
             EngineContext.Replace(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_final_product_price()
         {
             var product = new Product
@@ -103,7 +103,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 2).ShouldEqual(12.34M);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_final_product_price_with_tier_prices()
         {
             var product = new Product
@@ -157,7 +157,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 10).ShouldEqual(9);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_final_product_price_with_tier_prices_by_customerRole()
         {
             var product = new Product
@@ -226,7 +226,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 10).ShouldEqual(8);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_final_product_price_with_additionalFee()
         {
             var product = new Product
@@ -244,7 +244,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _priceCalcService.GetFinalPrice(product, customer, 5, false, 1).ShouldEqual(17.34M);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_final_product_price_with_discount()
         {
             var product = new Product
@@ -272,14 +272,15 @@ namespace RufaPoint.Services.Tests.Catalog
             product.AppliedDiscounts.Add(discount1);
             //set HasDiscountsApplied property
             product.HasDiscountsApplied = true;
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() {IsValid = true});
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.ValidateDiscount(discount1, customer)).Returns(new DiscountValidationResult() {IsValid = true});
+
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories,"","",true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(9.34M);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_item_unitPrice()
         {
             //customer
@@ -303,14 +304,14 @@ namespace RufaPoint.Services.Tests.Catalog
                 Quantity = 2,
             };
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories,"","",true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers,"","",true)).Returns(new List<DiscountForCaching>());
 
             _priceCalcService.GetUnitPrice(sci1).ShouldEqual(12.34);
 
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_item_subTotal()
         {
             //customer
@@ -334,18 +335,20 @@ namespace RufaPoint.Services.Tests.Catalog
                 Quantity = 2,
             };
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories,"","",true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             _priceCalcService.GetSubTotal(sci1).ShouldEqual(24.68);
 
         }
 
-        [Test]
-        [TestCase(12.00009, 12.00)]
-        [TestCase(12.119, 12.12)]
-        [TestCase(12.115, 12.12)]
-        [TestCase(12.114, 12.11)]        
+
+    
+        [Theory]
+        [InlineData(12.00009, 12.00)]
+        [InlineData(12.119, 12.12)]
+        [InlineData(12.115, 12.12)]
+        [InlineData(12.114, 12.11)]
         public void Test_GetUnitPrice_WhenRoundPricesDuringCalculationIsTrue_PriceMustBeRounded(decimal inputPrice, decimal expectedPrice)
         {
             // arrange
@@ -359,11 +362,11 @@ namespace RufaPoint.Services.Tests.Catalog
             resultPrice.ShouldEqual(expectedPrice);
         }
 
-        [Test]
-        [TestCase(12.00009, 12.00009)]
-        [TestCase(12.119, 12.119)]
-        [TestCase(12.115, 12.115)]
-        [TestCase(12.114, 12.114)]
+        [Theory]
+        [InlineData(12.00009, 12.00009)]
+        [InlineData(12.119, 12.119)]
+        [InlineData(12.115, 12.115)]
+        [InlineData(12.114, 12.114)]
         public void Test_GetUnitPrice_WhenNotRoundPricesDuringCalculationIsFalse_PriceMustNotBeRounded(decimal inputPrice, decimal expectedPrice)
         {
             // arrange            
@@ -401,8 +404,8 @@ namespace RufaPoint.Services.Tests.Catalog
                 Quantity = quantity
             };
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories,"","",true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             return shoppingCartItem;
         }

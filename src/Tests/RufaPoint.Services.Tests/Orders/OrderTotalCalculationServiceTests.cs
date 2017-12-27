@@ -24,82 +24,81 @@ using RufaPoint.Services.Payments;
 using RufaPoint.Services.Shipping;
 using RufaPoint.Services.Tax;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Orders
 {
-    [TestFixture]
     public class OrderTotalCalculationServiceTests : ServiceTest
     {
-        private IWorkContext _workContext;
-        private IStoreContext _storeContext;
+        private Mock<IWorkContext> _workContext;
+        private Mock<IStoreContext> _storeContext;
         private ITaxService _taxService;
         private IShippingService _shippingService;
-        private IPaymentService _paymentService;
-        private ICheckoutAttributeParser _checkoutAttributeParser;
-        private IDiscountService _discountService;
-        private IGiftCardService _giftCardService;
-        private IGenericAttributeService _genericAttributeService;
+        private Mock<IPaymentService> _paymentService;
+        private Mock<ICheckoutAttributeParser> _checkoutAttributeParser;
+        private Mock<IDiscountService> _discountService;
+        private Mock<IGiftCardService> _giftCardService;
+        private Mock<IGenericAttributeService> _genericAttributeService;
         private TaxSettings _taxSettings;
         private RewardPointsSettings _rewardPointsSettings;
-        private ICategoryService _categoryService;
-        private IManufacturerService _manufacturerService;
-        private IProductAttributeParser _productAttributeParser;
+        private Mock<ICategoryService> _categoryService;
+        private Mock<IManufacturerService> _manufacturerService;
+        private Mock<IProductAttributeParser> _productAttributeParser;
         private IPriceCalculationService _priceCalcService;
         private IOrderTotalCalculationService _orderTotalCalcService;
-        private IAddressService _addressService;
+        private Mock<IAddressService> _addressService;
         private ShippingSettings _shippingSettings;
-        private ILocalizationService _localizationService;
+        private Mock<ILocalizationService> _localizationService;
         private ILogger _logger;
-        private IRepository<ShippingMethod> _shippingMethodRepository;
-        private IRepository<Warehouse> _warehouseRepository;
+        private Mock<IRepository<ShippingMethod>> _shippingMethodRepository;
+        private Mock<IRepository<Warehouse>> _warehouseRepository;
         private ShoppingCartSettings _shoppingCartSettings;
         private CatalogSettings _catalogSettings;
-        private IEventPublisher _eventPublisher;
+        private Mock<IEventPublisher> _eventPublisher;
         private Store _store;
-        private IProductService _productService;
-        private IGeoLookupService _geoLookupService;
-        private ICountryService _countryService;
-        private IStateProvinceService _stateProvinceService;
+        private Mock<IProductService> _productService;
+        private Mock<IGeoLookupService> _geoLookupService;
+        private Mock<ICountryService> _countryService;
+        private Mock<IStateProvinceService> _stateProvinceService;
         private CustomerSettings _customerSettings;
         private AddressSettings _addressSettings;
-        private IRewardPointService _rewardPointService;
-        private IWebHelper _webHelper;
+        private Mock<IRewardPointService> _rewardPointService;
+        private Mock<IWebHelper> _webHelper;
 
-        [SetUp]
-        public new void SetUp()
+
+        public OrderTotalCalculationServiceTests()
         {
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
+            _workContext = new Mock<IWorkContext>();
 
             _store = new Store { Id = 1 };
-            _storeContext = MockRepository.GenerateMock<IStoreContext>();
-            _storeContext.Expect(x => x.CurrentStore).Return(_store);
+            _storeContext = new Mock<IStoreContext>();
+            _storeContext.Setup(x => x.CurrentStore).Returns(_store);
 
-            _productService = MockRepository.GenerateMock<IProductService>();
+            _productService = new Mock<IProductService>();
 
             var pluginFinder = new PluginFinder();
             var cacheManager = new NopNullCache();
 
-            _discountService = MockRepository.GenerateMock<IDiscountService>();
-            _categoryService = MockRepository.GenerateMock<ICategoryService>();
-            _manufacturerService = MockRepository.GenerateMock<IManufacturerService>();
-            _productAttributeParser = MockRepository.GenerateMock<IProductAttributeParser>();
+            _discountService = new Mock<IDiscountService>();
+            _categoryService = new Mock<ICategoryService>();
+            _manufacturerService = new Mock<IManufacturerService>();
+            _productAttributeParser = new Mock<IProductAttributeParser>();
 
             _shoppingCartSettings = new ShoppingCartSettings();
             _catalogSettings = new CatalogSettings();
 
-            _priceCalcService = new PriceCalculationService(_workContext, _storeContext,
-                _discountService, _categoryService, 
-                _manufacturerService, _productAttributeParser,
-                _productService, cacheManager, 
+            _priceCalcService = new PriceCalculationService(_workContext.Object, _storeContext.Object,
+                _discountService.Object, _categoryService.Object, 
+                _manufacturerService.Object, _productAttributeParser.Object,
+                _productService.Object, cacheManager, 
                 _shoppingCartSettings, _catalogSettings);
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
-            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
-            _webHelper = MockRepository.GenerateMock<IWebHelper>();
+            _localizationService = new Mock<ILocalizationService>();
+            _webHelper = new Mock<IWebHelper>();
 
             //shipping
             _shippingSettings = new ShippingSettings
@@ -107,37 +106,37 @@ namespace RufaPoint.Services.Tests.Orders
                 ActiveShippingRateComputationMethodSystemNames = new List<string>()
             };
             _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
-            _shippingMethodRepository = MockRepository.GenerateMock<IRepository<ShippingMethod>>();
-            _warehouseRepository = MockRepository.GenerateMock<IRepository<Warehouse>>();
+            _shippingMethodRepository = new Mock<IRepository<ShippingMethod>>();
+            _warehouseRepository = new Mock<IRepository<Warehouse>>();
             _logger = new NullLogger();
-            _shippingService = new ShippingService(_shippingMethodRepository,
-                _warehouseRepository,
+            _shippingService = new ShippingService(_shippingMethodRepository.Object,
+                _warehouseRepository.Object,
                 _logger,
-                _productService,
-                _productAttributeParser,
-                _checkoutAttributeParser,
-                _genericAttributeService,
-                _localizationService,
-                _addressService,
+                _productService.Object,
+                _productAttributeParser.Object,
+                _checkoutAttributeParser.Object,
+                _genericAttributeService.Object,
+                _localizationService.Object,
+                _addressService.Object,
                 _shippingSettings,
                 pluginFinder, 
-                _storeContext,
-                _eventPublisher, 
+                _storeContext.Object,
+                _eventPublisher.Object, 
                 _shoppingCartSettings,
                 cacheManager);
             
 
-            _paymentService = MockRepository.GenerateMock<IPaymentService>();
-            _checkoutAttributeParser = MockRepository.GenerateMock<ICheckoutAttributeParser>();
-            _giftCardService = MockRepository.GenerateMock<IGiftCardService>();
-            _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
+            _paymentService = new Mock<IPaymentService>();
+            _checkoutAttributeParser = new Mock<ICheckoutAttributeParser>();
+            _giftCardService = new Mock<IGiftCardService>();
+            _genericAttributeService = new Mock<IGenericAttributeService>();
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
-            _geoLookupService = MockRepository.GenerateMock<IGeoLookupService>();
-            _countryService = MockRepository.GenerateMock<ICountryService>();
-            _stateProvinceService = MockRepository.GenerateMock<IStateProvinceService>();
+            _geoLookupService = new Mock<IGeoLookupService>();
+            _countryService = new Mock<ICountryService>();
+            _stateProvinceService = new Mock<IStateProvinceService>();
             _customerSettings = new CustomerSettings();
             _addressSettings = new AddressSettings();
 
@@ -148,23 +147,23 @@ namespace RufaPoint.Services.Tests.Orders
                 PaymentMethodAdditionalFeeIsTaxable = true,
                 DefaultTaxAddressId = 10
             };
-            _addressService = MockRepository.GenerateMock<IAddressService>();
-            _addressService.Expect(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Return(new Address { Id = _taxSettings.DefaultTaxAddressId });
-            _taxService = new TaxService(_addressService, _workContext, _storeContext, _taxSettings,
-                pluginFinder, _geoLookupService, _countryService, _stateProvinceService, _logger, _webHelper,
+            _addressService = new Mock<IAddressService>();
+            _addressService.Setup(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Returns(new Address { Id = _taxSettings.DefaultTaxAddressId });
+            _taxService = new TaxService(_addressService.Object, _workContext.Object, _storeContext.Object, _taxSettings,
+                pluginFinder, _geoLookupService.Object, _countryService.Object, _stateProvinceService.Object, _logger, _webHelper.Object,
                 _customerSettings, _shippingSettings, _addressSettings);
-            _rewardPointService = MockRepository.GenerateMock<IRewardPointService>();
+            _rewardPointService = new Mock<IRewardPointService>();
 
             _rewardPointsSettings = new RewardPointsSettings();
 
-            _orderTotalCalcService = new OrderTotalCalculationService(_workContext, _storeContext,
-                _priceCalcService, _productService, _productAttributeParser, _taxService, _shippingService, _paymentService,
-                _checkoutAttributeParser, _discountService, _giftCardService, _genericAttributeService,
-                _rewardPointService, _taxSettings, _rewardPointsSettings,
+            _orderTotalCalcService = new OrderTotalCalculationService(_workContext.Object, _storeContext.Object,
+                _priceCalcService, _productService.Object, _productAttributeParser.Object, _taxService, _shippingService, _paymentService.Object,
+                _checkoutAttributeParser.Object, _discountService.Object, _giftCardService.Object, _genericAttributeService.Object,
+                _rewardPointService.Object, _taxSettings, _rewardPointsSettings,
                 _shippingSettings, _shoppingCartSettings, _catalogSettings);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_subTotal_excluding_tax()
         {
             //customer
@@ -204,8 +203,8 @@ namespace RufaPoint.Services.Tests.Orders
             cart.ForEach(sci => sci.Customer = customer);
             cart.ForEach(sci => sci.CustomerId = customer.Id);
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories,"","",true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers,"","",true)).Returns(new List<DiscountForCaching>());
 
             //10% - default tax rate
             _orderTotalCalcService.GetShoppingCartSubTotal(cart, false,
@@ -220,7 +219,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRates[10].ShouldEqual(8.939);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_subTotal_including_tax()
         {
             //customer
@@ -260,8 +259,8 @@ namespace RufaPoint.Services.Tests.Orders
             cart.ForEach(sci => sci.Customer = customer);
             cart.ForEach(sci => sci.CustomerId = customer.Id);
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories,"","",true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers,"","",true)).Returns(new List<DiscountForCaching>());
             
             _orderTotalCalcService.GetShoppingCartSubTotal(cart, true,
                 out decimal discountAmount, out List<DiscountForCaching> appliedDiscounts,
@@ -275,7 +274,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRates[10].ShouldEqual(8.939);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_subTotal_discount_excluding_tax()
         {
             //customer
@@ -324,10 +323,10 @@ namespace RufaPoint.Services.Tests.Orders
                 DiscountAmount = 3,
                 DiscountLimitation = DiscountLimitationType.Unlimited,
             };
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() { IsValid = true });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToOrderSubTotal)).Return(new List<DiscountForCaching> { discount1 });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.ValidateDiscount(discount1, customer)).Returns(new DiscountValidationResult() { IsValid = true });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToOrderSubTotal, "", "", true)).Returns(new List<DiscountForCaching> { discount1 });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories, "", "", true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             //10% - default tax rate
             _orderTotalCalcService.GetShoppingCartSubTotal(cart, false,
@@ -343,7 +342,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRates[10].ShouldEqual(8.639);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_subTotal_discount_including_tax()
         {
             //customer
@@ -392,10 +391,10 @@ namespace RufaPoint.Services.Tests.Orders
                 DiscountAmount = 3,
                 DiscountLimitation = DiscountLimitationType.Unlimited,
             };
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() { IsValid = true });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToOrderSubTotal)).Return(new List<DiscountForCaching> { discount1 });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.ValidateDiscount(discount1, customer)).Returns(new DiscountValidationResult() { IsValid = true });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToOrderSubTotal, "", "", true)).Returns(new List<DiscountForCaching> { discount1 });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories, "", "", true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             _orderTotalCalcService.GetShoppingCartSubTotal(cart, true,
                 out decimal discountAmount, out List<DiscountForCaching> appliedDiscounts,
@@ -416,7 +415,7 @@ namespace RufaPoint.Services.Tests.Orders
 
 
 
-        [Test]
+        [Fact]
         public void Can_get_shoppingCartItem_additional_shippingCharge()
         {
             var sci1 = new ShoppingCartItem
@@ -468,7 +467,7 @@ namespace RufaPoint.Services.Tests.Orders
             _orderTotalCalcService.GetShoppingCartAdditionalShippingCharge(cart).ShouldEqual(42.5M);
         }
 
-        [Test]
+        [Fact]
         public void Shipping_should_be_free_when_all_shoppingCartItems_are_marked_as_freeShipping()
         {
             var sci1 = new ShoppingCartItem
@@ -507,7 +506,7 @@ namespace RufaPoint.Services.Tests.Orders
             _orderTotalCalcService.IsFreeShipping(cart).ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void Shipping_should_not_be_free_when_some_of_shoppingCartItems_are_not_marked_as_freeShipping()
         {
             var sci1 = new ShoppingCartItem
@@ -546,7 +545,7 @@ namespace RufaPoint.Services.Tests.Orders
             _orderTotalCalcService.IsFreeShipping(cart).ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void Shipping_should_be_free_when_customer_is_in_role_with_free_shipping()
         {
             var sci1 = new ShoppingCartItem
@@ -597,7 +596,7 @@ namespace RufaPoint.Services.Tests.Orders
             _orderTotalCalcService.IsFreeShipping(cart).ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shipping_total_with_fixed_shipping_rate_excluding_tax()
         {
             var sci1 = new ShoppingCartItem
@@ -662,7 +661,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRate.ShouldEqual(10);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shipping_total_with_fixed_shipping_rate_including_tax()
         {
             var sci1 = new ShoppingCartItem
@@ -727,7 +726,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRate.ShouldEqual(10);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shipping_total_discount_excluding_tax()
         {
             var sci1 = new ShoppingCartItem
@@ -792,8 +791,8 @@ namespace RufaPoint.Services.Tests.Orders
                 DiscountAmount = 3,
                 DiscountLimitation = DiscountLimitationType.Unlimited,
             };
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() { IsValid = true });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToShipping)).Return(new List<DiscountForCaching> { discount1 });
+            _discountService.Setup(ds => ds.ValidateDiscount(discount1, customer)).Returns(new DiscountValidationResult() { IsValid = true });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToShipping, "", "", true)).Returns(new List<DiscountForCaching> { discount1 });
 
 
             var shipping = _orderTotalCalcService.GetShoppingCartShippingTotal(cart, false, out decimal taxRate, out List<DiscountForCaching> appliedDiscounts);
@@ -806,7 +805,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRate.ShouldEqual(10);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shipping_total_discount_including_tax()
         {
             var sci1 = new ShoppingCartItem
@@ -871,8 +870,8 @@ namespace RufaPoint.Services.Tests.Orders
                 DiscountAmount = 3,
                 DiscountLimitation = DiscountLimitationType.Unlimited,
             };
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() { IsValid = true });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToShipping)).Return(new List<DiscountForCaching> { discount1 });
+            _discountService.Setup(ds => ds.ValidateDiscount(discount1, customer)).Returns(new DiscountValidationResult() { IsValid = true });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToShipping, "", "", true)).Returns(new List<DiscountForCaching> { discount1 });
 
 
             var shipping = _orderTotalCalcService.GetShoppingCartShippingTotal(cart, true, out decimal taxRate, out List<DiscountForCaching> appliedDiscounts);
@@ -885,7 +884,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRate.ShouldEqual(10);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_tax_total()
         {
             //customer
@@ -930,8 +929,8 @@ namespace RufaPoint.Services.Tests.Orders
 
 
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+                .Returns(new List<GenericAttribute>
                             {
                                 new GenericAttribute
                                     {
@@ -942,9 +941,9 @@ namespace RufaPoint.Services.Tests.Orders
                                         Value = "test1"
                                     }
                             });
-            _paymentService.Expect(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Return(20);
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _paymentService.Setup(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Returns(20);
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories, "", "", true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             //56 - items, 10 - shipping (fixed), 20 - payment fee
 
@@ -985,7 +984,7 @@ namespace RufaPoint.Services.Tests.Orders
             taxRates[10].ShouldEqual(5.6);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_total_without_shipping_required()
         {
             //customer
@@ -1030,8 +1029,8 @@ namespace RufaPoint.Services.Tests.Orders
 
 
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+                .Returns(new List<GenericAttribute>
                             {
                                 new GenericAttribute
                                     {
@@ -1042,10 +1041,10 @@ namespace RufaPoint.Services.Tests.Orders
                                         Value = "test1"
                                     }
                             });
-            _paymentService.Expect(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Return(20);
+            _paymentService.Setup(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Returns(20);
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories, "", "", true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
             
             //shipping is taxable, payment fee is taxable
@@ -1057,7 +1056,7 @@ namespace RufaPoint.Services.Tests.Orders
                 .ShouldEqual(83.6M);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_total_with_shipping_required()
         {
             //customer
@@ -1100,8 +1099,8 @@ namespace RufaPoint.Services.Tests.Orders
             cart.ForEach(sci => sci.Customer = customer);
             cart.ForEach(sci => sci.CustomerId = customer.Id);
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+                .Returns(new List<GenericAttribute>
                             {
                                 new GenericAttribute
                                     {
@@ -1112,10 +1111,10 @@ namespace RufaPoint.Services.Tests.Orders
                                         Value = "test1"
                                     }
                             });
-            _paymentService.Expect(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Return(20);
+            _paymentService.Setup(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Returns(20);
 
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories, "", "", true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
             
             //shipping is taxable, payment fee is taxable
             _taxSettings.ShippingIsTaxable = true;
@@ -1172,7 +1171,7 @@ namespace RufaPoint.Services.Tests.Orders
 
 
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
                 .Return(new List<GenericAttribute>
                             {
                                 new GenericAttribute
@@ -1221,7 +1220,7 @@ namespace RufaPoint.Services.Tests.Orders
                 .ShouldEqual(64.6M);
         }*/
 
-        [Test]
+        [Fact]
         public void Can_get_shopping_cart_total_discount()
         {
             //customer
@@ -1273,14 +1272,14 @@ namespace RufaPoint.Services.Tests.Orders
                 DiscountAmount = 3,
                 DiscountLimitation = DiscountLimitationType.Unlimited,
             };
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() { IsValid = true });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToOrderTotal)).Return(new List<DiscountForCaching> { discount1 });
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
-            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.ValidateDiscount(discount1, customer)).Returns(new DiscountValidationResult() { IsValid = true });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToOrderTotal, "", "", true)).Returns(new List<DiscountForCaching> { discount1 });
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories, "", "", true)).Returns(new List<DiscountForCaching>());
+            _discountService.Setup(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers, "", "", true)).Returns(new List<DiscountForCaching>());
 
 
-            _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(x => x.GetAttributesForEntity(customer.Id, "Customer"))
+                .Returns(new List<GenericAttribute>
                             {
                                 new GenericAttribute
                                     {
@@ -1291,7 +1290,7 @@ namespace RufaPoint.Services.Tests.Orders
                                         Value = "test1"
                                     }
                             });
-            _paymentService.Expect(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Return(20);
+            _paymentService.Setup(ps => ps.GetAdditionalHandlingFee(cart, "test1")).Returns(20);
             
             //shipping is taxable, payment fee is taxable
             _taxSettings.ShippingIsTaxable = true;
@@ -1305,7 +1304,7 @@ namespace RufaPoint.Services.Tests.Orders
             appliedDiscounts.First().Name.ShouldEqual("Discount 1");
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_reward_points_to_amount()
         {
             _rewardPointsSettings.Enabled = true;
@@ -1314,7 +1313,7 @@ namespace RufaPoint.Services.Tests.Orders
             _orderTotalCalcService.ConvertRewardPointsToAmount(100).ShouldEqual(1500);
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_amount_to_reward_points()
         {
             _rewardPointsSettings.Enabled = true;
@@ -1324,7 +1323,7 @@ namespace RufaPoint.Services.Tests.Orders
             _orderTotalCalcService.ConvertAmountToRewardPoints(100).ShouldEqual(7);
         }
 
-        [Test]
+        [Fact]
         public void Can_check_minimum_reward_points_to_use_requirement()
         {
             _rewardPointsSettings.Enabled = true;

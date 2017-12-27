@@ -3,20 +3,15 @@ using System.Linq;
 using RufaPoint.Core.Domain.Catalog;
 using RufaPoint.Services.Catalog;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Catalog
 {
-    [TestFixture]
     public class TierPriceExtensionTests : ServiceTest
     {
-        [SetUp]
-        public new void SetUp()
-        {
 
-        }
 
-        [Test]
+        [Fact]
         public void Can_remove_duplicatedQuantities()
         {
             var tierPrices = new List<TierPrice>();

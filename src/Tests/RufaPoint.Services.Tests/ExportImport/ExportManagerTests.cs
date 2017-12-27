@@ -31,76 +31,75 @@ using RufaPoint.Services.Shipping.Date;
 using RufaPoint.Services.Stores;
 using RufaPoint.Services.Tax;
 using RufaPoint.Services.Vendors;
-using RufaPoint.Tests;
-using NUnit.Framework;
 using OfficeOpenXml;
-using Rhino.Mocks;
+using RufaPoint.Tests;
+using Xunit;
+using Moq;
+
 
 namespace RufaPoint.Services.Tests.ExportImport
 {
-    [TestFixture]
     public class ExportManagerTests : ServiceTest
     {
-        private IPictureService _pictureService;
+        private Mock<IPictureService> _pictureService;
         private IExportManager _exportManager;
-        private IGenericAttributeService _genericAttributeService;
-        private IAuthenticationService _authenticationService;
-        private ILocalizationService _localizationService;
-        private IWorkContext _workContext;
-        private IVendorService _vendorService;
-        private IProductTemplateService _productTemplateService;
-        private IDateRangeService _dateRangeService;
-        private IStoreService _storeService;
-        private IProductAttributeService _productAttributeService;
-        private ITaxCategoryService _taxCategoryService;
-        private IMeasureService _measureService;
+        private Mock<IGenericAttributeService> _genericAttributeService;
+        private Mock<IAuthenticationService> _authenticationService;
+        private Mock<ILocalizationService> _localizationService;
+        private Mock<IWorkContext> _workContext;
+        private Mock<IVendorService> _vendorService;
+        private Mock<IProductTemplateService> _productTemplateService;
+        private Mock<IDateRangeService> _dateRangeService;
+        private Mock<IStoreService> _storeService;
+        private Mock<IProductAttributeService> _productAttributeService;
+        private Mock<ITaxCategoryService> _taxCategoryService;
+        private Mock<IMeasureService> _measureService;
         private CatalogSettings _catalogSettings;
-        private ISpecificationAttributeService _specificationAttributeService;
+        private Mock<ISpecificationAttributeService> _specificationAttributeService;
         private OrderSettings _orderSettings;
-        private ICategoryService _categoryService;
-        private IManufacturerService _manufacturerService;
-        private ICustomerService _customerService;
-        private INewsLetterSubscriptionService _newsLetterSubscriptionService;
+        private Mock<ICategoryService> _categoryService;
+        private Mock<IManufacturerService> _manufacturerService;
+        private Mock<ICustomerService> _customerService;
+        private Mock<INewsLetterSubscriptionService> _newsLetterSubscriptionService;
         private ProductEditorSettings _productEditorSettings;
-        private ICustomerAttributeFormatter _customerAttributeFormatter;
+        private Mock<ICustomerAttributeFormatter> _customerAttributeFormatter;
 
-        [SetUp]
-        public new void SetUp()
+        public ExportManagerTests()
         {
-            _pictureService = MockRepository.GenerateMock<IPictureService>();
-            _authenticationService = MockRepository.GenerateMock<IAuthenticationService>();
-            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
-            _workContext = MockRepository.GenerateMock<IWorkContext>();
-            _vendorService = MockRepository.GenerateMock<IVendorService>();
-            _productTemplateService = MockRepository.GenerateMock<IProductTemplateService>();
-            _dateRangeService = MockRepository.GenerateMock<IDateRangeService>();
-            _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
-            _storeService = MockRepository.GenerateMock<IStoreService>();
-            _productAttributeService = MockRepository.GenerateMock<IProductAttributeService>();
-            _taxCategoryService = MockRepository.GenerateMock<ITaxCategoryService>();
-            _measureService = MockRepository.GenerateMock<IMeasureService>();
+            _pictureService = new Mock<IPictureService>();
+            _authenticationService = new Mock<IAuthenticationService>();
+            _localizationService = new Mock<ILocalizationService>();
+            _workContext = new Mock<IWorkContext>();
+            _vendorService = new Mock<IVendorService>();
+            _productTemplateService = new Mock<IProductTemplateService>();
+            _dateRangeService = new Mock<IDateRangeService>();
+            _genericAttributeService = new Mock<IGenericAttributeService>();
+            _storeService = new Mock<IStoreService>();
+            _productAttributeService = new Mock<IProductAttributeService>();
+            _taxCategoryService = new Mock<ITaxCategoryService>();
+            _measureService = new Mock<IMeasureService>();
             _catalogSettings = new CatalogSettings();
-            _specificationAttributeService = MockRepository.GenerateMock<ISpecificationAttributeService>();
+            _specificationAttributeService = new Mock<ISpecificationAttributeService>();
             _orderSettings = new OrderSettings();
-            _categoryService = MockRepository.GenerateMock<ICategoryService>();
-            _manufacturerService = MockRepository.GenerateMock<IManufacturerService>();
-            _customerService = MockRepository.GenerateMock<ICustomerService>();
-            _newsLetterSubscriptionService = MockRepository.GenerateMock<INewsLetterSubscriptionService>();
+            _categoryService = new Mock<ICategoryService>();
+            _manufacturerService = new Mock<IManufacturerService>();
+            _customerService = new Mock<ICustomerService>();
+            _newsLetterSubscriptionService = new Mock<INewsLetterSubscriptionService>();
             _productEditorSettings = new ProductEditorSettings();
-            _customerAttributeFormatter = MockRepository.GenerateMock<ICustomerAttributeFormatter>();
+            _customerAttributeFormatter = new Mock<ICustomerAttributeFormatter>();
 
-            var httpContextAccessor = MockRepository.GenerateMock<IHttpContextAccessor>();
-            var nopEngine = MockRepository.GenerateMock<NopEngine>();
-            var serviceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var urlRecordService = MockRepository.GenerateMock<IUrlRecordService>();
+            var httpContextAccessor = new Mock<IHttpContextAccessor>();
+            var nopEngine = new Mock<NopEngine>();
+            var serviceProvider = new Mock<IServiceProvider>();
+            var urlRecordService = new Mock<IUrlRecordService>();
             var picture = new Picture
             {
                 Id = 1,
                 SeoFilename = "picture"
             };
             
-            _genericAttributeService.Expect(p => p.GetAttributesForEntity(1, "Customer"))
-                .Return(new List<GenericAttribute>
+            _genericAttributeService.Setup(p => p.GetAttributesForEntity(1, "Customer"))
+                .Returns(new List<GenericAttribute>
                 {
                     new GenericAttribute
                     {
@@ -111,28 +110,28 @@ namespace RufaPoint.Services.Tests.ExportImport
                         Value = "true"
                     }
                 });
-            _authenticationService.Expect(p => p.GetAuthenticatedCustomer()).Return(GetTestCustomer());
-            _pictureService.Expect(p => p.GetPictureById(1)).Return(picture);
-            _pictureService.Expect(p => p.GetThumbLocalPath(picture)).Return(@"c:\temp\picture.png");
-            _pictureService.Expect(p => p.GetPicturesByProductId(1, 3)).Return(new List<Picture> { picture });
-            _productTemplateService.Expect(p => p.GetAllProductTemplates()).Return(new List<ProductTemplate> { new ProductTemplate { Id = 1 } });
-            _dateRangeService.Expect(d => d.GetAllDeliveryDates()).Return(new List<DeliveryDate> { new DeliveryDate { Id = 1 } });
-            _dateRangeService.Expect(d => d.GetAllProductAvailabilityRanges()).Return(new List<ProductAvailabilityRange> { new ProductAvailabilityRange { Id = 1 } });
-            _taxCategoryService.Expect(t => t.GetAllTaxCategories()).Return(new List<TaxCategory> { new TaxCategory() });
-            _vendorService.Expect(v => v.GetAllVendors(showHidden: true)).Return(new PagedList<Vendor>(new List<Vendor> { new Vendor { Id = 1 } }, 0, 10));
-            _measureService.Expect(m => m.GetAllMeasureWeights()).Return(new List<MeasureWeight> { new MeasureWeight() });
-            _categoryService.Expect(c => c.GetProductCategoriesByProductId(1, true)).Return(new List<ProductCategory>());
-            _manufacturerService.Expect(m => m.GetProductManufacturersByProductId(1, true)).Return(new List<ProductManufacturer>());
+            _authenticationService.Setup(p => p.GetAuthenticatedCustomer()).Returns(GetTestCustomer());
+            _pictureService.Setup(p => p.GetPictureById(1)).Returns(picture);
+            _pictureService.Setup(p => p.GetThumbLocalPath(picture,100,true)).Returns(@"c:\temp\picture.png");
+            _pictureService.Setup(p => p.GetPicturesByProductId(1, 3)).Returns(new List<Picture> { picture });
+            _productTemplateService.Setup(p => p.GetAllProductTemplates()).Returns(new List<ProductTemplate> { new ProductTemplate { Id = 1 } });
+            _dateRangeService.Setup(d => d.GetAllDeliveryDates()).Returns(new List<DeliveryDate> { new DeliveryDate { Id = 1 } });
+            _dateRangeService.Setup(d => d.GetAllProductAvailabilityRanges()).Returns(new List<ProductAvailabilityRange> { new ProductAvailabilityRange { Id = 1 } });
+            _taxCategoryService.Setup(t => t.GetAllTaxCategories()).Returns(new List<TaxCategory> { new TaxCategory() });
+            _vendorService.Setup(v => v.GetAllVendors("",0,100000,true)).Returns(new PagedList<Vendor>(new List<Vendor> { new Vendor { Id = 1 } }, 0, 10));
+            _measureService.Setup(m => m.GetAllMeasureWeights()).Returns(new List<MeasureWeight> { new MeasureWeight() });
+            _categoryService.Setup(c => c.GetProductCategoriesByProductId(1, true)).Returns(new List<ProductCategory>());
+            _manufacturerService.Setup(m => m.GetProductManufacturersByProductId(1, true)).Returns(new List<ProductManufacturer>());
 
-            nopEngine.Expect(x => x.ServiceProvider).Return(serviceProvider);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IGenericAttributeService))).Return(_genericAttributeService);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IUrlRecordService))).Return(urlRecordService);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(ILocalizationService))).Return(_localizationService);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IWorkContext))).Return(_workContext);
-            serviceProvider.Expect(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Return(httpContextAccessor);
+            nopEngine.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IGenericAttributeService))).Returns(_genericAttributeService);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IUrlRecordService))).Returns(urlRecordService);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(ILocalizationService))).Returns(_localizationService);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IWorkContext))).Returns(_workContext);
+            serviceProvider.Setup(x => x.GetRequiredService(typeof(IHttpContextAccessor))).Returns(httpContextAccessor);
 
-            EngineContext.Replace(nopEngine);
-            _exportManager = new ExportManager(_categoryService, _manufacturerService, _customerService, _productAttributeService, _pictureService, _newsLetterSubscriptionService, _storeService, _workContext, _productEditorSettings, _vendorService, _productTemplateService, _dateRangeService, _taxCategoryService, _measureService, _catalogSettings, _genericAttributeService, _customerAttributeFormatter, _orderSettings, _specificationAttributeService);
+            EngineContext.Replace(nopEngine.Object);
+            _exportManager = new ExportManager(_categoryService.Object, _manufacturerService.Object, _customerService.Object, _productAttributeService.Object, _pictureService.Object, _newsLetterSubscriptionService.Object, _storeService.Object, _workContext.Object, _productEditorSettings, _vendorService.Object, _productTemplateService.Object, _dateRangeService.Object, _taxCategoryService.Object, _measureService.Object, _catalogSettings, _genericAttributeService.Object, _customerAttributeFormatter.Object, _orderSettings, _specificationAttributeService.Object);
         }
 
         #region Utilities
@@ -175,7 +174,7 @@ namespace RufaPoint.Services.Tests.ExportImport
                     objectPropertyValue = ((DateTime?)objectPropertyValue).Value.ToOADate();
                 }
 
-                Assert.AreEqual(objectPropertyValue, property.PropertyValue, $"The property \"{typeof(T).Name}.{property.PropertyName}\" of these objects is not equal");
+                Assert.Equal(objectPropertyValue, property.PropertyValue/*, $"The property \"{typeof(T).Name}.{property.PropertyName}\" of these objects is not equal"*/);
             }
 
             return actual;
@@ -212,7 +211,7 @@ namespace RufaPoint.Services.Tests.ExportImport
                 if (manager.GetProperties.Any(p => p.PropertyName == propertyInfo.Name))
                     continue;
 
-                Assert.Fail("The property \"{0}.{1}\" no present on excel file", typeof(T).Name, propertyInfo.Name);
+                Assert.Equal(/*"The property \"{0}.{1}\" no present on excel file",*/ typeof(T).Name, propertyInfo.Name);
             }
 
             return obj;
@@ -289,7 +288,7 @@ namespace RufaPoint.Services.Tests.ExportImport
 
         #region Test export to excel
 
-        [Test]
+        [Fact]
         public void can_export_orders_xlsx()
         {
             var orderGuid = Guid.NewGuid();
@@ -425,7 +424,7 @@ namespace RufaPoint.Services.Tests.ExportImport
             manager.GetProperties.First(p => p.PropertyName == "ShippingCountry").PropertyValue.ShouldEqual(shippingAddress.Country.Name);
         }
 
-        [Test]
+        [Fact]
         public void can_export_manufacturers_xlsx()
         {
             var manufacturers = new List<Manufacturer>
@@ -465,7 +464,7 @@ namespace RufaPoint.Services.Tests.ExportImport
             manager.GetProperties.First(p => p.PropertyName == "Picture").PropertyValue.ShouldEqual(@"c:\temp\picture.png");
         }
 
-        [Test]
+        [Fact]
         public void can_export_customers_to_xlsx()
         {
             var customers = new List<Customer>
@@ -500,7 +499,7 @@ namespace RufaPoint.Services.Tests.ExportImport
             PropertiesShouldEqual(customer, manager, new Dictionary<string, string>());
         }
 
-        [Test]
+        [Fact]
         public void can_export_categories_to_xlsx()
         {
             var categories = new List<Category>
@@ -542,7 +541,7 @@ namespace RufaPoint.Services.Tests.ExportImport
             manager.GetProperties.First(p => p.PropertyName == "Picture").PropertyValue.ShouldEqual(@"c:\temp\picture.png");
         }
 
-        [Test]
+        [Fact]
         public void can_export_products_to_xlsx()
         {
             var replacePairse = new Dictionary<string, string>
@@ -685,13 +684,13 @@ namespace RufaPoint.Services.Tests.ExportImport
             manager.SetSelectList("RecurringCyclePeriod", RecurringProductCyclePeriod.Days.ToSelectList(useLocalization: false));
             manager.SetSelectList("RentalPricePeriod", RentalPricePeriod.Days.ToSelectList(useLocalization: false));
 
-            manager.SetSelectList("Vendor", _vendorService.GetAllVendors(showHidden: true).Select(v => v as BaseEntity).ToSelectList(p => (p as Vendor)?.Name ?? string.Empty));
-            manager.SetSelectList("ProductTemplate", _productTemplateService.GetAllProductTemplates().Select(pt => pt as BaseEntity).ToSelectList(p => (p as ProductTemplate)?.Name ?? string.Empty));
-            manager.SetSelectList("DeliveryDate", _dateRangeService.GetAllDeliveryDates().Select(dd => dd as BaseEntity).ToSelectList(p => (p as DeliveryDate)?.Name ?? string.Empty));
-            manager.SetSelectList("ProductAvailabilityRange", _dateRangeService.GetAllProductAvailabilityRanges().Select(range => range as BaseEntity).ToSelectList(p => (p as ProductAvailabilityRange)?.Name ?? string.Empty));
-            manager.SetSelectList("TaxCategory", _taxCategoryService.GetAllTaxCategories().Select(tc => tc as BaseEntity).ToSelectList(p => (p as TaxCategory)?.Name ?? string.Empty));
-            manager.SetSelectList("BasepriceUnit", _measureService.GetAllMeasureWeights().Select(mw => mw as BaseEntity).ToSelectList(p => (p as MeasureWeight)?.Name ?? string.Empty));
-            manager.SetSelectList("BasepriceBaseUnit", _measureService.GetAllMeasureWeights().Select(mw => mw as BaseEntity).ToSelectList(p => (p as MeasureWeight)?.Name ?? string.Empty));
+            manager.SetSelectList("Vendor", _vendorService.Object.GetAllVendors(showHidden: true).Select(v => v as BaseEntity).ToSelectList(p => (p as Vendor)?.Name ?? string.Empty));
+            manager.SetSelectList("ProductTemplate", _productTemplateService.Object.GetAllProductTemplates().Select(pt => pt as BaseEntity).ToSelectList(p => (p as ProductTemplate)?.Name ?? string.Empty));
+            manager.SetSelectList("DeliveryDate", _dateRangeService.Object.GetAllDeliveryDates().Select(dd => dd as BaseEntity).ToSelectList(p => (p as DeliveryDate)?.Name ?? string.Empty));
+            manager.SetSelectList("ProductAvailabilityRange", _dateRangeService.Object.GetAllProductAvailabilityRanges().Select(range => range as BaseEntity).ToSelectList(p => (p as ProductAvailabilityRange)?.Name ?? string.Empty));
+            manager.SetSelectList("TaxCategory", _taxCategoryService.Object.GetAllTaxCategories().Select(tc => tc as BaseEntity).ToSelectList(p => (p as TaxCategory)?.Name ?? string.Empty));
+            manager.SetSelectList("BasepriceUnit", _measureService.Object.GetAllMeasureWeights().Select(mw => mw as BaseEntity).ToSelectList(p => (p as MeasureWeight)?.Name ?? string.Empty));
+            manager.SetSelectList("BasepriceBaseUnit", _measureService.Object.GetAllMeasureWeights().Select(mw => mw as BaseEntity).ToSelectList(p => (p as MeasureWeight)?.Name ?? string.Empty));
 
             manager.Remove("ProductTags");
 

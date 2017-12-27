@@ -1,13 +1,13 @@
 ﻿using RufaPoint.Services.Payments;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Payments
 {
-    [TestFixture]
+
     public class PaymentExtensionTests : ServiceTest
     {
-        [Test]
+        [Fact]
         public void Can_deserialize_empty_string()
         {
             var processPaymentRequest = new ProcessPaymentRequest();
@@ -17,7 +17,7 @@ namespace RufaPoint.Services.Tests.Payments
             deserialized.Count.ShouldEqual(0);
         }
 
-        [Test]
+        [Fact]
         public void Can_deserialize_null_string()
         {
             var processPaymentRequest = new ProcessPaymentRequest();
@@ -27,7 +27,7 @@ namespace RufaPoint.Services.Tests.Payments
             deserialized.Count.ShouldEqual(0);
         }
 
-        [Test]
+        [Fact]
         public void Can_serialize_and_deserialize_empty_CustomValues()
         {
             var processPaymentRequest = new ProcessPaymentRequest();
@@ -38,7 +38,7 @@ namespace RufaPoint.Services.Tests.Payments
             deserialized.Count.ShouldEqual(0);
         }
 
-        [Test]
+        [Fact]
         public void Can_serialize_and_deserialize_CustomValues()
         {
             var processPaymentRequest = new ProcessPaymentRequest();

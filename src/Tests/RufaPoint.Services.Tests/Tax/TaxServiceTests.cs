@@ -13,31 +13,29 @@ using RufaPoint.Services.Events;
 using RufaPoint.Services.Logging;
 using RufaPoint.Services.Tax;
 using RufaPoint.Tests;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
+using Moq;
 
 namespace RufaPoint.Services.Tests.Tax
 {
-    [TestFixture]
     public class TaxServiceTests : ServiceTest
     {
-        private IAddressService _addressService;
+        private Mock<IAddressService> _addressService;
         private IWorkContext _workContext;
         private IStoreContext _storeContext;
         private TaxSettings _taxSettings;
-        private IEventPublisher _eventPublisher;
+        private Mock<IEventPublisher> _eventPublisher;
         private ITaxService _taxService;
-        private IGeoLookupService _geoLookupService;
-        private ICountryService _countryService;
-        private IStateProvinceService _stateProvinceService;
-        private ILogger _logger;
-        private IWebHelper _webHelper;
+        private Mock<IGeoLookupService> _geoLookupService;
+        private Mock<ICountryService> _countryService;
+        private Mock<IStateProvinceService> _stateProvinceService;
+        private Mock<ILogger> _logger;
+        private Mock<IWebHelper> _webHelper;
         private CustomerSettings _customerSettings;
         private ShippingSettings _shippingSettings;
         private AddressSettings _addressSettings;
 
-        [SetUp]
-        public new void SetUp()
+        public TaxServiceTests()
         {
             _taxSettings = new TaxSettings
             {
@@ -47,31 +45,31 @@ namespace RufaPoint.Services.Tests.Tax
             _workContext = null;
             _storeContext = null;
 
-            _addressService = MockRepository.GenerateMock<IAddressService>();
+            _addressService = new Mock<IAddressService>();
             //default tax address
-            _addressService.Expect(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Return(new Address { Id = _taxSettings.DefaultTaxAddressId });
+            _addressService.Setup(x => x.GetAddressById(_taxSettings.DefaultTaxAddressId)).Returns(new Address { Id = _taxSettings.DefaultTaxAddressId });
 
             var pluginFinder = new PluginFinder();
 
-            _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
-            _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
+            _eventPublisher = new Mock<IEventPublisher>();
+            _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
-            _geoLookupService = MockRepository.GenerateMock<IGeoLookupService>();
-            _countryService = MockRepository.GenerateMock<ICountryService>();
-            _stateProvinceService = MockRepository.GenerateMock<IStateProvinceService>();
-            _logger = MockRepository.GenerateMock<ILogger>();
-            _webHelper = MockRepository.GenerateMock<IWebHelper>();
+            _geoLookupService = new Mock<IGeoLookupService>();
+            _countryService = new Mock<ICountryService>();
+            _stateProvinceService = new Mock<IStateProvinceService>();
+            _logger = new Mock<ILogger>();
+            _webHelper = new Mock<IWebHelper>();
 
             _customerSettings = new CustomerSettings();
             _shippingSettings = new ShippingSettings();
             _addressSettings = new AddressSettings();
 
-            _taxService = new TaxService(_addressService, _workContext, _storeContext, _taxSettings,
-                pluginFinder, _geoLookupService, _countryService, _stateProvinceService, _logger, _webHelper,
+            _taxService = new TaxService(_addressService.Object, _workContext, _storeContext, _taxSettings,
+                pluginFinder, _geoLookupService.Object, _countryService.Object, _stateProvinceService.Object, _logger.Object, _webHelper.Object,
                 _customerSettings, _shippingSettings, _addressSettings);
         }
 
-        [Test]
+        [Fact]
         public void Can_load_taxProviders()
         {
             var providers = _taxService.LoadAllTaxProviders();
@@ -79,21 +77,21 @@ namespace RufaPoint.Services.Tests.Tax
             (providers.Any()).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_load_taxProvider_by_systemKeyword()
         {
             var provider = _taxService.LoadTaxProviderBySystemName("FixedTaxRateTest");
             provider.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_load_active_taxProvider()
         {
             var provider = _taxService.LoadActiveTaxProvider();
             provider.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_check_taxExempt_product()
         {
             var product = new Product
@@ -105,7 +103,7 @@ namespace RufaPoint.Services.Tests.Tax
             _taxService.IsTaxExempt(product, null).ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void Can_check_taxExempt_customer()
         {
             var customer = new Customer
@@ -117,7 +115,7 @@ namespace RufaPoint.Services.Tests.Tax
             _taxService.IsTaxExempt(null, customer).ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void Can_check_taxExempt_customer_in_taxExemptCustomerRole()
         {
             var customer = new Customer
@@ -147,7 +145,7 @@ namespace RufaPoint.Services.Tests.Tax
             return 10;
         }
 
-        [Test]
+        [Fact]
         public void Can_get_productPrice_priceIncludesTax_includingTax_taxable()
         {
             var customer = new Customer();
@@ -159,7 +157,7 @@ namespace RufaPoint.Services.Tests.Tax
             _taxService.GetProductPrice(product, 0, 1000M, false, customer, false, out taxRate).ShouldEqual(1000);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_productPrice_priceIncludesTax_includingTax_non_taxable()
         {
             var customer = new Customer();
@@ -174,7 +172,7 @@ namespace RufaPoint.Services.Tests.Tax
             _taxService.GetProductPrice(product, 0, 1000M, false, customer, false, out taxRate).ShouldEqual(1000);
         }
 
-        [Test]
+        [Fact]
         public void Can_do_VAT_check()
         {
             //remove? this method requires Internet access
@@ -190,7 +188,7 @@ namespace RufaPoint.Services.Tests.Tax
             exception.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_assume_valid_VAT_number_if_EuVatAssumeValid_setting_is_true()
         {
             _taxSettings.EuVatAssumeValid = true;

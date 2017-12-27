@@ -2,14 +2,14 @@
 using RufaPoint.Core.Domain.Messages;
 using RufaPoint.Services.Messages;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Messages
 {
-    [TestFixture]
+
     public class TokenizerTests : ServiceTest
     {
-        [Test]
+        [Fact]
         public void Can_replace_tokens_case_sensitive()
         {
             var messageTemplatesSettings = new MessageTemplatesSettings
@@ -32,7 +32,7 @@ namespace RufaPoint.Services.Tests.Messages
                 .ShouldEqual("Some text %TOKeN1%");
         }
 
-        [Test]
+        [Fact]
         public void Can_replace_tokens_case_invariant()
         {
             var messageTemplatesSettings = new MessageTemplatesSettings
@@ -50,7 +50,7 @@ namespace RufaPoint.Services.Tests.Messages
                 .ShouldEqual("Some text Value1");
         }
 
-        [Test]
+        [Fact]
         public void Can_html_encode()
         {
             var messageTemplatesSettings = new MessageTemplatesSettings
@@ -69,7 +69,7 @@ namespace RufaPoint.Services.Tests.Messages
                 .ShouldEqual("Some text &lt;Value1&gt;");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_html_encode_if_token_doesnt_allow_it()
         {
             var messageTemplatesSettings = new MessageTemplatesSettings
@@ -88,7 +88,7 @@ namespace RufaPoint.Services.Tests.Messages
                 .ShouldEqual("Some text <Value1>");
         }
 
-        [Test]
+        [Fact]
         public void Can_replace_tokens_with_conditional_statements()
         {
             var tokenizer = new Tokenizer(new MessageTemplatesSettings
@@ -130,7 +130,7 @@ namespace RufaPoint.Services.Tests.Messages
                 .ShouldEqual("Some text value  10 value2   10");
         }
 
-        [Test]
+        [Fact]
         public void Can_replace_tokens_with_non_string_values()
         {
             var tokenizer = new Tokenizer(new MessageTemplatesSettings
