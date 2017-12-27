@@ -19,7 +19,6 @@ using RufaPoint.Services.Authentication.External;
 using RufaPoint.Services.Logging;
 using RufaPoint.Services.Tasks;
 using RufaPoint.Web.Framework.FluentValidation;
-using RufaPoint.Web.Framework.Mvc.Filters;
 using RufaPoint.Web.Framework.Mvc.ModelBinding;
 using RufaPoint.Web.Framework.Themes;
 
@@ -149,19 +148,19 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
         public static void AddNopDataProtection(this IServiceCollection services)
         {
             //check whether to persist data protection in Redis
-            var nopConfig = services.BuildServiceProvider().GetRequiredService<CoreAppConfig>();
-            /*Pekmez Redis
-            if (nopConfig.RedisCachingEnabled && nopConfig.PersistDataProtectionKeysToRedis)
-            {
-                //store keys in Redis
-                services.AddDataProtection().PersistKeysToRedis(
-                    () =>
-                    {
-                        var redisConnectionWrapper = EngineContext.Current.Resolve<IRedisConnectionWrapper>();
-                        return redisConnectionWrapper.GetDatabase();
-                    }, RedisConfiguration.DataProtectionKeysName);
-            }
-            else*/
+            var appConfig = services.BuildServiceProvider().GetRequiredService<CoreAppConfig>();
+
+            /* Pekmez redis extension???
+             if (appConfig.RedisCachingEnabled && appConfig.PersistDataProtectionKeysToRedis)
+             {
+                 //store keys in Redis
+                 services.AddDataProtection().PersistKeysToRedis(() =>
+                     {
+                         var redisConnectionWrapper = EngineContext.Current.Resolve<IRedisConnectionWrapper>();
+                         return redisConnectionWrapper.GetDatabase();
+                     }, RedisConfiguration.DataProtectionKeysName );
+             }
+             else */
             {
                 var dataProtectionKeysPath = CommonHelper.MapPath("~/App_Data/DataProtectionKeys");
                 var dataProtectionKeysFolder = new DirectoryInfo(dataProtectionKeysPath);
