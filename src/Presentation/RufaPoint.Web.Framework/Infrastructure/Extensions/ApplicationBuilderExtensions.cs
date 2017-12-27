@@ -221,6 +221,7 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
             //whether MiniProfiler should be displayed
             if (EngineContext.Current.Resolve<StoreInformationSettings>().DisplayMiniProfilerInPublicStore)
             {
+                /*Pekmez
                 application.UseMiniProfiler(miniProfilerOptions =>
                 {
                     //use memory cache provider for storing each result
@@ -231,6 +232,7 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
                         !EngineContext.Current.Resolve<StoreInformationSettings>().DisplayMiniProfilerForAdminOnly ||
                         EngineContext.Current.Resolve<IPermissionService>().Authorize(StandardPermissionProvider.AccessAdminPanel);
                 });
+                */
             }
         }
     }

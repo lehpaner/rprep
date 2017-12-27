@@ -150,6 +150,7 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
         {
             //check whether to persist data protection in Redis
             var nopConfig = services.BuildServiceProvider().GetRequiredService<RufaPointConfig>();
+            /*Pekmez Redis
             if (nopConfig.RedisCachingEnabled && nopConfig.PersistDataProtectionKeysToRedis)
             {
                 //store keys in Redis
@@ -160,7 +161,7 @@ namespace RufaPoint.Web.Framework.Infrastructure.Extensions
                         return redisConnectionWrapper.GetDatabase();
                     }, RedisConfiguration.DataProtectionKeysName);
             }
-            else
+            else*/
             {
                 var dataProtectionKeysPath = CommonHelper.MapPath("~/App_Data/DataProtectionKeys");
                 var dataProtectionKeysFolder = new DirectoryInfo(dataProtectionKeysPath);

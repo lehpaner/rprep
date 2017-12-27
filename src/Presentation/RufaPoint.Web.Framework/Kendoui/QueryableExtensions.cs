@@ -30,7 +30,7 @@ namespace RufaPoint.Web.Framework.Kendoui
                 var predicate = filter.ToExpression(filters);
 
                 // Use the Where method of Dynamic Linq to filter the data
-                queryable = queryable.Where(predicate, values);
+//Pekmez                queryable = queryable.Where(predicate, values);
             }
 
             return queryable;
@@ -51,7 +51,7 @@ namespace RufaPoint.Web.Framework.Kendoui
                 var ordering = string.Join(",", sort.Select(s => s.ToExpression()));
 
                 // Use the OrderBy method of Dynamic Linq to sort the data
-                return queryable.OrderBy(ordering);
+//Pekmez                return queryable.OrderBy(ordering);
             }
 
             return queryable;

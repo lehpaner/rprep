@@ -1,7 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using ImageResizer.Configuration;
-using ImageResizer.Plugins.PrettyGifs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
@@ -56,7 +54,7 @@ namespace RufaPoint.Web.Framework.Infrastructure
             services.AddThemes();
             
             //add gif resizing support
-            new PrettyGifs().Install(Config.Current);
+//Pekmez            new PrettyGifs().Install(Config.Current);
         }
 
         /// <summary>

@@ -34,9 +34,14 @@ namespace RufaPoint.Web.Framework.Security
             var flag8 = false;
             var current = WindowsIdentity.GetCurrent();
             AuthorizationRuleCollection rules;
+           
+            FileSecurity ess;
             try
             {
-                rules = Directory.GetAccessControl(path).GetAccessRules(true, true, typeof(SecurityIdentifier));
+                DirectoryInfo dInfo = new DirectoryInfo(path);
+                DirectorySecurity dSecurity = dInfo.GetAccessControl();
+                rules =  dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
+                // rules = dss.GetAccessControl(path).GetAccessRules(true, true, typeof(SecurityIdentifier));
             }
             catch
             {
