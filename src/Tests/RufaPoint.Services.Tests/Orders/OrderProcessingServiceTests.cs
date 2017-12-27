@@ -110,7 +110,7 @@ namespace RufaPoint.Services.Tests.Orders
             _shoppingCartSettings = new ShoppingCartSettings();
             _catalogSettings = new CatalogSettings();
             
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _productService = new Mock<IProductService>();
 

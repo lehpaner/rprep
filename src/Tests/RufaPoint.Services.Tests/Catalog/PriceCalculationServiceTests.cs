@@ -56,7 +56,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _shoppingCartSettings = new ShoppingCartSettings();
             _catalogSettings = new CatalogSettings();
 
-            _cacheManager = new NopNullCache();
+            _cacheManager = new DummyCacheManager();
 
             _priceCalcService = new PriceCalculationService(_workContext.Object,
                 _storeContext.Object, 

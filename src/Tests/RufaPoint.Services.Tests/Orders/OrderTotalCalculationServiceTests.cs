@@ -78,7 +78,7 @@ namespace RufaPoint.Services.Tests.Orders
             _productService = new Mock<IProductService>();
 
             var pluginFinder = new PluginFinder();
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _discountService = new Mock<IDiscountService>();
             _categoryService = new Mock<ICategoryService>();

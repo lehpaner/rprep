@@ -77,7 +77,7 @@ namespace RufaPoint.Services.Tests.Directory
 
             _storeMappingService = new Mock<IStoreMappingService>();
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _currencySettings = new CurrencySettings
             {

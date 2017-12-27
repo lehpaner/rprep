@@ -37,7 +37,7 @@ namespace RufaPoint.Services.Tests.Catalog
 
         public PriceFormatterTests()
         {
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _workContext = new Mock<IWorkContext>();
             _workContext.Setup(w => w.WorkingCurrency).Returns(new Currency { RoundingType = RoundingType.Rounding001 });

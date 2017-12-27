@@ -20,7 +20,7 @@ namespace RufaPoint.Services.Tests
         public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, RufaPointConfig config)
         {
             //cache managers
-            builder.RegisterType<NopNullCache>().As<ICacheManager>().Named<ICacheManager>("nop_cache_static").SingleInstance();
+            builder.RegisterType<DummyCacheManager>().As<ICacheManager>().Named<ICacheManager>("nop_cache_static").SingleInstance();
 
         }
 

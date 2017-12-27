@@ -106,7 +106,7 @@ namespace RufaPoint.Services.Tests.Directory
             _measureWeightRepository.Setup(x => x.GetById(measureWeight4.Id)).Returns(measureWeight4);
 
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _measureSettings = new MeasureSettings
             {

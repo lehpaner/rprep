@@ -48,7 +48,7 @@ namespace RufaPoint.Services.Tests.Localization
 
             _storeMappingService = new Mock<IStoreMappingService>();
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _settingService = new Mock<ISettingService>();
 

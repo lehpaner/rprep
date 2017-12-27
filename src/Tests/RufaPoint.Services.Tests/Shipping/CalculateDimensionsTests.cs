@@ -54,7 +54,7 @@ namespace RufaPoint.Services.Tests.Shipping
             _productAttributeParser = new Mock<IProductAttributeParser>();
             _checkoutAttributeParser = new Mock<ICheckoutAttributeParser>();
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             var pluginFinder = new PluginFinder();
             _productService = new Mock<IProductService>();

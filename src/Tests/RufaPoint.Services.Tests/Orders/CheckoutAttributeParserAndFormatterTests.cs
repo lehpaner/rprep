@@ -132,7 +132,7 @@ namespace RufaPoint.Services.Tests.Orders
             _checkoutAttributeValueRepo.Setup(x => x.GetById(cav2_1.Id)).Returns(cav2_1);
             _checkoutAttributeValueRepo.Setup(x => x.GetById(cav2_2.Id)).Returns(cav2_2);
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _storeMappingService = new Mock<IStoreMappingService>();
 

@@ -65,7 +65,7 @@ namespace RufaPoint.Services.Tests.Discounts
 
             _storeContext = new Mock<IStoreContext>();
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
             _discountRequirementRepo = new Mock<IRepository<DiscountRequirement>>();
             _discountRequirementRepo.Setup(x => x.Table).Returns(new List<DiscountRequirement>().AsQueryable());
 

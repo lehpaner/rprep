@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using RufaPoint.Core.Data;
 using RufaPoint.Data.Initializers;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Data.SqlServerCe;
+//using System.Data.SqlServerCe;
 
 namespace RufaPoint.Data
 {

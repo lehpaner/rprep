@@ -202,7 +202,7 @@ namespace RufaPoint.Services.Tests.Catalog
             _eventPublisher.Setup(x => x.Publish(It.IsAny<object>()));
 
 
-            var cacheManager = new NopNullCache();
+            var cacheManager = new DummyCacheManager();
 
             _productAttributeService = new ProductAttributeService(cacheManager,
                 _productAttributeRepo.Object,
