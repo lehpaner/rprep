@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Orders
 {
-    [TestFixture]
+
     public class ShoppingCartItemPeristenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_shoppingCartItem()
         {
             var sci = this.GetTestShoppingCartItem();

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Vendors
 {
-    [TestFixture]
+
     public class VendorPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_vendor()
         {
             var vendor = this.GetTestVendor();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Vendors
             fromDb.PropertiesShouldEqual(vendor);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_vendor_with_vendorNotes()
         {
             var vendor = this.GetTestVendor();

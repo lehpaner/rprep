@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Customers
 {
-    [TestFixture]
+
     public class CustomerRolePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_customerRole()
         {
             var customerRole = this.GetTestCustomerRole();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.PropertiesShouldEqual(customerRole);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_customerRole_with_permissions()
         {
             var customerRole = this.GetTestCustomerRole();

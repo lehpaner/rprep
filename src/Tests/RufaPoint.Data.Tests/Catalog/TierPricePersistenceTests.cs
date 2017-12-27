@@ -1,12 +1,11 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Catalog
 {
-    [TestFixture]
     public class TierPricePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_tierPrice()
         {
             var tierPrice = this.GetTestTierPrice();
@@ -18,7 +17,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.Product.PropertiesShouldEqual(this.GetTestProduct());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_tierPriceWithCustomerRole()
         {
             var tierPrice = this.GetTestTierPrice();

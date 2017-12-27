@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Orders
 {
-    [TestFixture]
+
     public class GiftCardPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_giftCard()
         {
             var giftCard = this.GetTestGiftCard();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.PropertiesShouldEqual(giftCard);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_giftCard_with_usageHistory()
         {
             var giftCard = this.GetTestGiftCard();
@@ -35,7 +35,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.GiftCardUsageHistory.First().PropertiesShouldEqual(this.GetTestGiftCardUsageHistory());
         }
         
-        [Test]
+        [Fact]
         public void Can_save_and_load_giftCard_with_associatedItem()
         {
             var giftCard = this.GetTestGiftCard();

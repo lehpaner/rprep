@@ -1,13 +1,13 @@
 ﻿using System;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Messages
 {
-    [TestFixture]
+
     public class CampaignPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_campaign()
         {
             var campaign = this.GetTestCampaign();

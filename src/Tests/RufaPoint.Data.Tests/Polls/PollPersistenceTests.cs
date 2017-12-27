@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Polls
 {
-    [TestFixture]
+
     public class PollPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_poll()
         {
             var poll = this.GetTestPoll();
@@ -21,7 +21,7 @@ namespace RufaPoint.Data.Tests.Polls
             fromDb.Language.PropertiesShouldEqual(this.GetTestLanguage());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_poll_with_answers()
         {
             var poll = this.GetTestPoll();
@@ -37,7 +37,7 @@ namespace RufaPoint.Data.Tests.Polls
             fromDb.PollAnswers.First().PropertiesShouldEqual(this.GetTestPollAnswer());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_poll_with_answer_and_votingrecord()
         {
             var poll = this.GetTestPoll();

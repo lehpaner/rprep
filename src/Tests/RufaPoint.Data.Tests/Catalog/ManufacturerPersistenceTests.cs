@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Catalog
 {
-    [TestFixture]
+
     public class ManufacturerPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_manufacturer()
         {
             var manufacturer = this.GetTestManufacturer();

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Common
 {
-    [TestFixture]
+
     public class AddressAttributePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_addressAttribute()
         {
             var ca = this.GetTestAddressAttribute();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Common
             fromDb.PropertiesShouldEqual(ca);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_addressAttribute_with_values()
         {
             var ca = this.GetTestAddressAttribute();

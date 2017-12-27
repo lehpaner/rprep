@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Orders
 {
-    [TestFixture]
+
     public class CheckoutAttributePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_checkoutAttribute()
         {
             var checkoutAttribute = this.GetTestCheckoutAttribute();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.PropertiesShouldEqual(checkoutAttribute);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_checkoutAttribute_with_values()
         {
             var checkoutAttribute = this.GetTestCheckoutAttribute();

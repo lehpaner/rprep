@@ -1,12 +1,22 @@
-﻿using RufaPoint.Tests;
-using NUnit.Framework;
+﻿using RufaPoint.Core.Domain.Affiliates;
+using RufaPoint.Tests;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Affiliates
 {
-    [TestFixture]
+
     public class AffiliatePersistenceTests : PersistenceTest
     {
-        [Test]
+        public AffiliatePersistenceTests():base()
+        {
+            Affiliate testAff = new Affiliate()
+            {
+                Id = 1,
+                Active = true,
+            };
+            context.Add<Affiliate>(testAff);
+        }
+        [Fact]
         public void Can_save_and_load_affiliate()
         {
             var affiliate = this.GetTestAffiliate();

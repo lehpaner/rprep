@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.News
 {
-    [TestFixture]
+
     public class NewsPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_newsItem()
         {
             var news = this.GetTestNewsItem();
@@ -19,7 +19,7 @@ namespace RufaPoint.Data.Tests.News
             fromDb.Language.PropertiesShouldEqual(this.GetTestLanguage());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_newsItem_with_comments()
         {
             var news = this.GetTestNewsItem();

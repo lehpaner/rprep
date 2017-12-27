@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Messages
 {
-    [TestFixture]
+
     public class MessageTemplatePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_messageTemplate()
         {
             var mt = this.GetTestMessageTemplate();

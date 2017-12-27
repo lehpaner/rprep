@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Messages
 {
-    [TestFixture]
+
     public class NewsLetterSubscriptionPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_nls()
         {
             var nls = this.GetTestNewsLetterSubscription();

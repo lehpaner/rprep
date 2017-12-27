@@ -1,12 +1,11 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Discounts
 {
-    [TestFixture]
     public class DiscountUsageHistoryPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_discountUsageHistory()
         {
             var discount = this.GetTestDiscountUsageHistory();

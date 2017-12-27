@@ -1,12 +1,11 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Configuration
 {
-    [TestFixture]
     public class SettingPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_setting()
         {
             var setting = this.GetTestSetting();

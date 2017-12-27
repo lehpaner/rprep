@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Forums
 {
-    [TestFixture]
+
     public class ForumGroupPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_forumgroup()
         {
             var forumGroup = this.GetTestForumGroup();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Forums
             fromDb.PropertiesShouldEqual(forumGroup);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_forumgroup_with_forums()
         {
             var forumGroup = this.GetTestForumGroup();

@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Common
 {
-    [TestFixture]
+
     public class AddressPeristenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_address()
         {
             var address = this.GetTestAddress();
@@ -21,7 +21,7 @@ namespace RufaPoint.Data.Tests.Common
             fromDb.Country.PropertiesShouldEqual(this.GetTestCountry());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_address_with_stateProvince()
         {
             var address = this.GetTestAddress();

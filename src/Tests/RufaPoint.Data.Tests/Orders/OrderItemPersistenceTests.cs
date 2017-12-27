@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Orders
 {
-    [TestFixture]
+
     public class OrderItemPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_orderItem()
         {
             var orderItem = this.GetTestOrderItem();
@@ -21,7 +21,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.Order.PropertiesShouldEqual(this.GetTestOrder());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_orderItem_with_giftCard()
         {
             var orderItem = this.GetTestOrderItem();

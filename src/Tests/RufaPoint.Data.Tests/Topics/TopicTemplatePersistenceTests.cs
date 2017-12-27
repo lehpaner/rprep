@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Topics
 {
-    [TestFixture]
+
     public class TopicTemplatePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_topicTemplate()
         {
             var topicTemplate = this.GetTestTopicTemplate();

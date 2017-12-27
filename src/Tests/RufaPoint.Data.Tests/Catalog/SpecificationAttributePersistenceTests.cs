@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Catalog
 {
-    [TestFixture]
+
     public class SpecificationAttributePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_specificationAttribute()
         {
             var specificationAttribute = this.GetTestSpecificationAttribute();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.PropertiesShouldEqual(specificationAttribute);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_specificationAttribute_with_specificationAttributeOptions()
         {
             var specificationAttribute = this.GetTestSpecificationAttribute();

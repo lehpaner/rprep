@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Logging
 {
-    [TestFixture]
+
     public class LogPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_log()
         {
             var log = this.GetTestLog();
@@ -16,7 +16,7 @@ namespace RufaPoint.Data.Tests.Logging
             fromDb.PropertiesShouldEqual(log);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_log_with_customer()
         {
             var log = this.GetTestLog();

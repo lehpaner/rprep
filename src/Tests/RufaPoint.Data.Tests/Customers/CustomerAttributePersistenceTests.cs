@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Customers
 {
-    [TestFixture]
     public class CustomerAttributePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_customerAttribute()
         {
             var ca = this.GetTestCustomerAttribute();
@@ -17,7 +16,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.PropertiesShouldEqual(ca);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_customerAttribute_with_values()
         {
             var ca = this.GetTestCustomerAttribute();

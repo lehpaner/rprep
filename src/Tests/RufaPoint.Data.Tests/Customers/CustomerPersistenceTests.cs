@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Customers
 {
-    [TestFixture]
+
     public class CustomerPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_customer()
         {
             var customer = this.GetTestCustomer();
@@ -18,7 +18,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.PropertiesShouldEqual(customer);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_customer_with_customerRoles()
         {
             var customer = this.GetTestCustomer();
@@ -33,7 +33,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.CustomerRoles.First().PropertiesShouldEqual(this.GetTestCustomerRole());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_customer_with_externalAuthenticationRecord()
         {
             var customer = this.GetTestCustomer();
@@ -48,7 +48,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.ExternalAuthenticationRecords.First().PropertiesShouldEqual(this.GetTestExternalAuthenticationRecord());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_customer_with_address()
         {
             var customer = this.GetTestCustomer();
@@ -62,7 +62,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.Addresses.First().PropertiesShouldEqual(this.GetTestAddress());
         }
 
-        [Test]
+        [Fact]
         public void Can_set_default_billing_and_shipping_address()
         {
             var customer = this.GetTestCustomer();
@@ -90,7 +90,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.ShippingAddress.ShouldBeTheSameAs(addresses[1]);
         }
 
-        [Test]
+        [Fact]
         public void Can_remove_a_customer_address()
         {
             var customer = this.GetTestCustomer();
@@ -111,7 +111,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.BillingAddress.ShouldBeNull();
         }
         
-        [Test]
+        [Fact]
         public void Can_save_and_load_customer_with_shopping_cart()
         {
             var customer = this.GetTestCustomer();

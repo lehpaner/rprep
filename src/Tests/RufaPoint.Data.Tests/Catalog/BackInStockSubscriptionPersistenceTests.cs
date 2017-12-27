@@ -1,18 +1,19 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Catalog
 {
-    [TestFixture]
+
     public class BackInStockSubscriptionPersistenceTests : PersistenceTest
     {
+        /*
         [OneTimeSetUp]
         public override void SetUp()
         {
             base.SetUp();
         }
-
-        [Test]
+        */
+        [Fact]
         public void Can_save_and_load_backInStockSubscription()
         {
             var backInStockSubscription = this.GetTestBackInStockSubscription();

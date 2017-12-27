@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Directory
 {
-    [TestFixture]
+
     public class CountryPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_country()
         {
             var country = this.GetTestCountry();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Directory
             fromDb.PropertiesShouldEqual(country);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_country_with_states()
         {
             var country = this.GetTestCountry();
@@ -31,7 +31,7 @@ namespace RufaPoint.Data.Tests.Directory
             fromDb.StateProvinces.First().PropertiesShouldEqual(this.GetTestStateProvince());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_country_with_restrictions()
         {
             var country = this.GetTestCountry();

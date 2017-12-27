@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Catalog
 {
-    [TestFixture]
+
     public class ProductWarehouseInventoryPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_productWarehouseInventory()
         {
             var pwi = this.GetTestProductWarehouseInventory();

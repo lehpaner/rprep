@@ -1,24 +1,21 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
 using RufaPoint.Core;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests
 {
-    [TestFixture]
+
     public abstract class PersistenceTest
     {
         protected NopObjectContext context;
 
-        [SetUp]
-        public virtual void SetUp()
+        public PersistenceTest()
         {
-            //TODO fix compilation warning (below)
-            #pragma warning disable 0618
-            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-            context = new NopObjectContext(GetTestDbName());
-            context.Database.Delete();
-            context.Database.Create();
+            var options = new DbContextOptionsBuilder<NopObjectContext>()
+                     .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
+                     .UseInMemoryDatabase(System.Guid.NewGuid().ToString())
+                     .Options;
+            context = new NopObjectContext(options);
         }
 
         protected string GetTestDbName()

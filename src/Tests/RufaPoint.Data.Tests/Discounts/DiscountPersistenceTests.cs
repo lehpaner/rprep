@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Discounts
 {
-    [TestFixture]
+
     public class DiscountPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_discount()
         {
             var discount = this.GetTestDiscount();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Discounts
             fromDb.PropertiesShouldEqual(discount);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_discount_with_discountRequirements()
         {
             var discount = this.GetTestDiscount();
@@ -31,7 +31,7 @@ namespace RufaPoint.Data.Tests.Discounts
             fromDb.DiscountRequirements.First().PropertiesShouldEqual(this.GetTestDiscountRequirement());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_discount_with_appliedProducts()
         {
             var discount = this.GetTestDiscount();
@@ -46,7 +46,7 @@ namespace RufaPoint.Data.Tests.Discounts
 
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_discount_with_appliedCategories()
         {
             var discount = this.GetTestDiscount();

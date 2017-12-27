@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Security
 {
-    [TestFixture]
+
     public class PermissionRecordPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_permissionRecord()
         {
             var permissionRecord = this.GetTestPermissionRecord();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Security
             fromDb.PropertiesShouldEqual(permissionRecord);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_permissionRecord_with_customerRoles()
         {
             var permissionRecord = this.GetTestPermissionRecord();

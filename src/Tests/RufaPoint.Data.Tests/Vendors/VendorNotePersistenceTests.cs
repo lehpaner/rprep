@@ -1,12 +1,11 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Vendors
 {
-    [TestFixture]
     public class VendorNotePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_vendorNote()
         {
             var on = this.GetTestVendorNote();

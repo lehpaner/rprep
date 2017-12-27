@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Blogs
 {
-    [TestFixture]
+
     public class BlogPostPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_blogPost()
         {
             var blogPost = this.GetTestBlogPost();
@@ -20,7 +20,7 @@ namespace RufaPoint.Data.Tests.Blogs
             fromDb.Language.PropertiesShouldEqual(blogPost.Language);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_blogPost_with_blogComments()
         {
             var blogPost = this.GetTestBlogPost();

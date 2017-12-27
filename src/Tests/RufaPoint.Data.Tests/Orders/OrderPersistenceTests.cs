@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Orders
 {
-    [TestFixture]
+
     public class OrderPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_order()
         {
             var order = this.GetTestOrder();
@@ -23,7 +23,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.BillingAddress.PropertiesShouldEqual(this.GetTestAddress());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_shipping_address()
         {
             var order = this.GetTestOrder();
@@ -38,7 +38,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.ShippingAddress.PropertiesShouldEqual(this.GetTestAddress());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_usedRewardPoints()
         {
             var order = this.GetTestOrder();
@@ -53,7 +53,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.RedeemedRewardPointsEntry.PropertiesShouldEqual(this.GetTestRewardPointsHistory());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_discountUsageHistory()
         {
             var order = this.GetTestOrder();
@@ -70,7 +70,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.DiscountUsageHistory.First().PropertiesShouldEqual(this.GetTestDiscountUsageHistory());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_giftCardUsageHistory()
         {
             var order = this.GetTestOrder();
@@ -84,7 +84,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.GiftCardUsageHistory.First().PropertiesShouldEqual(this.GetTestGiftCardUsageHistory());
         }
         
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_orderNotes()
         {
             var order = this.GetTestOrder();
@@ -98,7 +98,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.OrderNotes.First().PropertiesShouldEqual(this.GetTestOrderNote());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_orderItems()
         {
             var order = this.GetTestOrder();
@@ -112,7 +112,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.OrderItems.First().PropertiesShouldEqual(this.GetTestOrderItem());
         }
         
-        [Test]
+        [Fact]
         public void Can_save_and_load_order_with_shipments()
         {
             var order = this.GetTestOrder();

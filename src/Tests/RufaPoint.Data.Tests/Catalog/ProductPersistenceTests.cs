@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Catalog
 {
-    [TestFixture]
+
     public class ProductPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_product()
         {
             var product = this.GetTestProduct();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.PropertiesShouldEqual(product);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_product_with_productCategories()
         {
             var product = this.GetTestProduct();
@@ -39,7 +39,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.ProductCategories.First().Category.PropertiesShouldEqual(this.GetTestCategory());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_product_with_productManufacturers()
         {
             var product = this.GetTestProduct();
@@ -58,7 +58,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.ProductManufacturers.First().Manufacturer.PropertiesShouldEqual(this.GetTestManufacturer());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_product_with_productPictures()
         {
             var product = this.GetTestProduct();
@@ -75,7 +75,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.ProductPictures.First().Picture.PropertiesShouldEqual(this.GetTestPicture());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_product_with_productTags()
         {
             var product = this.GetTestProduct();
@@ -89,7 +89,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.ProductTags.First().PropertiesShouldEqual(this.GetTestProductTag());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_product_with_tierPrices()
         {
             var product = this.GetTestProduct();
@@ -103,7 +103,7 @@ namespace RufaPoint.Data.Tests.Catalog
             fromDb.TierPrices.First().PropertiesShouldEqual(this.GetTestTierPrice());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_product_with_productWarehouseInventory()
         {
             var product = this.GetTestProduct();

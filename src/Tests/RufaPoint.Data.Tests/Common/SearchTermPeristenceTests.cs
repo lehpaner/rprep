@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Common
 {
-    [TestFixture]
+
     public class SearchTermPeristenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_searchTerm()
         {
             var searchTerm = this.GetTestSearchTerm();

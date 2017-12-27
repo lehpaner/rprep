@@ -1,13 +1,12 @@
 ﻿using System;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Forums
 {
-    [TestFixture]
     public class PrivateMessagePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_privatemessage()
         {
             var store = this.GetTestStore();

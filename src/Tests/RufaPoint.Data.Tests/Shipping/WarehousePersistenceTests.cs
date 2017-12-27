@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Shipping
 {
-    [TestFixture]
+
     public class WarehousePersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_warehouse()
         {
             var warehouse = this.GetTestWarehouse();

@@ -1,12 +1,11 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Customers
 {
-    [TestFixture]
     public class RewardPointsHistoryPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_rewardPointsHistory()
         {
             var rewardPointsHistory = this.GetTestRewardPointsHistory();
@@ -19,7 +18,7 @@ namespace RufaPoint.Data.Tests.Customers
             fromDb.Customer.PropertiesShouldEqual(rewardPointsHistory.Customer);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_rewardPointsHistory_with_order()
         {
             var rewardPointsHistory = this.GetTestRewardPointsHistory();

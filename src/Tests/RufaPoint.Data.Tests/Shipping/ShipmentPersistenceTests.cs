@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Shipping
 {
-    [TestFixture]
+
     public class ShipmentPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_shipment()
         {
             var shipment = this.GetTestShipment();
@@ -17,7 +17,7 @@ namespace RufaPoint.Data.Tests.Shipping
             fromDb.PropertiesShouldEqual(this.GetTestShipment());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_shipment_with_items()
         {
             var shipment = this.GetTestShipment();

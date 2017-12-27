@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Orders
 {
-    [TestFixture]
+
     public class RecurringPaymentPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_recurringPayment()
         {
             var rp = this.GetTestRecurringPayment();
@@ -20,7 +20,7 @@ namespace RufaPoint.Data.Tests.Orders
             fromDb.InitialOrder.PropertiesShouldEqual(this.GetTestOrder());
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_recurringPayment_with_history()
         {
             var rp = this.GetTestRecurringPayment();

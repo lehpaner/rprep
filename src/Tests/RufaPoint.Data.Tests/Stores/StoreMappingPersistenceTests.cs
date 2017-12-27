@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Stores
 {
-    [TestFixture]
+
     public class StoreMappingPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_storeMapping()
         {
             var storeMapping = this.GetTestStoreMapping();

@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Forums
 {
-    [TestFixture]
+
     public class ForumSubscriptionPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_forum_subscription_forum_subscribed()
         {
             var customer = this.GetTestCustomer();
@@ -48,7 +48,7 @@ namespace RufaPoint.Data.Tests.Forums
             forumSubscriptionFromDb.CustomerId.ShouldEqual(customerFromDb.Id);
         }
 
-        [Test]
+        [Fact]
         public void Can_save_and_load_forum_subscription_topic_subscribed()
         {
             var customer = this.GetTestCustomer();

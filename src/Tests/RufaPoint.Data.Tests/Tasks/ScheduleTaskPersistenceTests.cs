@@ -1,12 +1,12 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Data.Tests.Tasks
 {
-    [TestFixture]
+
     public class ScheduleTaskPersistenceTests : PersistenceTest
     {
-        [Test]
+        [Fact]
         public void Can_save_and_load_scheduleTask()
         {
             var scheduleTask = this.GetTestScheduleTask();
