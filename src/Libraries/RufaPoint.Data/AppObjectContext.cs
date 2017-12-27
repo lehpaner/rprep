@@ -222,10 +222,10 @@ namespace RufaPoint.Data
             {
                 return false;//Pekmez Configuration.ProxyCreationEnabled;
             }
-            //set
-            //{
+            set
+            {
             //    Configuration.ProxyCreationEnabled = value;
-            //}
+            }
         }
 
         /// <summary>
@@ -237,10 +237,10 @@ namespace RufaPoint.Data
             {
                 return false; //Pekmez Configuration.AutoDetectChangesEnabled;
             }
-            //set
-            //{
+            set
+            {
             //    Configuration.AutoDetectChangesEnabled = value;
-            //}
+            }
         }
 
         #endregion
