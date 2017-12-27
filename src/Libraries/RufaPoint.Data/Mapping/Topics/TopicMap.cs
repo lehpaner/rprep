@@ -1,4 +1,6 @@
-﻿using RufaPoint.Core.Domain.Topics;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RufaPoint.Core.Domain.Topics;
 
 namespace RufaPoint.Data.Mapping.Topics
 {
@@ -12,8 +14,12 @@ namespace RufaPoint.Data.Mapping.Topics
         /// </summary>
         public TopicMap()
         {
-            this.ToTable("Topic");
-            this.HasKey(t => t.Id);
+            //this.ToTable("Topic");
+            //this.HasKey(t => t.Id);
+        }
+        protected override void DoConfig(EntityTypeBuilder<Topic> builder)
+        {
+            builder.ToTable("Topic").HasKey(t => t.Id);
         }
     }
 }

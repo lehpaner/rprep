@@ -1,4 +1,5 @@
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace RufaPoint.Data.Mapping
 {
@@ -6,7 +7,7 @@ namespace RufaPoint.Data.Mapping
     /// Entity configuration
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class NopEntityTypeConfiguration<T> : EntityTypeConfiguration<T> where T : class
+    public abstract class NopEntityTypeConfiguration<T> : IEntityTypeConfiguration<T> where T : class
     {
         /// <summary>
         /// Ctor
@@ -23,6 +24,15 @@ namespace RufaPoint.Data.Mapping
         protected virtual void PostInitialize()
         {
             
+        }
+        protected virtual void DoConfig(EntityTypeBuilder<T> builder)
+        {
+            throw new System.NotImplementedException();
+        }
+        void IEntityTypeConfiguration<T>.Configure(EntityTypeBuilder<T> builder)
+        {
+            DoConfig(builder);
+           
         }
     }
 }

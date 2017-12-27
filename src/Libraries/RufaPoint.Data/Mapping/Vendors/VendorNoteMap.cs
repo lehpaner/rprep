@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Vendors;
 
 namespace RufaPoint.Data.Mapping.Vendors
@@ -12,11 +14,20 @@ namespace RufaPoint.Data.Mapping.Vendors
         /// </summary>
         public VendorNoteMap()
         {
-            this.ToTable("VendorNote");
-            this.HasKey(vn => vn.Id);
-            this.Property(vn => vn.Note).IsRequired();
+            //this.ToTable("VendorNote");
+            //this.HasKey(vn => vn.Id);
+            //this.Property(vn => vn.Note).IsRequired();
 
-            this.HasRequired(vn => vn.Vendor)
+            //this.HasRequired(vn => vn.Vendor)
+            //    .WithMany(v => v.VendorNotes)
+            //    .HasForeignKey(vn => vn.VendorId);
+        }
+        protected override void DoConfig(EntityTypeBuilder<VendorNote> builder)
+        {
+            builder.ToTable("VendorNote").HasKey(vn => vn.Id);
+            builder.Property(vn => vn.Note).IsRequired();
+
+            builder.HasOne(vn => vn.Vendor)
                 .WithMany(v => v.VendorNotes)
                 .HasForeignKey(vn => vn.VendorId);
         }

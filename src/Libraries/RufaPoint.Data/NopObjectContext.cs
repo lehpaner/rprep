@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
 using RufaPoint.Core;
 using RufaPoint.Data.Mapping;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Data.Common;
+using System.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace RufaPoint.Data
 {
@@ -17,17 +18,25 @@ namespace RufaPoint.Data
     public class NopObjectContext : DbContext, IDbContext
     {
         #region Ctor
-
+        string connectionString;
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="nameOrConnectionString">Connecting string</param>
         public NopObjectContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
         {
+            connectionString = nameOrConnectionString;
             //((IObjectContextAdapter) this).ObjectContext.ContextOptions.LazyLoadingEnabled = true;
         }
 
+        public NopObjectContext(DbContextOptions<NopObjectContext> options) : base(options)
+        {
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Demo;Trusted_Connection=True;");
+           // optionsBuilder.UseSqlServer(connectionString);
+        }
         #endregion
 
         #region Utilities
@@ -36,12 +45,8 @@ namespace RufaPoint.Data
         /// On model creating
         /// </summary>
         /// <param name="modelBuilder">Model builder</param>
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //dynamically load all configuration
-            //System.Type configType = typeof(LanguageMap);   //any of your configuration classes here
-            //var typesToRegister = Assembly.GetAssembly(configType).GetTypes()
-
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
             .Where(type => !string.IsNullOrEmpty(type.Namespace))
             .Where(type => type.BaseType != null && type.BaseType.IsGenericType &&
@@ -49,7 +54,7 @@ namespace RufaPoint.Data
             foreach (var type in typesToRegister)
             {
                 dynamic configurationInstance = Activator.CreateInstance(type);
-                modelBuilder.Configurations.Add(configurationInstance);
+                modelBuilder.ApplyConfiguration(configurationInstance);
             }
             //...or do it manually below. For example,
             //modelBuilder.Configurations.Add(new LanguageMap());
@@ -89,7 +94,9 @@ namespace RufaPoint.Data
         /// <returns>SQL to generate database</returns>
         public string CreateDatabaseScript()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
+            //this.GetService<IDatabaseProviderServices>()
+            //return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
+            return this.CreateDatabaseScript();
         }
 
         /// <summary>
@@ -97,7 +104,7 @@ namespace RufaPoint.Data
         /// </summary>
         /// <typeparam name="TEntity">Entity type</typeparam>
         /// <returns>DbSet</returns>
-        public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
+        public new DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
             return base.Set<TEntity>();
         }
@@ -131,13 +138,15 @@ namespace RufaPoint.Data
                 }
             }
 
-            var result = Database.SqlQuery<TEntity>(commandText, parameters).ToList();
-
+            //var result = Database.SqlQuery<TEntity>(commandText, parameters).ToList();
+            var result = this.SqlQuery<TEntity>(commandText, parameters).ToList();
+            /*Pekmez
             //performance hack applied as described here - https://www.nopcommerce.com/boards/t/25483/fix-very-important-speed-improvement.aspx
             var acd = Configuration.AutoDetectChangesEnabled;
+            
             try
             {
-                Configuration.AutoDetectChangesEnabled = false;
+                IConfiguration.AutoDetectChangesEnabled = false;
 
                 for (var i = 0; i < result.Count; i++)
                     result[i] = AttachEntityToContext(result[i]);
@@ -146,7 +155,7 @@ namespace RufaPoint.Data
             {
                 Configuration.AutoDetectChangesEnabled = acd;
             }
-
+            */
             return result;
         }
 
@@ -159,7 +168,8 @@ namespace RufaPoint.Data
         /// <returns>Result</returns>
         public IEnumerable<TElement> SqlQuery<TElement>(string sql, params object[] parameters)
         {
-            return Database.SqlQuery<TElement>(sql, parameters);
+            //return Database.SqlQuery<TElement>(sql, parameters);
+            return this.SqlQuery<TElement>(sql, parameters);
         }
     
         /// <summary>
@@ -173,25 +183,25 @@ namespace RufaPoint.Data
         public int ExecuteSqlCommand(string sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
         {
             int? previousTimeout = null;
+            /*
             if (timeout.HasValue)
             {
                 //store previous timeout
                 previousTimeout = ((IObjectContextAdapter) this).ObjectContext.CommandTimeout;
+   
                 ((IObjectContextAdapter) this).ObjectContext.CommandTimeout = timeout;
             }
+            */
+            var transactionalBehavior = doNotEnsureTransaction; // ? TransactionalBehavior.DoNotEnsureTransaction : TransactionalBehavior.EnsureTransaction;
 
-            var transactionalBehavior = doNotEnsureTransaction
-                ? TransactionalBehavior.DoNotEnsureTransaction
-                : TransactionalBehavior.EnsureTransaction;
-            var result = Database.ExecuteSqlCommand(transactionalBehavior, sql, parameters);
-
+            var result = Database.ExecuteSqlCommand(sql, parameters);
+            /*
             if (timeout.HasValue)
             {
                 //Set previous timeout back
                 ((IObjectContextAdapter) this).ObjectContext.CommandTimeout = previousTimeout;
             }
-
-            //return result
+            */
             return result;
         }
 
@@ -203,14 +213,14 @@ namespace RufaPoint.Data
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
-
-            ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
+            this.Detach(entity);
+           // ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
         }
 
         #endregion
 
         #region Properties
-
+        bool pce;
         /// <summary>
         /// Gets or sets a value indicating whether proxy creation setting is enabled (used in EF)
         /// </summary>
@@ -218,28 +228,30 @@ namespace RufaPoint.Data
         {
             get
             {
-                return Configuration.ProxyCreationEnabled;
+
+                return pce;// Configuration.ProxyCreationEnabled;
             }
             set
             {
-                Configuration.ProxyCreationEnabled = value;
+               pce=/* Configuration.ProxyCreationEnabled =*/ value;
             }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether auto detect changes setting is enabled (used in EF)
         /// </summary>
+        bool adce;
         public virtual bool AutoDetectChangesEnabled
         {
             get
             {
-                return Configuration.AutoDetectChangesEnabled;
+                return adce;// Configuration.AutoDetectChangesEnabled;
             }
             set
             {
-                Configuration.AutoDetectChangesEnabled = value;
+                adce=/*Configuration.AutoDetectChangesEnabled =*/ value;
             }
-        }
+        } 
 
         #endregion
     }

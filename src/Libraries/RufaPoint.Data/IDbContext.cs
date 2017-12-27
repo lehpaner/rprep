@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using RufaPoint.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace RufaPoint.Data
 {
@@ -14,7 +14,7 @@ namespace RufaPoint.Data
         /// </summary>
         /// <typeparam name="TEntity">Entity type</typeparam>
         /// <returns>DbSet</returns>
-        IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;
+        DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;
 
         /// <summary>
         /// Save changes

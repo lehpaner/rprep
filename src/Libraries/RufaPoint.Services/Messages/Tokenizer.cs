@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
 using System.Net;
 using System.Text.RegularExpressions;
 using RufaPoint.Core.Domain.Messages;
@@ -135,6 +134,7 @@ namespace RufaPoint.Services.Messages
                 var conditionIsMet = false;
                 if (!string.IsNullOrEmpty(statement.Condition))
                 {
+                    /*Pekmez
                     try
                     {
                         //replace tokens (string values are wrap in quotes)
@@ -142,6 +142,7 @@ namespace RufaPoint.Services.Messages
                         conditionIsMet = new[] { statement }.Where(conditionString).Any();
                     }
                     catch { }
+                    */
 
                 }
                 template = template.Replace(conditionIsMet ? statement.Condition : statement.FullStatement, string.Empty);

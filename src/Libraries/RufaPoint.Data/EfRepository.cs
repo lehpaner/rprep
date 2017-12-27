@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Linq;
 using RufaPoint.Core;
 using RufaPoint.Core.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace RufaPoint.Data
 {
@@ -16,7 +15,7 @@ namespace RufaPoint.Data
         #region Fields
 
         private readonly IDbContext _context;
-        private IDbSet<T> _entities;
+        private DbSet<T> _entities;
 
         #endregion
 
@@ -40,13 +39,16 @@ namespace RufaPoint.Data
         /// </summary>
         /// <param name="exc">Exception</param>
         /// <returns>Error</returns>
-        protected string GetFullErrorText(DbEntityValidationException exc)
+        protected string GetFullErrorText(/*DbEntityValidation*/Exception exc)
         {
+            /*
             var msg = string.Empty;
             foreach (var validationErrors in exc.EntityValidationErrors)
                 foreach (var error in validationErrors.ValidationErrors)
                     msg += $"Property: {error.PropertyName} Error: {error.ErrorMessage}" + Environment.NewLine;
             return msg;
+            */
+            return exc.Message;
         }
 
         /// <summary>
@@ -54,10 +56,10 @@ namespace RufaPoint.Data
         /// </summary>
         /// <param name="dbEx">Exception</param>
         /// <returns>Error</returns>
-        protected string GetFullErrorTextAndRollbackEntityChanges(DbEntityValidationException dbEx)
+        protected string GetFullErrorTextAndRollbackEntityChanges(/*DbEntityValidation*/Exception dbEx)
         {
             var fullErrorText = GetFullErrorText(dbEx);
-
+            /*
             foreach (var entry in dbEx.EntityValidationErrors.Select(error => error.Entry))
             {
                 if (entry == null)
@@ -66,7 +68,7 @@ namespace RufaPoint.Data
                 //rollback of entity changes
                 entry.State = EntityState.Unchanged;
             }
-
+            */
             _context.SaveChanges();
             return fullErrorText;
         }
@@ -84,7 +86,8 @@ namespace RufaPoint.Data
         {
             //see some suggested performance optimization (not tested)
             //http://stackoverflow.com/questions/11686225/dbset-find-method-ridiculously-slow-compared-to-singleordefault-on-id/11688189#comment34876113_11688189
-            return Entities.Find(id);
+           // return Entities.Find(id);
+            return _entities.Find(id);
         }
 
         /// <summary>
@@ -98,11 +101,11 @@ namespace RufaPoint.Data
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity));
 
-                Entities.Add(entity);
-
+                // Entities.Add(entity);
+                _entities.Add(entity);
                 _context.SaveChanges();
             }
-            catch (DbEntityValidationException dbEx)
+            catch (/*DbEntityValidation*/Exception dbEx)
             {
                 //ensure that the detailed error text is saved in the Log
                 throw new Exception(GetFullErrorTextAndRollbackEntityChanges(dbEx), dbEx);
@@ -121,11 +124,12 @@ namespace RufaPoint.Data
                     throw new ArgumentNullException(nameof(entities));
 
                 foreach (var entity in entities)
-                    Entities.Add(entity);
+                    _entities.Add(entity);
+                // Entities.Add(entity);
 
                 _context.SaveChanges();
             }
-            catch (DbEntityValidationException dbEx)
+            catch (/*DbEntityValidation*/Exception dbEx)
             {
                 //ensure that the detailed error text is saved in the Log
                 throw new Exception(GetFullErrorTextAndRollbackEntityChanges(dbEx), dbEx);
@@ -145,7 +149,7 @@ namespace RufaPoint.Data
 
                 _context.SaveChanges();
             }
-            catch (DbEntityValidationException dbEx)
+            catch (/*DbEntityValidation*/Exception dbEx)
             {
                 //ensure that the detailed error text is saved in the Log
                 throw new Exception(GetFullErrorTextAndRollbackEntityChanges(dbEx), dbEx);
@@ -165,7 +169,7 @@ namespace RufaPoint.Data
 
                 _context.SaveChanges();
             }
-            catch (DbEntityValidationException dbEx)
+            catch (/*DbEntityValidation*/Exception dbEx)
             {
                 //ensure that the detailed error text is saved in the Log
                 throw new Exception(GetFullErrorTextAndRollbackEntityChanges(dbEx), dbEx);
@@ -182,12 +186,12 @@ namespace RufaPoint.Data
             {
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity));
-
-                Entities.Remove(entity);
+                _entities.Remove(entity);
+                //Entities.Remove(entity);
 
                 _context.SaveChanges();
             }
-            catch (DbEntityValidationException dbEx)
+            catch (/*DbEntityValidation*/Exception dbEx)
             {
                 //ensure that the detailed error text is saved in the Log
                 throw new Exception(GetFullErrorTextAndRollbackEntityChanges(dbEx), dbEx);
@@ -206,11 +210,12 @@ namespace RufaPoint.Data
                     throw new ArgumentNullException(nameof(entities));
 
                 foreach (var entity in entities)
-                    Entities.Remove(entity);
+                    _entities.Remove(entity);
+                //Entities.Remove(entity);
 
                 _context.SaveChanges();
             }
-            catch (DbEntityValidationException dbEx)
+            catch (/*DbEntityValidation*/Exception dbEx)
             {
                 //ensure that the detailed error text is saved in the Log
                 throw new Exception(GetFullErrorTextAndRollbackEntityChanges(dbEx), dbEx);
@@ -228,7 +233,8 @@ namespace RufaPoint.Data
         {
             get
             {
-                return Entities;
+                return _entities;
+                //return Entities;
             }
         }
 
@@ -239,22 +245,23 @@ namespace RufaPoint.Data
         {
             get
             {
-                return Entities.AsNoTracking();
+                return _entities.AsNoTracking();
+               // return Entities.AsNoTracking();
             }
         }
 
         /// <summary>
         /// Entities
         /// </summary>
-        protected virtual IDbSet<T> Entities
-        {
-            get
-            {
-                if (_entities == null)
-                    _entities = _context.Set<T>();
-                return _entities;
-            }
-        }
+        //protected virtual IDbSet<T> Entities
+        //{
+        //    get
+        //    {
+        //        if (_entities == null)
+        //            _entities = _context.Set<T>();
+        //        return _entities;
+        //    }
+        //}
 
         #endregion
     }

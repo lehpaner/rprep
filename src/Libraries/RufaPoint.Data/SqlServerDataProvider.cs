@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 using RufaPoint.Core;
 using RufaPoint.Core.Data;
 using RufaPoint.Data.Initializers;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace RufaPoint.Data
 {
@@ -87,10 +87,10 @@ namespace RufaPoint.Data
         /// </summary>
         public virtual void InitConnectionFactory()
         {
-            var connectionFactory = new SqlConnectionFactory();
+            //Pekmez var connectionFactory = new SqlConnectionFactory();
             //TODO fix compilation warning (below)
-            #pragma warning disable 0618
-            Database.DefaultConnectionFactory = connectionFactory;
+#pragma warning disable 0618
+            //Pekmez Database.DefaultConnectionFactory = connectionFactory;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace RufaPoint.Data
             customCommands.AddRange(ParseCommands(CommonHelper.MapPath("~/App_Data/Install/SqlServer.StoredProcedures.sql"), false));
 
             var initializer = new CreateTablesIfNotExist<NopObjectContext>(tablesToValidate, customCommands.ToArray());
-            Database.SetInitializer(initializer);
+            //Pekmez Database.SetInitializer(initializer);
         }
 
         /// <summary>

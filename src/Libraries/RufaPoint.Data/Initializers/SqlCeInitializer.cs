@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Data.SqlServerCe;
+using Microsoft.EntityFrameworkCore;
 using System.IO;
 
 namespace RufaPoint.Data.Initializers
@@ -9,7 +8,7 @@ namespace RufaPoint.Data.Initializers
     /// SQL Server Compact initializer
     /// </summary>
     /// <typeparam name="T">The type of the context.</typeparam>
-    public abstract class SqlCeInitializer<T> : IDatabaseInitializer<T> where T : DbContext
+    public abstract class SqlCeInitializer<T> /*: IDatabaseInitializer<T> */where T : DbContext
     {
         /// <summary>
         /// Initialize database
@@ -26,6 +25,7 @@ namespace RufaPoint.Data.Initializers
         /// <returns></returns>
         protected static DbContext ReplaceSqlCeConnection(DbContext context)
         {
+            /*
             if (context.Database.Connection is SqlCeConnection)
             {
                 var builder = new SqlCeConnectionStringBuilder(context.Database.Connection.ConnectionString);
@@ -34,7 +34,7 @@ namespace RufaPoint.Data.Initializers
                     builder.DataSource = ReplaceDataDirectory(builder.DataSource);
                     return new DbContext(builder.ConnectionString);
                 }
-            }
+            }*/
             return context;
         }
 

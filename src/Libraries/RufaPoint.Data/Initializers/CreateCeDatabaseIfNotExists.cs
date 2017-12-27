@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 
 namespace RufaPoint.Data.Initializers
 {
@@ -20,13 +20,16 @@ namespace RufaPoint.Data.Initializers
         /// <param name="context">Context</param>
         public override void InitializeDatabase(TContext context)
         {
+            
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
+            /*
             var replacedContext = ReplaceSqlCeConnection(context);
 
             bool databaseExists;
+            
             using (new TransactionScope(TransactionScopeOption.Suppress))
             {
                 databaseExists = replacedContext.Database.Exists();
@@ -47,7 +50,7 @@ namespace RufaPoint.Data.Initializers
                 context.Database.Create();
                 Seed(context);
                 context.SaveChanges();
-            }
+            }*/
         }
 
         #endregion

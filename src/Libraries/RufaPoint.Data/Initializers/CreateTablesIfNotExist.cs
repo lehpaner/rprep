@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Transactions;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace RufaPoint.Data.Initializers
 {
@@ -11,7 +11,7 @@ namespace RufaPoint.Data.Initializers
     /// CreateTablesIfNotExist database initializer
     /// </summary>
     /// <typeparam name="TContext">Type of context</typeparam>
-    public class CreateTablesIfNotExist<TContext> : IDatabaseInitializer<TContext> where TContext : DbContext
+    public class CreateTablesIfNotExist<TContext>/* : IDatabaseInitializer<TContext> */where TContext : DbContext
     {
         private readonly string[] _tablesToValidate;
         private readonly string[] _customCommands;
@@ -33,10 +33,11 @@ namespace RufaPoint.Data.Initializers
         /// <param name="context">Context</param>
         public void InitializeDatabase(TContext context)
         {
-            bool dbExists;
+            /*bool dbExists;
+            
             using (new TransactionScope(TransactionScopeOption.Suppress))
             {
-                dbExists = context.Database.Exists();
+                dbExists =  context.Database.Exists();
             }
             if (dbExists)
             {
@@ -73,7 +74,7 @@ namespace RufaPoint.Data.Initializers
                     }
                 }
             }
-            else
+            else*/
             {
                 throw new ApplicationException("No database instance");
             }

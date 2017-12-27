@@ -1,9 +1,9 @@
 ﻿using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using RufaPoint.Core.Data;
 using RufaPoint.Data.Initializers;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data.SqlServerCe;
 
 namespace RufaPoint.Data
 {
@@ -17,10 +17,10 @@ namespace RufaPoint.Data
         /// </summary>
         public virtual void InitConnectionFactory()
         {
-            var connectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+            //Pekmez var connectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
             //TODO fix compilation warning (below)
-            #pragma warning disable 0618
-            Database.DefaultConnectionFactory = connectionFactory;
+#pragma warning disable 0618
+            //Pekmez Database.DefaultConnectionFactory = connectionFactory;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace RufaPoint.Data
         public virtual void SetDatabaseInitializer()
         {
             var initializer = new CreateCeDatabaseIfNotExists<NopObjectContext>();
-            Database.SetInitializer(initializer);
+            //PekmezDatabase.SetInitializer(initializer);
         }
 
         /// <summary>

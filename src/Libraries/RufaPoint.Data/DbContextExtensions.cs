@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using RufaPoint.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace RufaPoint.Data
 {
@@ -16,7 +14,7 @@ namespace RufaPoint.Data
     {
         #region Utilities
 
-        private static T InnerGetCopy<T>(IDbContext context, T currentCopy, Func<DbEntityEntry<T>, DbPropertyValues> func) where T : BaseEntity
+        private static T InnerGetCopy<T>(IDbContext context, T currentCopy, Func<EntityEntry<T>, PropertyValues> func) where T : BaseEntity
         {
             //Get the database context
             var dbContext = CastOrThrow(context);
@@ -47,7 +45,7 @@ namespace RufaPoint.Data
         /// <param name="currentCopy">The current copy.</param>
         /// <param name="dbContext">The db context.</param>
         /// <returns></returns>
-        private static DbEntityEntry<T> GetEntityOrReturnNull<T>(T currentCopy, DbContext dbContext) where T : BaseEntity
+        private static EntityEntry<T> GetEntityOrReturnNull<T>(T currentCopy, DbContext dbContext) where T : BaseEntity
         {
             return dbContext.ChangeTracker.Entries<T>().FirstOrDefault(e => e.Entity == currentCopy);
         }
@@ -106,11 +104,12 @@ namespace RufaPoint.Data
                 throw new ArgumentNullException(nameof(tableName));
 
             //drop the table
+            /*
             if (context.Database.SqlQuery<int>("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = {0}", tableName).Any<int>())
             {
                 var dbScript = "DROP TABLE [" + tableName + "]";
                 context.Database.ExecuteSqlCommand(dbScript);
-            }
+            }*/
             context.SaveChanges();
         }
 
@@ -127,14 +126,14 @@ namespace RufaPoint.Data
 
             //this code works only with Entity Framework.
             //If you want to support other database, then use the code above (commented)
-
+            /*
             var adapter = ((IObjectContextAdapter)context).ObjectContext;
             var storageModel = (StoreItemCollection)adapter.MetadataWorkspace.GetItemCollection(DataSpace.SSpace);
             var containers = storageModel.GetItems<EntityContainer>();
             var entitySetBase = containers.SelectMany(c => c.BaseEntitySets.Where(bes => bes.Name == typeof(T).Name)).First();
-
+            */
             // Here are variables that will hold table and schema name
-            var tableName = entitySetBase.MetadataProperties.First(p => p.Name == "Table").Value.ToString();
+            var tableName = "";// entitySetBase.MetadataProperties.First(p => p.Name == "Table").Value.ToString();
             //string schemaName = productEntitySetBase.MetadataProperties.First(p => p.Name == "Schema").Value.ToString();
             return tableName;
         }
@@ -161,6 +160,7 @@ namespace RufaPoint.Data
         /// <returns></returns>
         public static IDictionary<string, int> GetColumnsMaxLength(this IDbContext context, string entityTypeName, params string[] columnNames)
         {
+            /*
             var fildFacets = GetFildFacets(context, entityTypeName, "String", columnNames);
 
             var queryResult = fildFacets
@@ -169,6 +169,8 @@ namespace RufaPoint.Data
                 .ToDictionary(p => p.Name, p => Convert.ToInt32(p.MaxLength));
 
             return queryResult;
+            */
+            return new Dictionary<string, int>();
         }
 
 
@@ -179,6 +181,8 @@ namespace RufaPoint.Data
         /// <param name="entityTypeName">Entity type name</param>
         /// <param name="columnNames">Column names</param>
         /// <returns></returns>
+        /// 
+        /*
         public static IDictionary<string, decimal> GetDecimalMaxValue(this IDbContext context, string entityTypeName, params string[] columnNames)
         {
             var fildFacets = GetFildFacets(context, entityTypeName, "Decimal", columnNames);
@@ -214,7 +218,7 @@ namespace RufaPoint.Data
 
             return queryResult;
         }
-
+        */
         /// <summary>
         /// Get database name
         /// </summary>
@@ -222,11 +226,13 @@ namespace RufaPoint.Data
         /// <returns>Database name</returns>
         public static string DbName(this IDbContext context)
         {
+            /*
             var connection = ((IObjectContextAdapter)context).ObjectContext.Connection as EntityConnection;
             if (connection == null)
                 return string.Empty;
-
-            return connection.StoreConnection.Database;
+            
+            return connection.StoreConnection.Database;*/
+            return string.Empty;
         }
 
         #endregion

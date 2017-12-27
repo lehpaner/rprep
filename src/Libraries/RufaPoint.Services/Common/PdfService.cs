@@ -375,13 +375,13 @@ namespace RufaPoint.Services.Common
 
             //created on
             cellOrderNote = GetPdfCell("PDFInvoice.OrderNotes.CreatedOn", lang, font);
-            cellOrderNote.BackgroundColor = BaseColor.LIGHT_GRAY;
+            cellOrderNote.BackgroundColor = BaseColor.LightGray;
             cellOrderNote.HorizontalAlignment = Element.ALIGN_CENTER;
             notesTable.AddCell(cellOrderNote);
 
             //note
             cellOrderNote = GetPdfCell("PDFInvoice.OrderNotes.Note", lang, font);
-            cellOrderNote.BackgroundColor = BaseColor.LIGHT_GRAY;
+            cellOrderNote.BackgroundColor = BaseColor.LightGray;
             cellOrderNote.HorizontalAlignment = Element.ALIGN_CENTER;
             notesTable.AddCell(cellOrderNote);
 
@@ -735,7 +735,7 @@ namespace RufaPoint.Services.Common
 
             //product name
             var cellProductItem = GetPdfCell("PDFInvoice.ProductName", lang, font);
-            cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+            cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             productsTable.AddCell(cellProductItem);
 
@@ -743,26 +743,26 @@ namespace RufaPoint.Services.Common
             if (_catalogSettings.ShowSkuOnProductDetailsPage)
             {
                 cellProductItem = GetPdfCell("PDFInvoice.SKU", lang, font);
-                cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cellProductItem.BackgroundColor = BaseColor.LightGray;
                 cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
                 productsTable.AddCell(cellProductItem);
             }
 
             //price
             cellProductItem = GetPdfCell("PDFInvoice.ProductPrice", lang, font);
-            cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+            cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             productsTable.AddCell(cellProductItem);
 
             //qty
             cellProductItem = GetPdfCell("PDFInvoice.ProductQuantity", lang, font);
-            cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+            cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             productsTable.AddCell(cellProductItem);
 
             //total
             cellProductItem = GetPdfCell("PDFInvoice.ProductTotal", lang, font);
-            cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+            cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             productsTable.AddCell(cellProductItem);
 
@@ -1165,7 +1165,7 @@ namespace RufaPoint.Services.Common
 
             if (_pdfSettings.LetterPageSizeEnabled)
             {
-                pageSize = PageSize.LETTER;
+                pageSize = PageSize.Letter;
             }
 
             var doc = new Document(pageSize);
@@ -1175,7 +1175,7 @@ namespace RufaPoint.Services.Common
             //fonts
             var titleFont = GetFont();
             titleFont.SetStyle(Font.BOLD);
-            titleFont.Color = BaseColor.BLACK;
+            titleFont.Color = BaseColor.Black;
             var font = GetFont();
             var attributesFont = GetFont();
             attributesFont.SetStyle(Font.ITALIC);
@@ -1242,7 +1242,7 @@ namespace RufaPoint.Services.Common
 
             if (_pdfSettings.LetterPageSizeEnabled)
             {
-                pageSize = PageSize.LETTER;
+                pageSize = PageSize.Letter;
             }
 
             var doc = new Document(pageSize);
@@ -1252,7 +1252,7 @@ namespace RufaPoint.Services.Common
             //fonts
             var titleFont = GetFont();
             titleFont.SetStyle(Font.BOLD);
-            titleFont.Color = BaseColor.BLACK;
+            titleFont.Color = BaseColor.Black;
             var font = GetFont();
             var attributesFont = GetFont();
             attributesFont.SetStyle(Font.ITALIC);
@@ -1341,19 +1341,19 @@ namespace RufaPoint.Services.Common
 
                 //product name
                 var cell = GetPdfCell("PDFPackagingSlip.ProductName", lang, font);
-                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell.BackgroundColor = BaseColor.LightGray;
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 productsTable.AddCell(cell);
 
                 //SKU
                 cell = GetPdfCell("PDFPackagingSlip.SKU", lang, font);
-                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell.BackgroundColor = BaseColor.LightGray;
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 productsTable.AddCell(cell);
 
                 //qty
                 cell = GetPdfCell("PDFPackagingSlip.QTY", lang, font);
-                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell.BackgroundColor = BaseColor.LightGray;
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 productsTable.AddCell(cell);
 
@@ -1433,7 +1433,7 @@ namespace RufaPoint.Services.Common
 
             if (_pdfSettings.LetterPageSizeEnabled)
             {
-                pageSize = PageSize.LETTER;
+                pageSize = PageSize.Letter;
             }
 
             var doc = new Document(pageSize);
@@ -1443,7 +1443,7 @@ namespace RufaPoint.Services.Common
             //fonts
             var titleFont = GetFont();
             titleFont.SetStyle(Font.BOLD);
-            titleFont.Color = BaseColor.BLACK;
+            titleFont.Color = BaseColor.Black;
             var font = GetFont();
 
             var productNumber = 1;

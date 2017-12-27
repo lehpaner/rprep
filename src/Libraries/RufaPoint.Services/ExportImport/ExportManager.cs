@@ -169,7 +169,7 @@ namespace RufaPoint.Services.ExportImport
         protected virtual void SetCaptionStyle(ExcelStyle style)
         {
             style.Fill.PatternType = ExcelFillStyle.Solid;
-            style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+            //Pekmez style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
             style.Font.Bold = true;
         }
 

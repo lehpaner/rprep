@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using ImageResizer;
 using Microsoft.AspNetCore.Hosting;
 using RufaPoint.Core;
 using RufaPoint.Core.Data;
@@ -15,6 +13,8 @@ using RufaPoint.Services.Configuration;
 using RufaPoint.Services.Events;
 using RufaPoint.Services.Logging;
 using RufaPoint.Services.Seo;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace RufaPoint.Services.Media
 {
@@ -411,8 +411,12 @@ namespace RufaPoint.Services.Media
                 {
                     using (var b = new Bitmap(filePath))
                     {
+                        var newSize = CalculateDimensions(b.Size, targetSize);
+                        var resized = new Bitmap(b, newSize);
+
                         using (var destStream = new MemoryStream())
                         {
+                            /*Pekmez
                             var newSize = CalculateDimensions(b.Size, targetSize);
                             ImageBuilder.Current.Build(b, destStream, new ResizeSettings
                             {
@@ -420,7 +424,7 @@ namespace RufaPoint.Services.Media
                                 Height = newSize.Height,
                                 Scale = ScaleMode.Both,
                                 Quality = _mediaSettings.DefaultImageQuality
-                            });
+                            });*/
                             var destBinary = destStream.ToArray();
                             SaveThumb(thumbFilePath, thumbFileName, "", destBinary);
                         }
@@ -550,13 +554,14 @@ namespace RufaPoint.Services.Media
                                 using (var destStream = new MemoryStream())
                                 {
                                     var newSize = CalculateDimensions(b.Size, targetSize);
+                                    /*
                                     ImageBuilder.Current.Build(b, destStream, new ResizeSettings
                                     {
                                         Width = newSize.Width,
                                         Height = newSize.Height,
                                         Scale = ScaleMode.Both,
                                         Quality = _mediaSettings.DefaultImageQuality
-                                    });
+                                    });*/
                                     pictureBinaryResized = destStream.ToArray();
                                     b.Dispose();
                                 }
@@ -806,12 +811,13 @@ namespace RufaPoint.Services.Media
         {
             using (var destStream = new MemoryStream())
             {
+                /*
                 ImageBuilder.Current.Build(pictureBinary, destStream, new ResizeSettings
                 {
                     MaxWidth = _mediaSettings.MaximumImageSize,
                     MaxHeight = _mediaSettings.MaximumImageSize,
                     Quality = _mediaSettings.DefaultImageQuality
-                });
+                });*/
                 return destStream.ToArray();
             }
         }

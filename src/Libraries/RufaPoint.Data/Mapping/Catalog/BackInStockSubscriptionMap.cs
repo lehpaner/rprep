@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Catalog;
 
 namespace RufaPoint.Data.Mapping.Catalog
@@ -12,18 +14,22 @@ namespace RufaPoint.Data.Mapping.Catalog
         /// </summary>
         public BackInStockSubscriptionMap()
         {
-            this.ToTable("BackInStockSubscription");
-            this.HasKey(x => x.Id);
+            /*       this.ToTable("BackInStockSubscription");
+                   this.HasKey(x => x.Id);
 
-            this.HasRequired(x => x.Product)
-                .WithMany()
-                .HasForeignKey(x => x.ProductId)
-                .WillCascadeOnDelete(true);
-            
-            this.HasRequired(x => x.Customer)
-                .WithMany()
-                .HasForeignKey(x => x.CustomerId)
-                .WillCascadeOnDelete(true);
+                   this.HasRequired(x => x.Product)
+                       .WithMany()
+                       .HasForeignKey(x => x.ProductId)
+                       .WillCascadeOnDelete(true);
+
+                   this.HasRequired(x => x.Customer)
+                       .WithMany()
+                       .HasForeignKey(x => x.CustomerId)
+                       .WillCascadeOnDelete(true);*/
+        }
+        protected override void DoConfig(EntityTypeBuilder<BackInStockSubscription> builder)
+        {
+            builder.ToTable("BackInStockSubscription").HasKey(x => x.Id);
         }
     }
 }

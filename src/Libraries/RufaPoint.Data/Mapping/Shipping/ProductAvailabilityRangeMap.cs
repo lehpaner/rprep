@@ -1,4 +1,6 @@
-﻿using RufaPoint.Core.Domain.Shipping;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RufaPoint.Core.Domain.Shipping;
 
 namespace RufaPoint.Data.Mapping.Shipping
 {
@@ -12,9 +14,14 @@ namespace RufaPoint.Data.Mapping.Shipping
         /// </summary>
         public ProductAvailabilityRangeMap()
         {
-            this.ToTable("ProductAvailabilityRange");
-            this.HasKey(range => range.Id);
-            this.Property(range => range.Name).IsRequired().HasMaxLength(400);
+            //this.ToTable("ProductAvailabilityRange");
+            //this.HasKey(range => range.Id);
+            //this.Property(range => range.Name).IsRequired().HasMaxLength(400);
+        }
+        protected override void DoConfig(EntityTypeBuilder<ProductAvailabilityRange> builder)
+        {
+            builder.ToTable("ProductAvailabilityRange").HasKey(range => range.Id);
+            builder.Property(range => range.Name).IsRequired().HasMaxLength(400);
         }
     }
 }

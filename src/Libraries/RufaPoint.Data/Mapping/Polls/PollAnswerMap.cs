@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Polls;
 
 namespace RufaPoint.Data.Mapping.Polls
@@ -12,13 +14,22 @@ namespace RufaPoint.Data.Mapping.Polls
         /// </summary>
         public PollAnswerMap()
         {
-            this.ToTable("PollAnswer");
-            this.HasKey(pa => pa.Id);
-            this.Property(pa => pa.Name).IsRequired();
+            //this.ToTable("PollAnswer");
+            //this.HasKey(pa => pa.Id);
+            //this.Property(pa => pa.Name).IsRequired();
 
-            this.HasRequired(pa => pa.Poll)
+            //this.HasRequired(pa => pa.Poll)
+            //    .WithMany(p => p.PollAnswers)
+            //    .HasForeignKey(pa => pa.PollId).WillCascadeOnDelete(true);
+        }
+        protected override void DoConfig(EntityTypeBuilder<PollAnswer> builder)
+        {
+            builder.ToTable("PollAnswer").HasKey(pa => pa.Id);
+            builder.Property(pa => pa.Name).IsRequired();
+
+            builder.HasOne(pa => pa.Poll)
                 .WithMany(p => p.PollAnswers)
-                .HasForeignKey(pa => pa.PollId).WillCascadeOnDelete(true);
+                .HasForeignKey(pa => pa.PollId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

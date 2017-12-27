@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Catalog;
 
 namespace RufaPoint.Data.Mapping.Catalog
@@ -12,9 +14,14 @@ namespace RufaPoint.Data.Mapping.Catalog
         /// </summary>
         public ProductAttributeMap()
         {
-            this.ToTable("ProductAttribute");
+           /* this.ToTable("ProductAttribute");
             this.HasKey(pa => pa.Id);
-            this.Property(pa => pa.Name).IsRequired();
+            this.Property(pa => pa.Name).IsRequired();*/
+        }
+        protected override void DoConfig(EntityTypeBuilder<ProductAttribute> builder)
+        {
+            builder.ToTable("ProductAttribute").HasKey(pa => pa.Id);
+            builder.Property(pa => pa.Name).IsRequired();
         }
     }
 }

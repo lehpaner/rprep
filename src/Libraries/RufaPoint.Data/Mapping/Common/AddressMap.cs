@@ -1,4 +1,6 @@
-﻿using RufaPoint.Core.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RufaPoint.Core.Domain.Common;
 
 namespace RufaPoint.Data.Mapping.Common
 {
@@ -12,16 +14,28 @@ namespace RufaPoint.Data.Mapping.Common
         /// </summary>
         public AddressMap()
         {
-            this.ToTable("Address");
-            this.HasKey(a => a.Id);
+            //this.ToTable("Address");
+            //this.HasKey(a => a.Id);
 
-            this.HasOptional(a => a.Country)
-                .WithMany()
-                .HasForeignKey(a => a.CountryId).WillCascadeOnDelete(false);
+            //this.HasOptional(a => a.Country)
+            //    .WithMany()
+            //    .HasForeignKey(a => a.CountryId).WillCascadeOnDelete(false);
 
-            this.HasOptional(a => a.StateProvince)
-                .WithMany()
-                .HasForeignKey(a => a.StateProvinceId).WillCascadeOnDelete(false);
+            //this.HasOptional(a => a.StateProvince)
+            //    .WithMany()
+            //    .HasForeignKey(a => a.StateProvinceId).WillCascadeOnDelete(false);
+        }
+        protected override void DoConfig(EntityTypeBuilder<Address> builder)
+        {
+            builder.ToTable("Address").HasKey(a => a.Id);
+
+            //builder.HasOptional(a => a.Country)
+            //    .WithMany()
+            //    .HasForeignKey(a => a.CountryId).WillCascadeOnDelete(false);
+
+            //builder.HasOptional(a => a.StateProvince)
+            //    .WithMany()
+            //    .HasForeignKey(a => a.StateProvinceId).WillCascadeOnDelete(false);
         }
     }
 }

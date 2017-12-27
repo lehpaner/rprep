@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Core.Objects;
 using RufaPoint.Core;
 using RufaPoint.Core.Caching;
 
@@ -23,9 +22,10 @@ namespace RufaPoint.Data
         /// <returns></returns>
         public static Type GetUnproxiedEntityType(this BaseEntity entity)
         {
-            var type = entity is IEntityForCaching ? 
-               ((IEntityForCaching) entity).GetType().BaseType :
-               ObjectContext.GetObjectType(entity.GetType());
+            var type = entity is IEntityForCaching ?
+               ((IEntityForCaching)entity).GetType().BaseType :
+            //Pekmez      ObjectContext.GetObjectType(entity.GetType());
+            entity.GetType();
             if (type == null)
                 throw new Exception("Original entity type cannot be loaded");
 

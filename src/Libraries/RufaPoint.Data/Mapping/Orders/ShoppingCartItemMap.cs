@@ -1,4 +1,6 @@
-﻿using RufaPoint.Core.Domain.Orders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RufaPoint.Core.Domain.Orders;
 
 namespace RufaPoint.Data.Mapping.Orders
 {
@@ -12,18 +14,34 @@ namespace RufaPoint.Data.Mapping.Orders
         /// </summary>
         public ShoppingCartItemMap()
         {
-            this.ToTable("ShoppingCartItem");
-            this.HasKey(sci => sci.Id);
+            //this.ToTable("ShoppingCartItem");
+            //this.HasKey(sci => sci.Id);
 
-            this.Property(sci => sci.CustomerEnteredPrice).HasPrecision(18, 4);
+            //this.Property(sci => sci.CustomerEnteredPrice).HasPrecision(18, 4);
 
-            this.Ignore(sci => sci.ShoppingCartType);
+            //this.Ignore(sci => sci.ShoppingCartType);
 
-            this.HasRequired(sci => sci.Customer)
+            //this.HasRequired(sci => sci.Customer)
+            //    .WithMany(c => c.ShoppingCartItems)
+            //    .HasForeignKey(sci => sci.CustomerId);
+
+            //this.HasRequired(sci => sci.Product)
+            //    .WithMany()
+            //    .HasForeignKey(sci => sci.ProductId);
+        }
+        protected override void DoConfig(EntityTypeBuilder<ShoppingCartItem> builder)
+        {
+            builder.ToTable("ShoppingCartItem").HasKey(sci => sci.Id);
+
+            //builder.Property(sci => sci.CustomerEnteredPrice).HasPrecision(18, 4);
+
+            builder.Ignore(sci => sci.ShoppingCartType);
+
+            builder.HasOne(sci => sci.Customer)
                 .WithMany(c => c.ShoppingCartItems)
                 .HasForeignKey(sci => sci.CustomerId);
 
-            this.HasRequired(sci => sci.Product)
+            builder.HasOne(sci => sci.Product)
                 .WithMany()
                 .HasForeignKey(sci => sci.ProductId);
         }

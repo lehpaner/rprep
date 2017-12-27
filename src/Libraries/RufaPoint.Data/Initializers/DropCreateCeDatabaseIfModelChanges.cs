@@ -1,6 +1,7 @@
-﻿using System;
-using System.Data.Entity;
+﻿
+using System;
 using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 
 namespace RufaPoint.Data.Initializers
 {
@@ -21,6 +22,7 @@ namespace RufaPoint.Data.Initializers
         /// <param name="context">The context.</param>
         public override void InitializeDatabase(TContext context)
         {
+            /*
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
@@ -49,6 +51,7 @@ namespace RufaPoint.Data.Initializers
 
             Seed(context);
             context.SaveChanges();
+            */
         }
 
         #endregion

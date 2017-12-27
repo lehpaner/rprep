@@ -1,5 +1,4 @@
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -23,8 +22,8 @@ namespace RufaPoint.Data
             if (queryable == null)
                 throw new ArgumentNullException(nameof(queryable));
 
-            foreach (var includeProperty in includeProperties)
-                queryable = queryable.Include(includeProperty);
+           //Pekmez foreach (var includeProperty in includeProperties)
+               //Pekmez queryable = queryable.Include(includeProperty);
 
             return queryable;
         }

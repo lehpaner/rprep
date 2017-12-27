@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Common;
 
 namespace RufaPoint.Data.Mapping.Common
@@ -12,11 +14,20 @@ namespace RufaPoint.Data.Mapping.Common
         /// </summary>
         public AddressAttributeValueMap()
         {
-            this.ToTable("AddressAttributeValue");
-            this.HasKey(aav => aav.Id);
-            this.Property(aav => aav.Name).IsRequired().HasMaxLength(400);
+            //this.ToTable("AddressAttributeValue");
+            //this.HasKey(aav => aav.Id);
+            //this.Property(aav => aav.Name).IsRequired().HasMaxLength(400);
 
-            this.HasRequired(aav => aav.AddressAttribute)
+            //this.HasRequired(aav => aav.AddressAttribute)
+            //    .WithMany(aa => aa.AddressAttributeValues)
+            //    .HasForeignKey(aav => aav.AddressAttributeId);
+        }
+        protected override void DoConfig(EntityTypeBuilder<AddressAttributeValue> builder)
+        {
+            builder.ToTable("AddressAttributeValue").HasKey(aav => aav.Id);
+            builder.Property(aav => aav.Name).IsRequired().HasMaxLength(400);
+
+            builder.HasOne(aav => aav.AddressAttribute)
                 .WithMany(aa => aa.AddressAttributeValues)
                 .HasForeignKey(aav => aav.AddressAttributeId);
         }

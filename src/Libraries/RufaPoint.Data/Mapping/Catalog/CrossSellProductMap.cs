@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Catalog;
 
 namespace RufaPoint.Data.Mapping.Catalog
@@ -12,8 +14,12 @@ namespace RufaPoint.Data.Mapping.Catalog
         /// </summary>
         public CrossSellProductMap()
         {
-            this.ToTable("CrossSellProduct");
-            this.HasKey(c => c.Id);
+         /*   this.ToTable("CrossSellProduct");
+            this.HasKey(c => c.Id);*/
+        }
+        protected override void DoConfig(EntityTypeBuilder<CrossSellProduct> builder)
+        {
+            builder.ToTable("CrossSellProduct").HasKey(c => c.Id);
         }
     }
 }

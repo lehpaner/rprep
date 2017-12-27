@@ -1,4 +1,6 @@
-﻿using RufaPoint.Core.Domain.Forums;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RufaPoint.Core.Domain.Forums;
 
 namespace RufaPoint.Data.Mapping.Forums
 {
@@ -12,13 +14,22 @@ namespace RufaPoint.Data.Mapping.Forums
         /// </summary>
         public ForumSubscriptionMap()
         {
-            this.ToTable("Forums_Subscription");
-            this.HasKey(fs => fs.Id);
+            //this.ToTable("Forums_Subscription");
+            //this.HasKey(fs => fs.Id);
 
-            this.HasRequired(fs => fs.Customer)
+            //this.HasRequired(fs => fs.Customer)
+            //    .WithMany()
+            //    .HasForeignKey(fs => fs.CustomerId)
+            //    .WillCascadeOnDelete(false);
+        }
+        protected override void DoConfig(EntityTypeBuilder<ForumSubscription> builder)
+        {
+            builder.ToTable("Forums_Subscription").HasKey(fs => fs.Id);
+
+            builder.HasOne(fs => fs.Customer)
                 .WithMany()
                 .HasForeignKey(fs => fs.CustomerId)
-                .WillCascadeOnDelete(false);
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

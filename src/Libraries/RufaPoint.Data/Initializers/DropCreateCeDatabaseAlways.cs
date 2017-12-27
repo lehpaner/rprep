@@ -1,5 +1,5 @@
-﻿using System;
-using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace RufaPoint.Data.Initializers
 {
@@ -24,12 +24,12 @@ namespace RufaPoint.Data.Initializers
                 throw new ArgumentNullException(nameof(context));
             }
             var replacedContext = ReplaceSqlCeConnection(context);
-
+            /*
             if (replacedContext.Database.Exists())
             {
                 replacedContext.Database.Delete();
             }
-            context.Database.Create();
+            context.Database.Create();*/
             Seed(context);
             context.SaveChanges();
         }

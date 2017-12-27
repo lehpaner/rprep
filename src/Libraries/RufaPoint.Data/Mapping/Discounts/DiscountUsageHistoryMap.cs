@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RufaPoint.Core.Domain.Discounts;
 
 namespace RufaPoint.Data.Mapping.Discounts
@@ -12,14 +14,26 @@ namespace RufaPoint.Data.Mapping.Discounts
         /// </summary>
         public DiscountUsageHistoryMap()
         {
-            this.ToTable("DiscountUsageHistory");
-            this.HasKey(duh => duh.Id);
-            
-            this.HasRequired(duh => duh.Discount)
+            //this.ToTable("DiscountUsageHistory");
+            //this.HasKey(duh => duh.Id);
+
+            //this.HasRequired(duh => duh.Discount)
+            //    .WithMany()
+            //    .HasForeignKey(duh => duh.DiscountId);
+
+            //this.HasRequired(duh => duh.Order)
+            //    .WithMany(o => o.DiscountUsageHistory)
+            //    .HasForeignKey(duh => duh.OrderId);
+        }
+        protected override void DoConfig(EntityTypeBuilder<DiscountUsageHistory> builder)
+        {
+            builder.ToTable("DiscountUsageHistory").HasKey(duh => duh.Id);
+
+            builder.HasOne(duh => duh.Discount)
                 .WithMany()
                 .HasForeignKey(duh => duh.DiscountId);
 
-            this.HasRequired(duh => duh.Order)
+            builder.HasOne(duh => duh.Order)
                 .WithMany(o => o.DiscountUsageHistory)
                 .HasForeignKey(duh => duh.OrderId);
         }
