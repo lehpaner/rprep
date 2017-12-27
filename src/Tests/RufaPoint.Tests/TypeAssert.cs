@@ -1,5 +1,5 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Tests
 {
@@ -8,19 +8,19 @@ namespace RufaPoint.Tests
         public static void AreEqual(object expected, object instance)
         {
             if (expected == null)
-                Assert.IsNull(instance);
+                Assert.Null(instance);
             else
-                Assert.IsNotNull(instance, "Instance was null");
-            Assert.AreEqual(expected.GetType(), instance.GetType(), "Expected: " + expected.GetType() + ", was: " + instance.GetType() + " was not of type " + instance.GetType());
+                Assert.NotNull(instance/*, "Instance was null"*/);
+            Assert.Equal(expected.GetType(), instance.GetType()/*, "Expected: " + expected.GetType() + ", was: " + instance.GetType() + " was not of type " + instance.GetType()*/);
         }
 
         public static void AreEqual(Type expected, object instance)
         {
             if (expected == null)
-                Assert.IsNull(instance);
+                Assert.Null(instance);
             else
-                Assert.IsNotNull(instance, "Instance was null");
-            Assert.AreEqual(expected, instance.GetType(), "Expected: " + expected + ", was: " + instance.GetType() + " was not of type " + instance.GetType());
+                Assert.NotNull(instance/*, "Instance was null"*/);
+            Assert.Equal(expected, instance.GetType()/*, "Expected: " + expected + ", was: " + instance.GetType() + " was not of type " + instance.GetType()*/);
         }
 
         public static void Equals<T>(object instance)
@@ -30,7 +30,7 @@ namespace RufaPoint.Tests
 
         public static void Is<T>(object instance)
         {
-            Assert.IsTrue(instance is T, "Instance " + instance + " was not of type " + typeof(T));
+            Assert.True(instance is T, "Instance " + instance + " was not of type " + typeof(T));
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RufaPoint.Core;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Tests
 {
@@ -10,31 +10,31 @@ namespace RufaPoint.Tests
     {
         public static T ShouldNotNull<T>(this T obj)
         {
-            Assert.IsNull(obj);
+            Assert.Null(obj);
             return obj;
         }
 
         public static T ShouldNotNull<T>(this T obj, string message)
         {
-            Assert.IsNull(obj, message);
+            Assert.Null(obj/*, message*/);
             return obj;
         }
 
         public static T ShouldNotBeNull<T>(this T obj)
         {
-            Assert.IsNotNull(obj);
+            Assert.NotNull(obj);
             return obj;
         }
 
         public static T ShouldNotBeNull<T>(this T obj, string message)
         {
-            Assert.IsNotNull(obj, message);
+            Assert.NotNull(obj/*, message*/);
             return obj;
         }
 
         public static T ShouldEqual<T>(this T actual, object expected)
         {
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
             return actual;
         }
 
@@ -47,32 +47,32 @@ namespace RufaPoint.Tests
         ///<exception cref="AssertionException"></exception>
         public static void ShouldEqual(this object actual, object expected, string message)
         {
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
-
+        /*Pekmez
         public static Exception ShouldBeThrownBy(this Type exceptionType, TestDelegate testDelegate)
         {
             return Assert.Throws(exceptionType, testDelegate);
         }
-
+        */
         public static void ShouldBe<T>(this object actual)
         {
-            Assert.IsInstanceOf<T>(actual);
+            Assert.IsType<T>(actual);
         }
 
         public static void ShouldBeNull(this object actual)
         {
-            Assert.IsNull(actual);
+            Assert.Null(actual);
         }
 
         public static void ShouldBeTheSameAs(this object actual, object expected)
         {
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         public static void ShouldBeNotBeTheSameAs(this object actual, object expected)
         {
-            Assert.AreNotSame(expected, actual);
+            Assert.NotSame(expected, actual);
         }
 
         public static T CastTo<T>(this object source)
@@ -82,12 +82,12 @@ namespace RufaPoint.Tests
 
         public static void ShouldBeTrue(this bool source)
         {
-            Assert.IsTrue(source);
+            Assert.True(source);
         }
 
         public static void ShouldBeFalse(this bool source)
         {
-            Assert.IsFalse(source);
+            Assert.False(source);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace RufaPoint.Tests
             if (!string.Equals(actual, expected, StringComparison.InvariantCultureIgnoreCase))
             {
                 var message = $"Expected {expected} but was {actual}";
-                throw new AssertionException(message);
+                throw new Exception(message); //AssertionException(message);
             }
         }
 
@@ -142,7 +142,7 @@ namespace RufaPoint.Tests
                 if (filterByEntities.Any(f => f == propertyInfo.Name))
                     continue;
                
-                Assert.AreEqual(values[propertyInfo.Name], propertyInfo.GetValue(expected), $"The property \"{typeof(T).Name}.{propertyInfo.Name}\" of these objects is not equal");
+                Assert.Equal(values[propertyInfo.Name], propertyInfo.GetValue(expected)/*, $"The property \"{typeof(T).Name}.{propertyInfo.Name}\" of these objects is not equal"*/);
             }
 
             return actual;

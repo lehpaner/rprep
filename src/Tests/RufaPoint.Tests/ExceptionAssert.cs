@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Tests
 {
@@ -24,10 +24,10 @@ namespace RufaPoint.Tests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(exceptionType, ex.GetType());
+                Assert.Equal(exceptionType, ex.GetType());
                 return ex;
             }
-            Assert.Fail("Expected exception '" + exceptionType.FullName + "' wasn't thrown.");
+            Assert.True(false,"Expected exception '" + exceptionType.FullName + "' wasn't thrown.");
             return null;
         }
 
@@ -44,7 +44,7 @@ namespace RufaPoint.Tests
             }
             catch (TargetInvocationException ex)
             {
-                Assert.That(ex.InnerException, Is.TypeOf(typeof(T)));
+                Assert.IsType(ex.InnerException.GetType(), typeof(T));
             }
             catch (T ex)
             {
@@ -52,10 +52,10 @@ namespace RufaPoint.Tests
             }
             catch (Exception ex)
             {
-                Assert.Fail("Expected exception '" + typeof(T).FullName + "' but got exception '" + ex.GetType() + "'.");
+                Assert.True(false, "Expected exception '" + typeof(T).FullName + "' but got exception '" + ex.GetType() + "'.");
                 return null;
             }
-            Assert.Fail("Expected exception '" + typeof(T).FullName + "' wasn't thrown.");
+            Assert.True(false, "Expected exception '" + typeof(T).FullName + "' wasn't thrown.");
             return null;
         }
 
@@ -75,11 +75,10 @@ namespace RufaPoint.Tests
                 TypeAssert.AreEqual(typeof(T), ex.InnerException);
                 return;
             }
-            Assert.Fail("Expected exception '" + typeof(T).FullName + "' wasn't thrown.");
+            Assert.True(false, "Expected exception '" + typeof(T).FullName + "' wasn't thrown.");
         }
     }
 
-    [TestFixture]
     public class ExceptionAssertTests
     {
         //[Test, ExpectedException(typeof(MbUnit.Core.Exceptions.AssertionException))]
@@ -97,7 +96,7 @@ namespace RufaPoint.Tests
         //                throw new Exception("rebuke me");
         //            });
         //}
-        [Test]
+        [Fact]
         public void PassesOnExceptionTrown()
         {
             ExceptionAssert.Throws(
@@ -107,7 +106,7 @@ namespace RufaPoint.Tests
                     throw new ArgumentException("catch me");
                 });
         }
-        [Test]
+        [Fact]
         public void ReturnsTheException()
         {
             var ex = ExceptionAssert.Throws(
@@ -116,7 +115,7 @@ namespace RufaPoint.Tests
                 {
                     throw new ArgumentException("return me");
                 });
-            Assert.AreEqual("return me", ex.Message);
+            Assert.Equal("return me", ex.Message);
         }
 
         //[Test, ExpectedException(typeof(MbUnit.Core.Exceptions.AssertionException))]
@@ -133,7 +132,7 @@ namespace RufaPoint.Tests
         //                throw new Exception("rebuke me");
         //            });
         //}
-        [Test]
+        [Fact]
         public void PassesOnExceptionTrown_generic()
         {
             ExceptionAssert.Throws<ArgumentException>(
@@ -142,7 +141,7 @@ namespace RufaPoint.Tests
                     throw new ArgumentException("catch me");
                 });
         }
-        [Test]
+        [Fact]
         public void ReturnsTheException_generic()
         {
             var ex = ExceptionAssert.Throws<ArgumentException>(
@@ -150,7 +149,7 @@ namespace RufaPoint.Tests
                 {
                     throw new ArgumentException("return me");
                 });
-            Assert.AreEqual("return me", ex.Message);
+            Assert.Equal("return me", ex.Message);
         }
     }
 }

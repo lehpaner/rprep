@@ -1,27 +1,25 @@
 ﻿using System.Security.Principal;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Xunit;
 
 namespace RufaPoint.Tests
 {
     public abstract class TestsBase
     {
-        protected MockRepository mocks;
+        //Pekmez         protected MockRepository mocks;
 
-        [SetUp]
-        public virtual void SetUp()
+        public TestsBase()
         {
-            mocks = new MockRepository();
+            //Pekmez     mocks = new MockRepository();
         }
 
-        [TearDown]
         public virtual void TearDown()
         {
+            /*//Pekmez 
             if (mocks != null)
             {
                 mocks.ReplayAll();
                 mocks.VerifyAll();
-            }
+            }*/
         }
 
         protected static IPrincipal CreatePrincipal(string name, params string[] roles)
