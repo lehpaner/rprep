@@ -1,5 +1,5 @@
 {
-  "DataProvider": "sqlce",
-  "DataConnectionString": "Data Source=|DataDirectory|\\Nop.Db.sdf;Persist Security Info=False",
+  "DataProvider": "sqlserver",
+  "DataConnectionString": "Data Source=localhost;Initial Catalog=rufa;Integrated Security=True;Persist Security Info=False",
   "RawDataSettings": {}
 }
