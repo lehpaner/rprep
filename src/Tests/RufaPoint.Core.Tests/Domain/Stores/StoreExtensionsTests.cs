@@ -1,13 +1,12 @@
 ﻿using RufaPoint.Core.Domain.Stores;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Stores
 {
-    [TestFixture]
     public class StoreExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Can_parse_host_values()
         {
             var store = new Store
@@ -21,7 +20,7 @@ namespace RufaPoint.Core.Tests.Domain.Stores
             hosts[1].ShouldEqual("www.yourstore.com");
         }
 
-        [Test]
+        [Fact]
         public void Can_find_host_value()
         {
             var store = new Store

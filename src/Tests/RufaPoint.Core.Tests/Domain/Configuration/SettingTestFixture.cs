@@ -1,13 +1,12 @@
 ﻿using RufaPoint.Core.Domain.Configuration;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Configuration
 {
-    [TestFixture]
     public class SettingTestFixture
     {
-        [Test]
+        [Fact]
         public void Can_create_setting()
         {
             var setting = new Setting("Setting1", "Value1");

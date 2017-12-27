@@ -1,13 +1,12 @@
 ﻿using RufaPoint.Core.Domain.Orders;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Orders
 {
-    [TestFixture]
     public class GiftCardTests
     {
-        [Test]
+        [Fact]
         public void Can_validate_giftCard()
         {
 
@@ -60,7 +59,7 @@ namespace RufaPoint.Core.Tests.Domain.Orders
             gc.IsGiftCardValid().ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_giftCard_remainingAmount()
         {
             var gc = new GiftCard

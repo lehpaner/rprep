@@ -1,13 +1,13 @@
 ﻿using RufaPoint.Core.Domain.Blogs;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Blogs
 {
-    [TestFixture]
+
     public class BlogPostTests
     {
-        [Test]
+        [Fact]
         public void Can_parse_tags()
         {
             var blogPost = new BlogPost

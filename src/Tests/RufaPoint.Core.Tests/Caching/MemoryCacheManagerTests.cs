@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using RufaPoint.Core.Caching;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Caching
 {
-    [TestFixture]
+
     public class MemoryCacheManagerTests
     {
-        [Test]
+        [Fact]
         public void Can_set_and_get_object_from_cache()
         {
             var cacheManager = new MemoryCacheManager(new MemoryCache(new MemoryCacheOptions()));
@@ -17,7 +17,7 @@ namespace RufaPoint.Core.Tests.Caching
             cacheManager.Get<int>("some_key_1").ShouldEqual(3);
         }
 
-        [Test]
+        [Fact]
         public void Can_validate_whetherobject_is_cached()
         {
             var cacheManager = new MemoryCacheManager(new MemoryCache(new MemoryCacheOptions()));
@@ -28,7 +28,7 @@ namespace RufaPoint.Core.Tests.Caching
             cacheManager.IsSet("some_key_3").ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void Can_clear_cache()
         {
             var cacheManager = new MemoryCacheManager(new MemoryCache(new MemoryCacheOptions()));

@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using RufaPoint.Core.Infrastructure;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Infrastructure
 {
-    [TestFixture]
+
     public class TypeFinderTests
     {
-        [Test]
+        [Fact]
         public void TypeFinder_Benchmark_Findings()
         {
             var finder = new AppDomainTypeFinder();

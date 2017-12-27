@@ -1,13 +1,13 @@
 ﻿using System;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests
 {
-    [TestFixture]
+
     public class CommonHelperEmailValidatorTests
     {
-        [Test]
+        [Fact]
         public void When_the_text_is_a_valid_email_address_then_the_validator_should_pass()
         {
             var email = "testperson@gmail.com";
@@ -15,7 +15,7 @@ namespace RufaPoint.Core.Tests
             result.ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void When_the_text_is_a_valid_email_address_including_plus_validator_should_pass()
         {
             var email = "testperson+label@gmail.com";
@@ -23,7 +23,7 @@ namespace RufaPoint.Core.Tests
             result.ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void When_the_text_is_null_then_the_validator_should_fail()
         {
             string email = null;
@@ -31,7 +31,7 @@ namespace RufaPoint.Core.Tests
             result.ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void When_the_text_is_empty_then_the_validator_should_fail()
         {
             var email = string.Empty;
@@ -39,7 +39,7 @@ namespace RufaPoint.Core.Tests
             result.ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void When_the_text_is_not_a_valid_email_address_then_the_validator_should_fail()
         {
             var email = "testperso";
@@ -48,7 +48,7 @@ namespace RufaPoint.Core.Tests
         }
 
 
-        [Test]
+        [Fact]
         public void This_should_not_hang()
         {
             var email = "thisisaverylongstringcodeplex.com";
@@ -56,7 +56,7 @@ namespace RufaPoint.Core.Tests
             result.ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void When_email_address_contains_upper_cases_then_the_validator_should_pass()
         {
             var email = "testperson@gmail.com";

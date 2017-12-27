@@ -2,14 +2,13 @@
 using RufaPoint.Core.Domain.Catalog;
 using RufaPoint.Core.Domain.Orders;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Orders
 {
-    [TestFixture]
     public class RecurringPaymentTests
     {
-        [Test]
+        [Fact]
         public void Can_calculate_nextPaymentDate_with_days_as_cycle_period()
         {
             var rp = new RecurringPayment
@@ -35,7 +34,7 @@ namespace RufaPoint.Core.Tests.Domain.Orders
             rp.NextPaymentDate.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_nextPaymentDate_with_weeks_as_cycle_period()
         {
             var rp = new RecurringPayment
@@ -61,7 +60,7 @@ namespace RufaPoint.Core.Tests.Domain.Orders
             rp.NextPaymentDate.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_nextPaymentDate_with_months_as_cycle_period()
         {
             var rp = new RecurringPayment
@@ -87,7 +86,7 @@ namespace RufaPoint.Core.Tests.Domain.Orders
             rp.NextPaymentDate.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_nextPaymentDate_with_years_as_cycle_period()
         {
             var rp = new RecurringPayment
@@ -113,7 +112,7 @@ namespace RufaPoint.Core.Tests.Domain.Orders
             rp.NextPaymentDate.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Next_payment_date_is_null_when_recurring_payment_is_not_active()
         {
             var rp = new RecurringPayment
@@ -139,7 +138,7 @@ namespace RufaPoint.Core.Tests.Domain.Orders
             rp.NextPaymentDate.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_calculate_number_of_remaining_cycle()
         {
             var rp = new RecurringPayment

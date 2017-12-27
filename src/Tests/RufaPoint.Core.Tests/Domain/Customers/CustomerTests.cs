@@ -2,14 +2,14 @@
 using RufaPoint.Core.Domain.Common;
 using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Customers
 {
-    [TestFixture]
+
     public class CustomerTests
     {
-        [Test]
+        [Fact]
         public void Can_check_IsInCustomerRole()
         {
             var customer = new Customer
@@ -52,7 +52,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             customer.IsInCustomerRole("Test system name 3", false).ShouldBeFalse();
             customer.IsInCustomerRole("Test system name 3", true).ShouldBeFalse();
         }
-        [Test]
+        [Fact]
         public void Can_check_whether_customer_is_admin()
         {
             var customer = new Customer();
@@ -81,7 +81,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
                 });
             customer.IsAdmin().ShouldBeTrue();
         }
-        [Test]
+        [Fact]
         public void Can_check_whether_customer_is_forum_moderator()
         {
             var customer = new Customer();
@@ -110,7 +110,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
                 });
             customer.IsForumModerator().ShouldBeTrue();
         }
-        [Test]
+        [Fact]
         public void Can_check_whether_customer_is_guest()
         {
             var customer = new Customer();
@@ -142,7 +142,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
                 );
             customer.IsGuest().ShouldBeTrue();
         }
-        [Test]
+        [Fact]
         public void Can_check_whether_customer_is_registered()
         {
             var customer = new Customer();
@@ -172,7 +172,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             customer.IsRegistered().ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_add_address()
         {
             var customer = new Customer();
@@ -184,7 +184,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             customer.Addresses.First().Id.ShouldEqual(1);
         }
         
-        [Test]
+        [Fact]
         public void Can_remove_address_assigned_as_billing_address()
         {
             var customer = new Customer();
@@ -200,7 +200,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             customer.BillingAddress.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_add_rewardPointsHistoryEntry()
         {
             //TODO temporary disabled until we can inject (not resolve using DI) "RewardPointsSettings" into "LimitPerStore" method of CustomerExtensions
@@ -212,7 +212,7 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             //customer.RewardPointsHistory.First().Points.ShouldEqual(1);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_rewardPointsHistoryBalance()
         {
             //TODO temporary disabled until we can inject (not resolve using DI) "RewardPointsSettings" into "LimitPerStore" method of CustomerExtensions

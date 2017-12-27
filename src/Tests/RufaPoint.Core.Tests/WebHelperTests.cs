@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Net.Http.Headers;
 using RufaPoint.Core.Configuration;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests
 {
-    [TestFixture]
+
     public class WebHelperTests
     {
         private DefaultHttpContext _httpContext;
         private IWebHelper _webHelper;
 
-        [SetUp]
-        public void SetUp()
+
+        public WebHelperTests()
         {
             _httpContext = new DefaultHttpContext();
             var queryString = new QueryString("");
@@ -25,38 +25,38 @@ namespace RufaPoint.Core.Tests
             _webHelper = new WebHelper(new HostingConfig(), new FakeHttpContextAccessor(_httpContext));
         }
 
-        [Test]
+        [Fact]
         public void Can_get_storeHost_without_ssl()
         {
             _webHelper.GetStoreHost(false).ShouldEqual("http://www.Example.com/");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_storeHost_with_ssl()
         {
             _webHelper.GetStoreHost(true).ShouldEqual("https://www.Example.com/");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_storeLocation_without_ssl()
         {
             _webHelper.GetStoreLocation(false).ShouldEqual("http://www.Example.com/");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_storeLocation_with_ssl()
         {
             _webHelper.GetStoreLocation(true).ShouldEqual("https://www.Example.com/");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_storeLocation_in_virtual_directory()
         {
             _httpContext.Request.PathBase = "/nopCommercepath";
             _webHelper.GetStoreLocation(false).ShouldEqual("http://www.Example.com/nopCommercepath/");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_queryString()
         {
             _webHelper.QueryString<string>("Key1").ShouldEqual("Value1");
@@ -64,7 +64,7 @@ namespace RufaPoint.Core.Tests
             _webHelper.QueryString<string>("Key3").ShouldEqual(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_remove_queryString()
         {
             //first param (?)
@@ -78,7 +78,7 @@ namespace RufaPoint.Core.Tests
                 .ShouldEqual("http://www.example.com/?param1=value1&param2=value2");
         }
 
-        [Test]
+        [Fact]
         public void Can_modify_queryString()
         {
             //first param (?)
@@ -92,14 +92,14 @@ namespace RufaPoint.Core.Tests
                 .ShouldEqual("http://www.example.com/?param1=value1&param2=value2&param3=value3");
         }
 
-        [Test]
+        [Fact]
         public void Can_modify_queryString_with_anchor()
         {
             _webHelper.ModifyQueryString("http://www.example.com/?param1=value1&param2=value2", "param1=value3", "Test")
                 .ShouldEqual("http://www.example.com/?param1=value3&param2=value2#Test");
         }
 
-        [Test]
+        [Fact]
         public void Can_modify_queryString_new_anchor_should_remove_previous_one()
         {
             _webHelper.ModifyQueryString("http://www.example.com/?param1=value1&param2=value2#test1", "param1=value3", "Test2")

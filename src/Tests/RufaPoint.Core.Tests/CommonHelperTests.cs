@@ -1,12 +1,11 @@
 ﻿using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests
 {
-    [TestFixture]
     public class CommonHelperTests
     {
-        [Test]
+        [Fact]
         public void Can_get_typed_value()
         {
             CommonHelper.To<int>("1000").ShouldBe<int>();

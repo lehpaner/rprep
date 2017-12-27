@@ -2,14 +2,14 @@
 using RufaPoint.Core.Domain.Common;
 using RufaPoint.Core.Domain.Directory;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Common
 {
-    [TestFixture]
+
     public class AddressTests
     {
-        [Test]
+        [Fact]
         public void Can_clone_address()
         {
             var address = new Address

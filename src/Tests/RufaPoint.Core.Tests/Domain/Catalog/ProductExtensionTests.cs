@@ -1,14 +1,13 @@
 ﻿using System;
 using RufaPoint.Core.Domain.Catalog;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Catalog
 {
-    [TestFixture]
     public class ProductExtensionTests
     {
-        [Test]
+        [Fact]
         public void Can_parse_required_product_ids()
         {
             var product = new Product
@@ -23,7 +22,7 @@ namespace RufaPoint.Core.Tests.Domain.Catalog
             ids[2].ShouldEqual(7);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_available_when_startdate_is_not_set()
         {
             var product = new Product
@@ -34,7 +33,7 @@ namespace RufaPoint.Core.Tests.Domain.Catalog
             product.IsAvailable(new DateTime(2010, 01, 03)).ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_available_when_startdate_is_less_than_somedate()
         {
             var product = new Product
@@ -45,7 +44,7 @@ namespace RufaPoint.Core.Tests.Domain.Catalog
             product.IsAvailable(new DateTime(2010, 01, 03)).ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_be_available_when_startdate_is_greater_than_somedate()
         {
             var product = new Product
@@ -56,7 +55,7 @@ namespace RufaPoint.Core.Tests.Domain.Catalog
             product.IsAvailable(new DateTime(2010, 01, 01)).ShouldEqual(false);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_available_when_enddate_is_not_set()
         {
             var product = new Product
@@ -67,7 +66,7 @@ namespace RufaPoint.Core.Tests.Domain.Catalog
             product.IsAvailable(new DateTime(2010, 01, 03)).ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_available_when_enddate_is_greater_than_somedate()
         {
             var product = new Product
@@ -78,7 +77,7 @@ namespace RufaPoint.Core.Tests.Domain.Catalog
             product.IsAvailable(new DateTime(2010, 01, 01)).ShouldEqual(true);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_be_available_when_enddate_is_less_than_somedate()
         {
             var product = new Product

@@ -1,13 +1,13 @@
 ﻿using RufaPoint.Core.Extensions;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests
 {
-    [TestFixture]
+
     public class ExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Can_check_IsNullOrDefault()
         {
             int? x1 = null;

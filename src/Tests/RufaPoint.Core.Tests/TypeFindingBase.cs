@@ -1,7 +1,7 @@
 ﻿using System;
 using RufaPoint.Core.Infrastructure;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests
 {
@@ -11,10 +11,9 @@ namespace RufaPoint.Core.Tests
 
         protected abstract Type[] GetTypes();
 
-        [SetUp]
-        public override void SetUp()
+
+        public TypeFindingBase():base()
         {
-            base.SetUp();
             typeFinder = new Fakes.FakeTypeFinder(typeof(TypeFindingBase).Assembly, GetTypes());
         }
     }

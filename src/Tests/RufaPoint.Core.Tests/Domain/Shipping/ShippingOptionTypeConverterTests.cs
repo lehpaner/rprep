@@ -1,28 +1,27 @@
 ﻿using System.ComponentModel;
 using RufaPoint.Core.Domain.Shipping;
 using RufaPoint.Tests;
-using NUnit.Framework;
+using Xunit;
 
 namespace RufaPoint.Core.Tests.Domain.Shipping
 {
-    [TestFixture]
+
     public class ShippingOptionTypeConverterTests
     {
-        [SetUp]
-        public void SetUp()
+        public ShippingOptionTypeConverterTests()
         {
             TypeDescriptor.AddAttributes(typeof(ShippingOption),
                 new TypeConverterAttribute(typeof(ShippingOptionTypeConverter)));
         }
 
-        [Test]
+        [Fact]
         public void Can_get_type_converter()
         {
             var converter = TypeDescriptor.GetConverter(typeof(ShippingOption));
             converter.GetType().ShouldEqual(typeof(ShippingOptionTypeConverter));
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_shippingOption_to_string_and_back()
         {
             var shippingOptionInput = new ShippingOption
