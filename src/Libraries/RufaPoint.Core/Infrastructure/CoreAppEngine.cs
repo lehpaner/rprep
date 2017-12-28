@@ -150,12 +150,12 @@ namespace RufaPoint.Core.Infrastructure
             //set base application path
             var provider = services.BuildServiceProvider();
             var hostingEnvironment = provider.GetRequiredService<IHostingEnvironment>();
-            var nopConfig = provider.GetRequiredService<CoreAppConfig>();
+            var appConfig = provider.GetRequiredService<CoreAppConfig>();
             CommonHelper.BaseDirectory = hostingEnvironment.ContentRootPath;
 
             //initialize plugins
             var mvcCoreBuilder = services.AddMvcCore();
-            PluginManager.Initialize(mvcCoreBuilder.PartManager, nopConfig);
+            PluginManager.Initialize(mvcCoreBuilder.PartManager, appConfig);
         }
 
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)

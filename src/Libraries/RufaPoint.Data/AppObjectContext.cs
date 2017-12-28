@@ -27,7 +27,6 @@ namespace RufaPoint.Data
         public AppObjectContext(string nameOrConnectionString)
         {
             connectionString = nameOrConnectionString;
-            //((IObjectContextAdapter) this).ObjectContext.ContextOptions.LazyLoadingEnabled = true;
         }
 
         public AppObjectContext(DbContextOptions<AppObjectContext> options) : base(options)

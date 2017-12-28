@@ -1,5 +1,5 @@
 {
-  "DataProvider": "sqlce",
-  "DataConnectionString": "Data Source=|DataDirectory|\\Nop.Db.sdf;Persist Security Info=False",
+  "DataProvider": "sqlserver",
+  "DataConnectionString": "Data Source=PRT_FRIDA;Initial Catalog==nop;Integrated Security=True",
   "RawDataSettings": {}
 }
