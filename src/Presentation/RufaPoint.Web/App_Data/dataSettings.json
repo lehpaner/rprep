@@ -1,9 +1,5 @@
 {
   "DataProvider": "sqlserver",
-<<<<<<< HEAD
   "DataConnectionString": "Data Source=localhost;Initial Catalog=rufa;Integrated Security=True;Persist Security Info=False",
-=======
-  "DataConnectionString": "Data Source=PRT_FRIDA;Initial Catalog==nop;Integrated Security=True",
->>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
   "RawDataSettings": {}
 }
