@@ -1,18 +1,11 @@
-<<<<<<< HEAD
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RufaPoint.Core.Configuration
 {
     /// <summary>
-    /// Represents startup configuration parameters
-=======
-namespace RufaPoint.Core.Configuration
-{
-    /// <summary>
     /// Represents startup RufaPoint configuration parameters
->>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
     /// </summary>
     public partial class CoreAppConfig
     {
@@ -101,8 +94,5 @@ namespace RufaPoint.Core.Configuration
         /// </summary>
         public bool UseUnsafeLoadAssembly { get; set; }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
+

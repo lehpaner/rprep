@@ -1,11 +1,7 @@
 ﻿using System;
-<<<<<<< HEAD
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
-=======
-using System.Runtime.Serialization;
->>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
 
 namespace RufaPoint.Core
 {
@@ -39,11 +35,9 @@ namespace RufaPoint.Core
         public CoreException(string messageFormat, params object[] args)
 			: base(string.Format(messageFormat, args))
 		{
-<<<<<<< HEAD
+
         }
-=======
-		}
->>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
+
 
         /// <summary>
         /// Initializes a new instance of the Exception class with serialized data.
