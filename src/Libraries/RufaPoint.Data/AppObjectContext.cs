@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using Microsoft.EntityFrameworkCore;
 using RufaPoint.Core;
 using System;
@@ -7,6 +8,20 @@ using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+=======
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using RufaPoint.Core;
+using RufaPoint.Data.Mapping;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Data.Common;
+using System.Data;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
 
 namespace RufaPoint.Data
 {
@@ -16,16 +31,36 @@ namespace RufaPoint.Data
     public class AppObjectContext : DbContext, IDbContext
     {
         #region Ctor
+<<<<<<< HEAD
         string connectionString { get; set; }
+=======
+        string connectionString;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="nameOrConnectionString">Connecting string</param>
+<<<<<<< HEAD
         public AppObjectContext(string nameOrConnectionString)// : base(nameOrConnectionString)
+=======
+        public AppObjectContext(string nameOrConnectionString)
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         {
             connectionString = nameOrConnectionString;
         }
 
+<<<<<<< HEAD
+=======
+        public AppObjectContext(DbContextOptions<AppObjectContext> options) : base(options)
+        {
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=RufaPoint;Trusted_Connection=True;")
+                .ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning));
+            // optionsBuilder.UseSqlServer(connectionString);
+        }
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         #endregion
 
         #region Utilities
@@ -36,6 +71,7 @@ namespace RufaPoint.Data
         /// <param name="modelBuilder">Model builder</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+<<<<<<< HEAD
             //dynamically load all configuration
             //System.Type configType = typeof(LanguageMap);   //any of your configuration classes here
             //var typesToRegister = Assembly.GetAssembly(configType).GetTypes()
@@ -48,6 +84,15 @@ namespace RufaPoint.Data
             {
                 dynamic configurationInstance = Activator.CreateInstance(type);
                 //Pekmez modelBuilder.Configurations.Add(configurationInstance);
+=======
+            var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(type => !string.IsNullOrEmpty(type.Namespace))
+            .Where(type => type.BaseType != null && type.BaseType.IsGenericType &&
+                type.BaseType.GetGenericTypeDefinition() == typeof(NopEntityTypeConfiguration<>));
+            foreach (var type in typesToRegister)
+            {
+                dynamic configurationInstance = Activator.CreateInstance(type);
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
                 modelBuilder.ApplyConfiguration(configurationInstance);
             }
             //...or do it manually below. For example,
@@ -88,8 +133,14 @@ namespace RufaPoint.Data
         /// <returns>SQL to generate database</returns>
         public string CreateDatabaseScript()
         {
+<<<<<<< HEAD
 
             return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
+=======
+            //this.GetService<IDatabaseProviderServices>()
+            //return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
+            return this.CreateDatabaseScript();
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         }
 
         /// <summary>
@@ -97,11 +148,19 @@ namespace RufaPoint.Data
         /// </summary>
         /// <typeparam name="TEntity">Entity type</typeparam>
         /// <returns>DbSet</returns>
+<<<<<<< HEAD
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
             return base.Set<TEntity>();
         }
 
+=======
+        public new DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
+        {
+            return base.Set<TEntity>();
+        }
+        
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         /// <summary>
         /// Execute stores procedure and load a list of entities at the end
         /// </summary>
@@ -131,6 +190,7 @@ namespace RufaPoint.Data
                 }
             }
 
+<<<<<<< HEAD
             var result = Database.SqlQuery<TEntity>(commandText, parameters).ToList<TEntity>();
 
             //performance hack applied as described here - https://www.nopcommerce.com/boards/t/25483/fix-very-important-speed-improvement.aspx
@@ -138,6 +198,17 @@ namespace RufaPoint.Data
             try
             {
                 Configuration.AutoDetectChangesEnabled = false;
+=======
+            //var result = Database.SqlQuery<TEntity>(commandText, parameters).ToList();
+            var result = this.SqlQuery<TEntity>(commandText, parameters).ToList();
+            /*Pekmez
+            //performance hack applied as described here - https://www.nopcommerce.com/boards/t/25483/fix-very-important-speed-improvement.aspx
+            var acd = Configuration.AutoDetectChangesEnabled;
+            
+            try
+            {
+                IConfiguration.AutoDetectChangesEnabled = false;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
 
                 for (var i = 0; i < result.Count; i++)
                     result[i] = AttachEntityToContext(result[i]);
@@ -146,7 +217,11 @@ namespace RufaPoint.Data
             {
                 Configuration.AutoDetectChangesEnabled = acd;
             }
+<<<<<<< HEAD
 
+=======
+            */
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
             return result;
         }
 
@@ -159,9 +234,16 @@ namespace RufaPoint.Data
         /// <returns>Result</returns>
         public IEnumerable<TElement> SqlQuery<TElement>(string sql, params object[] parameters)
         {
+<<<<<<< HEAD
             return Database.SqlQuery<TElement>(sql, parameters);
         }
 
+=======
+            //return Database.SqlQuery<TElement>(sql, parameters);
+            return this.SqlQuery<TElement>(sql, parameters);
+        }
+    
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         /// <summary>
         /// Executes the given DDL/DML command against the database.
         /// </summary>
@@ -173,6 +255,7 @@ namespace RufaPoint.Data
         public int ExecuteSqlCommand(string sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
         {
             int? previousTimeout = null;
+<<<<<<< HEAD
            
             if (timeout.HasValue)
             {
@@ -194,6 +277,27 @@ namespace RufaPoint.Data
                     //    ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = previousTimeout;
                 }
             
+=======
+            /*
+            if (timeout.HasValue)
+            {
+                //store previous timeout
+                previousTimeout = ((IObjectContextAdapter) this).ObjectContext.CommandTimeout;
+   
+                ((IObjectContextAdapter) this).ObjectContext.CommandTimeout = timeout;
+            }
+            */
+            var transactionalBehavior = doNotEnsureTransaction; // ? TransactionalBehavior.DoNotEnsureTransaction : TransactionalBehavior.EnsureTransaction;
+
+            var result = Database.ExecuteSqlCommand(sql, parameters);
+            /*
+            if (timeout.HasValue)
+            {
+                //Set previous timeout back
+                ((IObjectContextAdapter) this).ObjectContext.CommandTimeout = previousTimeout;
+            }
+            */
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
             return result;
         }
 
@@ -205,14 +309,23 @@ namespace RufaPoint.Data
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
+<<<<<<< HEAD
 
           //Pekmez  ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
+=======
+            this.Detach(entity);
+           // ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         }
 
         #endregion
 
         #region Properties
+<<<<<<< HEAD
 
+=======
+        bool pce;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         /// <summary>
         /// Gets or sets a value indicating whether proxy creation setting is enabled (used in EF)
         /// </summary>
@@ -220,21 +333,35 @@ namespace RufaPoint.Data
         {
             get
             {
+<<<<<<< HEAD
                 return false;//Pekmez Configuration.ProxyCreationEnabled;
             }
             set
             {
             //    Configuration.ProxyCreationEnabled = value;
+=======
+
+                return pce;// Configuration.ProxyCreationEnabled;
+            }
+            set
+            {
+               pce=/* Configuration.ProxyCreationEnabled =*/ value;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
             }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether auto detect changes setting is enabled (used in EF)
         /// </summary>
+<<<<<<< HEAD
+=======
+        bool adce;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         public virtual bool AutoDetectChangesEnabled
         {
             get
             {
+<<<<<<< HEAD
                 return false; //Pekmez Configuration.AutoDetectChangesEnabled;
             }
             set
@@ -246,3 +373,16 @@ namespace RufaPoint.Data
         #endregion
     }
 }
+=======
+                return adce;// Configuration.AutoDetectChangesEnabled;
+            }
+            set
+            {
+                adce=/*Configuration.AutoDetectChangesEnabled =*/ value;
+            }
+        } 
+
+        #endregion
+    }
+}
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -16,13 +17,36 @@ using AutoMapper;
 using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using System.Reflection;
+=======
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using RufaPoint.Core.Configuration;
+using RufaPoint.Core.Infrastructure.DependencyManagement;
+using RufaPoint.Core.Infrastructure.Mapper;
+using RufaPoint.Core.Plugins;
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
 
 namespace RufaPoint.Core.Infrastructure
 {
     /// <summary>
+<<<<<<< HEAD
     /// Represents core app engine
     /// </summary>
     class CoreAppEngine : IEngine
+=======
+    /// Represents RufaPoint engine
+    /// </summary>
+    public class CoreAppEngine : IEngine
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
     {
         #region Properties
 
@@ -70,7 +94,11 @@ namespace RufaPoint.Core.Infrastructure
         /// <summary>
         /// Register dependencies using Autofac
         /// </summary>
+<<<<<<< HEAD
         /// <param name="nopConfig">Startup Nop configuration parameters</param>
+=======
+        /// <param name="nopConfig">Startup RufaPoint configuration parameters</param>
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         /// <param name="services">Collection of service descriptors</param>
         /// <param name="typeFinder">Type finder</param>
         protected virtual IServiceProvider RegisterDependencies(CoreAppConfig nopConfig, IServiceCollection services, ITypeFinder typeFinder)
@@ -117,7 +145,11 @@ namespace RufaPoint.Core.Infrastructure
             //create and sort instances of mapper configurations
             var instances = mapperConfigurations
                 .Where(mapperConfiguration => PluginManager.FindPlugin(mapperConfiguration)?.Installed ?? true) //ignore not installed plugins
+<<<<<<< HEAD
                 .Select(mapperConfiguration => (IMapperProfile)Activator.CreateInstance(mapperConfiguration))
+=======
+                .Select(mapperConfiguration => (IMapperProfile) Activator.CreateInstance(mapperConfiguration))
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
                 .OrderBy(mapperConfiguration => mapperConfiguration.Order);
 
             //create AutoMapper configuration
@@ -151,12 +183,20 @@ namespace RufaPoint.Core.Infrastructure
             //set base application path
             var provider = services.BuildServiceProvider();
             var hostingEnvironment = provider.GetRequiredService<IHostingEnvironment>();
+<<<<<<< HEAD
             var nopConfig = provider.GetRequiredService<CoreAppConfig>();
+=======
+            var appConfig = provider.GetRequiredService<CoreAppConfig>();
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
             CommonHelper.BaseDirectory = hostingEnvironment.ContentRootPath;
 
             //initialize plugins
             var mvcCoreBuilder = services.AddMvcCore();
+<<<<<<< HEAD
             PluginManager.Initialize(mvcCoreBuilder.PartManager, nopConfig);
+=======
+            PluginManager.Initialize(mvcCoreBuilder.PartManager, appConfig);
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         }
 
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -296,6 +336,10 @@ namespace RufaPoint.Core.Infrastructure
             }
             throw new CoreException("No constructor was found that had all the dependencies satisfied.", innerException);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2e885519c792b00b6562bc7d426d77be57e39220
         #endregion
 
         #region Properties
