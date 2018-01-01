@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RufaPoint.Core.Domain.Catalog;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RufaPoint.Core.Domain.Discounts
 {
@@ -11,6 +12,7 @@ namespace RufaPoint.Core.Domain.Discounts
     {
         private ICollection<DiscountRequirement> _discountRequirements;
         private ICollection<Category> _appliedToCategories;
+
         private ICollection<Manufacturer> _appliedToManufacturers;
         private ICollection<Product> _appliedToProducts;
 
@@ -142,6 +144,7 @@ namespace RufaPoint.Core.Domain.Discounts
         /// <summary>
         /// Gets or sets the categories
         /// </summary>
+        [NotMapped] //Pekmez
         public virtual ICollection<Manufacturer> AppliedToManufacturers
         {
             get { return _appliedToManufacturers ?? (_appliedToManufacturers = new List<Manufacturer>()); }
@@ -151,6 +154,7 @@ namespace RufaPoint.Core.Domain.Discounts
         /// <summary>
         /// Gets or sets the products 
         /// </summary>
+        [NotMapped] //Pekmez
         public virtual ICollection<Product> AppliedToProducts
         {
             get { return _appliedToProducts ?? (_appliedToProducts = new List<Product>()); }

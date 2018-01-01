@@ -101,8 +101,7 @@ namespace RufaPoint.Data
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity));
 
-                // Entities.Add(entity);
-                _entities.Add(entity);
+                Entities.Add(entity);
                 _context.SaveChanges();
             }
             catch (/*DbEntityValidation*/Exception dbEx)
@@ -124,8 +123,7 @@ namespace RufaPoint.Data
                     throw new ArgumentNullException(nameof(entities));
 
                 foreach (var entity in entities)
-                    _entities.Add(entity);
-                // Entities.Add(entity);
+                Entities.Add(entity);
 
                 _context.SaveChanges();
             }
@@ -186,9 +184,8 @@ namespace RufaPoint.Data
             {
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity));
-                _entities.Remove(entity);
-                //Entities.Remove(entity);
 
+                Entities.Remove(entity);
                 _context.SaveChanges();
             }
             catch (/*DbEntityValidation*/Exception dbEx)
@@ -210,8 +207,7 @@ namespace RufaPoint.Data
                     throw new ArgumentNullException(nameof(entities));
 
                 foreach (var entity in entities)
-                    _entities.Remove(entity);
-                //Entities.Remove(entity);
+                    Entities.Remove(entity);
 
                 _context.SaveChanges();
             }
@@ -233,8 +229,7 @@ namespace RufaPoint.Data
         {
             get
             {
-                return _entities;
-                //return Entities;
+                return Entities;
             }
         }
 
@@ -245,23 +240,22 @@ namespace RufaPoint.Data
         {
             get
             {
-                return _entities.AsNoTracking();
-               // return Entities.AsNoTracking();
+                return Entities.AsNoTracking();
             }
         }
 
         /// <summary>
         /// Entities
         /// </summary>
-        //protected virtual IDbSet<T> Entities
-        //{
-        //    get
-        //    {
-        //        if (_entities == null)
-        //            _entities = _context.Set<T>();
-        //        return _entities;
-        //    }
-        //}
+        protected virtual DbSet<T> Entities
+        {
+            get
+            {
+                if (_entities == null)
+                    _entities = _context.Set<T>();
+                return _entities;
+            }
+        }
 
         #endregion
     }

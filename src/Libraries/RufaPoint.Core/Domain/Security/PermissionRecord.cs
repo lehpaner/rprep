@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RufaPoint.Core.Domain.Customers;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RufaPoint.Core.Domain.Security
 {
@@ -24,10 +25,11 @@ namespace RufaPoint.Core.Domain.Security
         /// Gets or sets the permission category
         /// </summary>
         public string Category { get; set; }
-        
+
         /// <summary>
         /// Gets or sets discount usage history
         /// </summary>
+        [NotMapped] //Pekmez
         public virtual ICollection<CustomerRole> CustomerRoles
         {
             get { return _customerRoles ?? (_customerRoles = new List<CustomerRole>()); }

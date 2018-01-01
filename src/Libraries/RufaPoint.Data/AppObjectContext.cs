@@ -33,7 +33,7 @@ namespace RufaPoint.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=RufaPoint;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Data Source=localhost; Initial Catalog=rufa; Integrated Security=True; Persist Security Info=False");
                // .ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning));
             // optionsBuilder.UseSqlServer(connectionString);
         }

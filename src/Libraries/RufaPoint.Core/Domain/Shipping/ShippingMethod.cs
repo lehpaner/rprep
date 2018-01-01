@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RufaPoint.Core.Domain.Directory;
 using RufaPoint.Core.Domain.Localization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RufaPoint.Core.Domain.Shipping
 {
@@ -29,6 +30,7 @@ namespace RufaPoint.Core.Domain.Shipping
         /// <summary>
         /// Gets or sets the restricted countries
         /// </summary>
+        [NotMapped] //Pekmez
         public virtual ICollection<Country> RestrictedCountries
         {
             get { return _restrictedCountries ?? (_restrictedCountries = new List<Country>()); }
