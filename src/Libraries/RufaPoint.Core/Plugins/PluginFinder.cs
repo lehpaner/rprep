@@ -115,7 +115,7 @@ namespace RufaPoint.Core.Plugins
             if (customer == null || !pluginDescriptor.LimitedToCustomerRoles.Any())
                 return true;
 
-            var customerRoleIds = customer.CustomerRoles.Where(role => role.Active).Select(role => role.Id);
+            var customerRoleIds = customer.CustomerRoles.Where(role => role.CustomerRole.Active).Select(role => role.Id);
 
             return pluginDescriptor.LimitedToCustomerRoles.Intersect(customerRoleIds).Any();
         }

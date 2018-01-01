@@ -27,9 +27,9 @@ namespace RufaPoint.Core.Domain.Customers
 
             if (string.IsNullOrEmpty(customerRoleSystemName))
                 throw new ArgumentNullException(nameof(customerRoleSystemName));
-
+            //Pekmez
             var result = customer.CustomerRoles
-                .FirstOrDefault(cr => (!onlyActiveCustomerRoles || cr.Active) && (cr.SystemName == customerRoleSystemName)) != null;
+                .FirstOrDefault(cr => (!onlyActiveCustomerRoles || cr.CustomerRole.Active) && (cr.CustomerRole.SystemName == customerRoleSystemName)) != null;
             return result;
         }
 
@@ -131,12 +131,12 @@ namespace RufaPoint.Core.Domain.Customers
         {
             if (customer == null)
                 throw new ArgumentNullException(nameof(customer));
-
-            var roleWithOVerriddenTaxType = customer.CustomerRoles.FirstOrDefault(cr => cr.Active && cr.OverrideTaxDisplayType);
+            //Pekmez
+            var roleWithOVerriddenTaxType = customer.CustomerRoles.FirstOrDefault(cr => cr.CustomerRole.Active && cr.CustomerRole.OverrideTaxDisplayType);
             if (roleWithOVerriddenTaxType == null)
                 return null;
-
-            return (TaxDisplayType)roleWithOVerriddenTaxType.DefaultTaxDisplayTypeId;
+            //Pekmez
+            return (TaxDisplayType)roleWithOVerriddenTaxType.CustomerRole.DefaultTaxDisplayTypeId;
         }
 
         #endregion

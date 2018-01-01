@@ -9,6 +9,7 @@ namespace RufaPoint.Core.Domain.Customers
     public partial class CustomerRole : BaseEntity
     {
         private ICollection<PermissionRecord> _permissionRecords;
+        private ICollection<CustomerCustomerRole> _customerRoles;
 
         /// <summary>
         /// Gets or sets the customer role name
@@ -67,6 +68,14 @@ namespace RufaPoint.Core.Domain.Customers
         {
             get { return _permissionRecords ?? (_permissionRecords = new List<PermissionRecord>()); }
             protected set { _permissionRecords = value; }
+        }
+        /// <summary>
+        /// Gets or sets the customer roles
+        /// </summary>
+        public virtual ICollection<CustomerCustomerRole> CustomerRoles
+        {
+            get { return _customerRoles ?? (_customerRoles = new List<CustomerCustomerRole>()); }
+            protected set { _customerRoles = value; }
         }
     }
 }

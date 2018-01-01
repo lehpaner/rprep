@@ -11,7 +11,8 @@ namespace RufaPoint.Core.Domain.Customers
     public partial class Customer : BaseEntity
     {
         private ICollection<ExternalAuthenticationRecord> _externalAuthenticationRecords;
-        private ICollection<CustomerRole> _customerRoles;
+        //       private ICollection<CustomerRole> _customerRoles;
+        private ICollection<CustomerCustomerRole> _customerRoles;
         private ICollection<ShoppingCartItem> _shoppingCartItems;
         private ICollection<ReturnRequest> _returnRequests;
         private ICollection<Address> _addresses;
@@ -148,9 +149,9 @@ namespace RufaPoint.Core.Domain.Customers
         /// <summary>
         /// Gets or sets the customer roles
         /// </summary>
-        public virtual ICollection<CustomerRole> CustomerRoles
+        public virtual ICollection<CustomerCustomerRole> CustomerRoles
         {
-            get { return _customerRoles ?? (_customerRoles = new List<CustomerRole>()); }
+            get { return _customerRoles ?? (_customerRoles = new List<CustomerCustomerRole>()); }
             protected set { _customerRoles = value; }
         }
 
