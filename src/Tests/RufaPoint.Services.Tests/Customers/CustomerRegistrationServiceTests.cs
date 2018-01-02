@@ -180,7 +180,7 @@ namespace RufaPoint.Services.Tests.Customers
                 _workflowMessageService.Object, _eventPublisher.Object, _rewardPointsSettings, _customerSettings);
         }
 
-        //[Test]
+        //[Fact]
         //public void Can_register_a_customer() 
         //{
         //    var registrationRequest = CreateCustomerRegistrationRequest();

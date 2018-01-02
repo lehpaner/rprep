@@ -28,7 +28,7 @@ namespace RufaPoint.Data.Mapping.Common
         protected override void DoConfig(EntityTypeBuilder<Address> builder)
         {
             builder.ToTable("Address").HasKey(a => a.Id);
-
+            builder.HasOne(a => a.Country).WithMany().HasForeignKey(a => a.CountryId).OnDelete(DeleteBehavior.ClientSetNull);
             //builder.HasOptional(a => a.Country)
             //    .WithMany()
             //    .HasForeignKey(a => a.CountryId).WillCascadeOnDelete(false);
