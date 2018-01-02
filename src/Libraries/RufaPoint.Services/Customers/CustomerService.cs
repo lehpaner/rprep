@@ -621,14 +621,21 @@ namespace RufaPoint.Services.Customers
                 LastActivityDateUtc = DateTime.UtcNow,
             };
 
+            _customerRepository.Insert(customer);
+
             //add to 'Guests' role
             var guestRole = GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
             if (guestRole == null)
                 throw new CoreException("'Guests' role could not be loaded");
-            customer.CustomerRoles.Add(guestRole);
-
-            _customerRepository.Insert(customer);
-
+            CustomerCustomerRole ccr = new CustomerCustomerRole()
+            {
+                CustomerId = customer.Id,
+                Customer = customer,
+                CustomerRoleId = guestRole.Id,
+                CustomerRole = guestRole
+            };
+            customer.CustomerRoles.Add(ccr);
+            _customerRepository.Update(customer);
             return customer;
         }
         

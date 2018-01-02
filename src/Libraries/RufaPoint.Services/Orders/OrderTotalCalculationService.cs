@@ -940,7 +940,7 @@ namespace RufaPoint.Services.Orders
         {
             //check whether customer is in a customer role with free shipping applied
             var customer = cart.GetCustomer();
-            if (customer != null && customer.CustomerRoles.Where(role => role.Active).Any(role => role.FreeShipping))
+            if (customer != null && customer.CustomerRoles.Where(role => role.CustomerRole.Active).Any(role => role.CustomerRole.FreeShipping))
                 return true;
 
             //check whether all shopping cart items and their associated products marked as free shipping

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RufaPoint.Core.Domain.Common;
 using RufaPoint.Core.Domain.Customers;
 
 namespace RufaPoint.Data.Mapping.Customers
@@ -39,6 +40,7 @@ namespace RufaPoint.Data.Mapping.Customers
             builder.Property(u => u.EmailToRevalidate).HasMaxLength(1000);
             builder.Property(u => u.SystemName).HasMaxLength(400);
             builder.HasMany(c => c.CustomerRoles);
+            builder.HasMany(c => c.Addresses);
             //builder.HasMany(c => c.CustomerRoles)
             //    .WithMany()
             //    .Map(m => m.ToTable("Customer_CustomerRole_Mapping"));

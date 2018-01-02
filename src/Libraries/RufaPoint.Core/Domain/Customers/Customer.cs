@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using RufaPoint.Core.Domain.Common;
 using RufaPoint.Core.Domain.Orders;
+using System.Runtime.InteropServices;
 
 namespace RufaPoint.Core.Domain.Customers
 {
@@ -11,11 +12,10 @@ namespace RufaPoint.Core.Domain.Customers
     public partial class Customer : BaseEntity
     {
         private ICollection<ExternalAuthenticationRecord> _externalAuthenticationRecords;
-        //       private ICollection<CustomerRole> _customerRoles;
         private ICollection<CustomerCustomerRole> _customerRoles;
         private ICollection<ShoppingCartItem> _shoppingCartItems;
         private ICollection<ReturnRequest> _returnRequests;
-        private ICollection<Address> _addresses;
+        private ICollection<CustomerAdresses> _addresses;
 
         /// <summary>
         /// Ctor
@@ -186,9 +186,9 @@ namespace RufaPoint.Core.Domain.Customers
         /// <summary>
         /// Gets or sets customer addresses
         /// </summary>
-        public virtual ICollection<Address> Addresses
+        public virtual ICollection<CustomerAdresses> Addresses
         {
-            get { return _addresses ?? (_addresses = new List<Address>()); }
+            get { return _addresses ?? (_addresses = new List<CustomerAdresses>()); }
             protected set { _addresses = value; }
         }
 

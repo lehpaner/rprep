@@ -286,7 +286,7 @@ namespace RufaPoint.Web.Controllers
 
         public virtual IActionResult SelectBillingAddress(int addressId, bool shipToSameAddress = false)
         {
-            var address = _workContext.CurrentCustomer.Addresses.FirstOrDefault(a => a.Id == addressId);
+            var address = _workContext.CurrentCustomer.Addresses.FirstOrDefault(a => a.Id == addressId).Address;
             if (address == null)
                 return RedirectToRoute("CheckoutBillingAddress");
 
@@ -340,7 +340,7 @@ namespace RufaPoint.Web.Controllers
             }
 
             var newAddress = model.BillingNewAddress;
-
+            /*Pekmez
             if (ModelState.IsValid)
             {
                 //try to find an address with the same values (don't duplicate records)
@@ -380,7 +380,7 @@ namespace RufaPoint.Web.Controllers
 
                 return RedirectToRoute("CheckoutShippingAddress");
             }
-
+            */
             //If we got this far, something failed, redisplay form
             model = _checkoutModelFactory.PrepareBillingAddressModel(cart,
                 selectedCountryId: newAddress.CountryId,
@@ -422,7 +422,7 @@ namespace RufaPoint.Web.Controllers
             if (address == null)
                 return RedirectToRoute("CheckoutShippingAddress");
 
-            _workContext.CurrentCustomer.ShippingAddress = address;
+            _workContext.CurrentCustomer.ShippingAddress = address.Address;
             _customerService.UpdateCustomer(_workContext.CurrentCustomer);
 
             if (_shippingSettings.AllowPickUpInStore)
@@ -502,7 +502,7 @@ namespace RufaPoint.Web.Controllers
             }
 
             var newAddress = model.ShippingNewAddress;
-
+            /*Pekmez
             if (ModelState.IsValid)
             {
                 //try to find an address with the same values (don't duplicate records)
@@ -525,11 +525,11 @@ namespace RufaPoint.Web.Controllers
                     _workContext.CurrentCustomer.Addresses.Add(address);
                 }
                 _workContext.CurrentCustomer.ShippingAddress = address;
-                _customerService.UpdateCustomer(_workContext.CurrentCustomer);
+            _customerService.UpdateCustomer(_workContext.CurrentCustomer);
 
                 return RedirectToRoute("CheckoutShippingMethod");
             }
-
+            */
             //If we got this far, something failed, redisplay form
             model = _checkoutModelFactory.PrepareShippingAddressModel(
                 selectedCountryId: newAddress.CountryId,
@@ -1117,7 +1117,7 @@ namespace RufaPoint.Web.Controllers
                 if (billingAddressId > 0)
                 {
                     //existing address
-                    var address = _workContext.CurrentCustomer.Addresses.FirstOrDefault(a => a.Id == billingAddressId);
+                    var address = _workContext.CurrentCustomer.Addresses.FirstOrDefault(a => a.Id == billingAddressId).Address;
                     if (address == null)
                         throw new Exception("Address can't be loaded");
 
@@ -1155,7 +1155,7 @@ namespace RufaPoint.Web.Controllers
                             wrong_billing_address = true,
                         });
                     }
-
+                    /*Pekmez
                     //try to find an address with the same values (don't duplicate records)
                     var address = _workContext.CurrentCustomer.Addresses.ToList().FindAddress(
                         newAddress.FirstName, newAddress.LastName, newAddress.PhoneNumber,
@@ -1182,6 +1182,7 @@ namespace RufaPoint.Web.Controllers
                     }
                     _workContext.CurrentCustomer.BillingAddress = address;
                     _customerService.UpdateCustomer(_workContext.CurrentCustomer);
+                    */
                 }
 
                 if (cart.RequiresShipping(_productService, _productAttributeParser))
@@ -1289,7 +1290,7 @@ namespace RufaPoint.Web.Controllers
                 if (shippingAddressId > 0)
                 {
                     //existing address
-                    var address = _workContext.CurrentCustomer.Addresses.FirstOrDefault(a => a.Id == shippingAddressId);
+                    var address = _workContext.CurrentCustomer.Addresses.FirstOrDefault(a => a.Id == shippingAddressId).Address;
                     if (address == null)
                         throw new Exception("Address can't be loaded");
 
@@ -1326,7 +1327,7 @@ namespace RufaPoint.Web.Controllers
                             }
                         });
                     }
-
+                    /*Pekmez
                     //try to find an address with the same values (don't duplicate records)
                     var address = _workContext.CurrentCustomer.Addresses.ToList().FindAddress(
                         newAddress.FirstName, newAddress.LastName, newAddress.PhoneNumber,
@@ -1356,7 +1357,7 @@ namespace RufaPoint.Web.Controllers
                         _workContext.CurrentCustomer.Addresses.Add(address);
                     }
                     _workContext.CurrentCustomer.ShippingAddress = address;
-                    _customerService.UpdateCustomer(_workContext.CurrentCustomer);
+                    _customerService.UpdateCustomer(_workContext.CurrentCustomer);*/
                 }
 
                 return OpcLoadStepAfterShippingAddress(cart);

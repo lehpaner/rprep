@@ -324,9 +324,9 @@ namespace RufaPoint.Services.Security
             if (string.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
 
-            var customerRoles = customer.CustomerRoles.Where(cr => cr.Active);
+            var customerRoles = customer.CustomerRoles.Where(cr => cr.CustomerRole.Active);
             foreach (var role in customerRoles)
-                if (Authorize(permissionRecordSystemName, role))
+                if (Authorize(permissionRecordSystemName, role.CustomerRole))
                     //yes, we have such permission
                     return true;
             

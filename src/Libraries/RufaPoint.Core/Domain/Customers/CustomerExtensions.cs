@@ -150,13 +150,29 @@ namespace RufaPoint.Core.Domain.Customers
         /// <param name="address">Address</param>
         public static void RemoveAddress(this Customer customer, Address address)
         {
-            if (customer.Addresses.Contains(address))
+            var adds = customer.Addresses.FirstOrDefault(o => o.AddressId == address.Id);  
+            customer.Addresses.Remove(adds);
+            /*Pekmez
+            if (customer.Addresses.Contains(address.))
             {
                 if (customer.BillingAddress == address) customer.BillingAddress = null;
                 if (customer.ShippingAddress == address) customer.ShippingAddress = null;
 
                 customer.Addresses.Remove(address);
-            }
+            }*/
+        }
+        public static void RemoveAddress(this Customer customer, CustomerAdresses address)
+        {
+
+            customer.Addresses.Remove(address);
+            /*Pekmez
+            if (customer.Addresses.Contains(address.))
+            {
+                if (customer.BillingAddress == address) customer.BillingAddress = null;
+                if (customer.ShippingAddress == address) customer.ShippingAddress = null;
+
+                customer.Addresses.Remove(address);
+            }*/
         }
 
         #endregion

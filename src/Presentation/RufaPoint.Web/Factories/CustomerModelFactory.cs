@@ -713,7 +713,7 @@ namespace RufaPoint.Web.Factories
         {
             var addresses = _workContext.CurrentCustomer.Addresses
                 //enabled for the current store
-                .Where(a => a.Country == null || _storeMappingService.Authorize(a.Country))
+                .Where(a => a.Address.Country == null || _storeMappingService.Authorize(a.Address.Country)).Select(f=>f.Address)
                 .ToList();
 
             var model = new CustomerAddressListModel();

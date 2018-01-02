@@ -710,7 +710,12 @@ namespace RufaPoint.Web.Controllers
                         if (defaultAddress.StateProvinceId == 0)
                             defaultAddress.StateProvinceId = null;
                         //set default address
-                        customer.Addresses.Add(defaultAddress);
+                        customer.Addresses.Add(new CustomerAdresses() {
+                            Customer = customer,
+                            CustomerId = customer.Id,
+                            AddressId = defaultAddress.Id,
+                            Address = defaultAddress
+                        });
                         customer.BillingAddress = defaultAddress;
                         customer.ShippingAddress = defaultAddress;
                         _customerService.UpdateCustomer(customer);
@@ -1136,7 +1141,7 @@ namespace RufaPoint.Web.Controllers
                 customer.RemoveAddress(address);
                 _customerService.UpdateCustomer(customer);
                 //now delete the address record
-                _addressService.DeleteAddress(address);
+                _addressService.DeleteAddress(address.Address);
             }
 
             //redirect to the address list page
@@ -1189,7 +1194,7 @@ namespace RufaPoint.Web.Controllers
                     address.CountryId = null;
                 if (address.StateProvinceId == 0)
                     address.StateProvinceId = null;
-                customer.Addresses.Add(address);
+                customer.Addresses.Add(new CustomerAdresses() { Customer= customer, CustomerId= customer.Id, AddressId= address.Id, Address= address });
                 _customerService.UpdateCustomer(customer);
 
                 return RedirectToRoute("CustomerAddresses");
@@ -1221,7 +1226,7 @@ namespace RufaPoint.Web.Controllers
 
             var model = new CustomerAddressEditModel();
             _addressModelFactory.PrepareAddressModel(model.Address,
-                address: address,
+                address: address.Address,
                 excludeProperties: false,
                 addressSettings: _addressSettings,
                 loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id));
@@ -1250,10 +1255,10 @@ namespace RufaPoint.Web.Controllers
             {
                 ModelState.AddModelError("", error);
             }
-
+            /*Pekmez
             if (ModelState.IsValid)
             {
-                address = model.Address.ToEntity(address);
+                address = model.Address.ToEntity(address.Address);
                 address.CustomAttributes = customAttributes;
                 _addressService.UpdateAddress(address);
 
@@ -1267,6 +1272,7 @@ namespace RufaPoint.Web.Controllers
                 addressSettings: _addressSettings,
                 loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id),
                 overrideAttributesXml: customAttributes);
+                */
             return View(model);
         }
 

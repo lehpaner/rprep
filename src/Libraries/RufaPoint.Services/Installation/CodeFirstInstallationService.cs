@@ -4141,13 +4141,37 @@ namespace RufaPoint.Services.Installation
                 ZipPostalCode = "10021",
                 CreatedOnUtc = DateTime.UtcNow,
             };
-            adminUser.Addresses.Add(defaultAdminUserAddress);
+            adminUser.Addresses.Add(new CustomerAdresses()
+            {
+                AddressId = defaultAdminUserAddress.Id,
+                Address = defaultAdminUserAddress,
+                CustomerId = adminUser.Id,
+                Customer = adminUser
+            });
             adminUser.BillingAddress = defaultAdminUserAddress;
             adminUser.ShippingAddress = defaultAdminUserAddress;
 
-            adminUser.CustomerRoles.Add(crAdministrators);
-            adminUser.CustomerRoles.Add(crForumModerators);
-            adminUser.CustomerRoles.Add(crRegistered);
+            adminUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = adminUser.Id,
+                Customer = adminUser,
+                CustomerRoleId = crAdministrators.Id,
+                CustomerRole = crAdministrators
+            });
+            adminUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = adminUser.Id,
+                Customer = adminUser,
+                CustomerRoleId = crForumModerators.Id,
+                CustomerRole = crForumModerators
+            });
+            adminUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = adminUser.Id,
+                Customer = adminUser,
+                CustomerRoleId = crRegistered.Id,
+                CustomerRole = crRegistered
+            });
 
             _customerRepository.Insert(adminUser);
             //set default customer name
@@ -4187,12 +4211,23 @@ namespace RufaPoint.Services.Installation
                 ZipPostalCode = "90077",
                 CreatedOnUtc = DateTime.UtcNow,
             };
-            secondUser.Addresses.Add(defaultSecondUserAddress);
+            secondUser.Addresses.Add(new CustomerAdresses()
+            {
+                AddressId = defaultSecondUserAddress.Id,
+                Address = defaultSecondUserAddress,
+                CustomerId = secondUser.Id,
+                Customer = secondUser
+            });
             secondUser.BillingAddress = defaultSecondUserAddress;
             secondUser.ShippingAddress = defaultSecondUserAddress;
 
-            secondUser.CustomerRoles.Add(crRegistered);
-
+            secondUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = secondUser.Id,
+                Customer = secondUser,
+                CustomerRoleId = crRegistered.Id,
+                CustomerRole = crRegistered
+            });
             _customerRepository.Insert(secondUser);
             //set default customer name
             _genericAttributeService.SaveAttribute(secondUser, SystemCustomerAttributeNames.FirstName, defaultSecondUserAddress.FirstName);
@@ -4235,11 +4270,23 @@ namespace RufaPoint.Services.Installation
                 ZipPostalCode = "NW1 6XE",
                 CreatedOnUtc = DateTime.UtcNow,
             };
-            thirdUser.Addresses.Add(defaultThirdUserAddress);
+            thirdUser.Addresses.Add(new CustomerAdresses()
+            {
+                AddressId = defaultThirdUserAddress.Id,
+                Address = defaultThirdUserAddress,
+                CustomerId = thirdUser.Id,
+                Customer = thirdUser
+            });
             thirdUser.BillingAddress = defaultThirdUserAddress;
             thirdUser.ShippingAddress = defaultThirdUserAddress;
 
-            thirdUser.CustomerRoles.Add(crRegistered);
+            thirdUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = thirdUser.Id,
+                Customer = thirdUser,
+                CustomerRoleId = crRegistered.Id,
+                CustomerRole = crRegistered
+            });
 
             _customerRepository.Insert(thirdUser);
             //set default customer name
@@ -4283,11 +4330,23 @@ namespace RufaPoint.Services.Installation
                 ZipPostalCode = "KY16 9AX",
                 CreatedOnUtc = DateTime.UtcNow,
             };
-            fourthUser.Addresses.Add(defaultFourthUserAddress);
+            fourthUser.Addresses.Add(new CustomerAdresses()
+            {
+                AddressId = defaultFourthUserAddress.Id,
+                Address = defaultFourthUserAddress,
+                CustomerId = fourthUser.Id,
+                Customer = fourthUser
+            });
             fourthUser.BillingAddress = defaultFourthUserAddress;
             fourthUser.ShippingAddress = defaultFourthUserAddress;
 
-            fourthUser.CustomerRoles.Add(crRegistered);
+            fourthUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = fourthUser.Id,
+                Customer = fourthUser,
+                CustomerRoleId = crRegistered.Id,
+                CustomerRole = crRegistered
+            });
 
             _customerRepository.Insert(fourthUser);
             //set default customer name
@@ -4332,11 +4391,22 @@ namespace RufaPoint.Services.Installation
                 ZipPostalCode = "99901",
                 CreatedOnUtc = DateTime.UtcNow,
             };
-            fifthUser.Addresses.Add(defaultFifthUserAddress);
+            fifthUser.Addresses.Add(new CustomerAdresses() {
+                AddressId = defaultFifthUserAddress.Id,
+                Address = defaultFifthUserAddress,
+                CustomerId = fifthUser.Id,
+                Customer= fifthUser
+            });
             fifthUser.BillingAddress = defaultFifthUserAddress;
             fifthUser.ShippingAddress = defaultFifthUserAddress;
 
-            fifthUser.CustomerRoles.Add(crRegistered);
+            fifthUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = fifthUser.Id,
+                Customer = fifthUser,
+                CustomerRoleId = crRegistered.Id,
+                CustomerRole = crRegistered
+            });
 
             _customerRepository.Insert(fifthUser);
             //set default customer name
@@ -4381,11 +4451,23 @@ namespace RufaPoint.Services.Installation
                 ZipPostalCode = "S7K 1J9",
                 CreatedOnUtc = DateTime.UtcNow,
             };
-            sixthUser.Addresses.Add(defaultSixthUserAddress);
+            sixthUser.Addresses.Add(new CustomerAdresses()
+            {
+                AddressId = defaultSixthUserAddress.Id,
+                Address = defaultSixthUserAddress,
+                CustomerId = sixthUser.Id,
+                Customer = sixthUser
+            });
             sixthUser.BillingAddress = defaultSixthUserAddress;
             sixthUser.ShippingAddress = defaultSixthUserAddress;
 
-            sixthUser.CustomerRoles.Add(crRegistered);
+            sixthUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = sixthUser.Id,
+                Customer = sixthUser,
+                CustomerRoleId = crRegistered.Id,
+                CustomerRole = crRegistered
+            });
 
             _customerRepository.Insert(sixthUser);
             //set default customer name
@@ -4415,7 +4497,13 @@ namespace RufaPoint.Services.Installation
                 LastActivityDateUtc = DateTime.UtcNow,
                 RegisteredInStoreId = storeId
             };
-            searchEngineUser.CustomerRoles.Add(crGuests);
+            searchEngineUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = searchEngineUser.Id,
+                Customer = searchEngineUser,
+                CustomerRoleId = crGuests.Id,
+                CustomerRole = crGuests
+            });
             _customerRepository.Insert(searchEngineUser);
 
 
@@ -4432,7 +4520,13 @@ namespace RufaPoint.Services.Installation
                 LastActivityDateUtc = DateTime.UtcNow,
                 RegisteredInStoreId = storeId
             };
-            backgroundTaskUser.CustomerRoles.Add(crGuests);
+            backgroundTaskUser.CustomerRoles.Add(new CustomerCustomerRole()
+            {
+                CustomerId = backgroundTaskUser.Id,
+                Customer = backgroundTaskUser,
+                CustomerRoleId = crGuests.Id,
+                CustomerRole = crGuests
+            });
             _customerRepository.Insert(backgroundTaskUser);
         }
 

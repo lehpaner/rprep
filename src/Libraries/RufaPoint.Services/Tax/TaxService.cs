@@ -800,7 +800,7 @@ namespace RufaPoint.Services.Tax
                 if (customer.IsTaxExempt)
                     return true;
 
-                if (customer.CustomerRoles.Where(cr => cr.Active).Any(cr => cr.TaxExempt))
+                if (customer.CustomerRoles.Where(cr => cr.CustomerRole.Active).Any(cr => cr.CustomerRole.TaxExempt))
                     return true;
             }
 

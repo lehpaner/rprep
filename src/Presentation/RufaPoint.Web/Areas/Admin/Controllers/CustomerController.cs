@@ -275,7 +275,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 Company = customer.GetAttribute<string>(SystemCustomerAttributeNames.Company),
                 Phone = customer.GetAttribute<string>(SystemCustomerAttributeNames.Phone),
                 ZipPostalCode = customer.GetAttribute<string>(SystemCustomerAttributeNames.ZipPostalCode),
-                CustomerRoleNames = GetCustomerRolesNames(customer.CustomerRoles.ToList()),
+                CustomerRoleNames = GetCustomerRolesNames(customer.CustomerRoles.Select(r=>r.CustomerRole).ToList()),
                 Active = customer.Active,
                 CreatedOn = _dateTimeHelper.ConvertToUserTime(customer.CreatedOnUtc, DateTimeKind.Utc),
                 LastActivityDate = _dateTimeHelper.ConvertToUserTime(customer.LastActivityDateUtc, DateTimeKind.Utc),
@@ -985,7 +985,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                             ErrorNotification(changePassError);
                     }
                 }
-
+                /*Pekmez
                 //customer roles
                 foreach (var customerRole in newCustomerRoles)
                 {
@@ -996,6 +996,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
 
                     customer.CustomerRoles.Add(customerRole);
                 }
+                */
                 _customerService.UpdateCustomer(customer);
                 
 
@@ -1014,7 +1015,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 {
                     var vendorRole = customer
                         .CustomerRoles
-                        .FirstOrDefault(x => x.SystemName == SystemCustomerRoleNames.Vendors);
+                        .FirstOrDefault(x => x.CustomerRole.SystemName == SystemCustomerRoleNames.Vendors);
                     customer.CustomerRoles.Remove(vendorRole);
                     _customerService.UpdateCustomer(customer);
                     ErrorNotification(_localizationService.GetResource("Admin.Customers.Customers.CannotBeInVendoRoleWithoutVendorAssociated"));
@@ -1239,8 +1240,13 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                         if (model.SelectedCustomerRoleIds.Contains(customerRole.Id))
                         {
                             //new role
-                            if (customer.CustomerRoles.Count(cr => cr.Id == customerRole.Id) == 0)
-                                customer.CustomerRoles.Add(customerRole);
+                            if (customer.CustomerRoles.Count(cr => cr.CustomerRole.Id == customerRole.Id) == 0)
+                            {
+                                var toBeAdded = customer.CustomerRoles.Where(r => r.CustomerRole.Id == customerRole.Id).ToList();
+                                foreach (CustomerCustomerRole elt in toBeAdded)
+                                    customer.CustomerRoles.Add(elt);
+                            }
+                                
                         }
                         else
                         {
@@ -1252,8 +1258,13 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                             }
 
                             //remove role
-                            if (customer.CustomerRoles.Count(cr => cr.Id == customerRole.Id) > 0)
-                                customer.CustomerRoles.Remove(customerRole);
+                            if (customer.CustomerRoles.Count(cr => cr.CustomerRole.Id == customerRole.Id) > 0)
+                            {
+                                var toBeRemoved = customer.CustomerRoles.Where(r => r.CustomerRole.Id == customerRole.Id).ToList();
+                                foreach(CustomerCustomerRole elt in toBeRemoved)
+                                    customer.CustomerRoles.Remove(elt);
+                            }
+
                         }
                     }
                     _customerService.UpdateCustomer(customer);
@@ -1273,7 +1284,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                     {
                         var vendorRole = customer
                             .CustomerRoles
-                            .FirstOrDefault(x => x.SystemName == SystemCustomerRoleNames.Vendors);
+                            .FirstOrDefault(x => x.CustomerRole.SystemName == SystemCustomerRoleNames.Vendors);
                         customer.CustomerRoles.Remove(vendorRole);
                         _customerService.UpdateCustomer(customer);
                         ErrorNotification(_localizationService.GetResource("Admin.Customers.Customers.CannotBeInVendoRoleWithoutVendorAssociated"));
@@ -1680,9 +1691,10 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             if (customer == null)
                 throw new ArgumentException("No customer found with the specified id", "customerId");
 
-            var addresses = customer.Addresses.OrderByDescending(a => a.CreatedOnUtc).ThenByDescending(a => a.Id).ToList();
+            var addresses = customer.Addresses.OrderByDescending(a => a.Address.CreatedOnUtc).ThenByDescending(a => a.Id).ToList();
             var gridModel = new DataSourceResult
             {
+                /*Pekmez
                 Data = addresses.Select(x =>
                 {
                     var model = x.ToModel();
@@ -1701,7 +1713,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                         addressHtmlSb.AppendFormat("{0}<br />", WebUtility.HtmlEncode(model.ZipPostalCode));
                     if (_addressSettings.CountryEnabled && !string.IsNullOrEmpty(model.CountryName))
                         addressHtmlSb.AppendFormat("{0}", WebUtility.HtmlEncode(model.CountryName));
-                    var customAttributesFormatted = _addressAttributeFormatter.FormatAttributes(x.CustomAttributes);
+                    var customAttributesFormatted = _addressAttributeFormatter.FormatAttributes(x.Address.CustomAttributes);
                     if (!string.IsNullOrEmpty(customAttributesFormatted))
                     {
                         //already encoded
@@ -1710,7 +1722,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                     addressHtmlSb.Append("</div>");
                     model.AddressHtml = addressHtmlSb.ToString();
                     return model;
-                }),
+                }),*/
                 Total = addresses.Count
             };
 
@@ -1728,6 +1740,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                 throw new ArgumentException("No customer found with the specified id", "customerId");
 
             var address = customer.Addresses.FirstOrDefault(a => a.Id == id);
+            /*Pekmez
             if (address == null)
                 //No customer found with the specified id
                 return Content("No customer found with the specified id");
@@ -1735,7 +1748,7 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
             _customerService.UpdateCustomer(customer);
             //now delete the address record
             _addressService.DeleteAddress(address);
-
+            */
             return new NullJsonResult();
         }
         
@@ -1784,9 +1797,10 @@ namespace RufaPoint.Web.Areas.Admin.Controllers
                     address.CountryId = null;
                 if (address.StateProvinceId == 0)
                     address.StateProvinceId = null;
+                /*Pekmez
                 customer.Addresses.Add(address);
                 _customerService.UpdateCustomer(customer);
-
+                */
                 SuccessNotification(_localizationService.GetResource("Admin.Customers.Customers.Addresses.Added"));
                 return RedirectToAction("AddressEdit", new { addressId = address.Id, customerId = model.CustomerId });
             }

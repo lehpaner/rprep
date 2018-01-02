@@ -137,7 +137,7 @@ namespace RufaPoint.Web.Factories
             };
 
             //existing addresses
-            var addresses = _workContext.CurrentCustomer.Addresses
+            var addresses = _workContext.CurrentCustomer.Addresses.Select(e=>e.Address)
                 .Where(a => a.Country == null || 
                     (//published
                     a.Country.Published && 
@@ -245,7 +245,7 @@ namespace RufaPoint.Web.Factories
             }
             
             //existing addresses
-            var addresses = _workContext.CurrentCustomer.Addresses
+            var addresses = _workContext.CurrentCustomer.Addresses.Select(e=>e.Address)
                 .Where(a => a.Country == null || 
                     (//published
                     a.Country.Published &&

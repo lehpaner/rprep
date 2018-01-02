@@ -1143,6 +1143,7 @@ namespace RufaPoint.Services.Orders
                 return;
 
             var customer = order.Customer;
+            /*Pekmez
             foreach (var customerRole in customerRoles)
             {
                 if (customer.CustomerRoles.Count(cr => cr.Id == customerRole.Id) == 0)
@@ -1163,7 +1164,7 @@ namespace RufaPoint.Services.Orders
                         customer.CustomerRoles.Remove(customerRole);
                     }
                 }
-            }
+            }*/
             _customerService.UpdateCustomer(customer);
         }
 

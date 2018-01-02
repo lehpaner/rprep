@@ -40,7 +40,7 @@ namespace RufaPoint.Services.Catalog
                 return source.Where(tierPrice => tierPrice.CustomerRole == null);
 
             return source.Where(tierPrice => tierPrice.CustomerRole == null ||
-                customer.CustomerRoles.Where(role => role.Active).Select(role => role.Id).Contains(tierPrice.CustomerRole.Id));
+                customer.CustomerRoles.Where(role => role.CustomerRole.Active).Select(role => role.Id).Contains(tierPrice.CustomerRole.Id));
         }
 
         /// <summary>

@@ -411,7 +411,7 @@ namespace RufaPoint.Services.Customers
                 throw new ArgumentNullException(nameof(customer));
 
             var customerRolesIds = customer.CustomerRoles
-               .Where(cr => showHidden || cr.Active)
+               .Where(cr => showHidden || cr.CustomerRole.Active)
                .Select(cr => cr.Id)
                .ToArray();
 
@@ -433,7 +433,7 @@ namespace RufaPoint.Services.Customers
                 return false;
 
             //password lifetime is disabled for user
-            if (!customer.CustomerRoles.Any(role => role.Active && role.EnablePasswordLifetime))
+            if (!customer.CustomerRoles.Any(role => role.CustomerRole.Active && role.CustomerRole.EnablePasswordLifetime))
                 return false;
 
             //setting disabled for all

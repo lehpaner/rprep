@@ -273,9 +273,15 @@ namespace RufaPoint.Services.Customers
             var registeredRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Registered);
             if (registeredRole == null)
                 throw new CoreException("'Registered' role could not be loaded");
-            request.Customer.CustomerRoles.Add(registeredRole);
+
+            request.Customer.CustomerRoles.Add(new CustomerCustomerRole() {
+                Customer= request.Customer,
+                CustomerId= request.Customer.Id,
+                CustomerRole= registeredRole,
+                CustomerRoleId= registeredRole.Id
+            });
             //remove from 'Guests' role
-            var guestRole = request.Customer.CustomerRoles.FirstOrDefault(cr => cr.SystemName == SystemCustomerRoleNames.Guests);
+            var guestRole = request.Customer.CustomerRoles.FirstOrDefault(cr => cr.CustomerRole.SystemName == SystemCustomerRoleNames.Guests);
             if (guestRole != null)
                 request.Customer.CustomerRoles.Remove(guestRole);
             

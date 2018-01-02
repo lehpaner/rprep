@@ -245,7 +245,7 @@ namespace RufaPoint.Services.Security
             if (!entity.SubjectToAcl)
                 return true;
 
-            foreach (var role1 in customer.CustomerRoles.Where(cr => cr.Active))
+            foreach (var role1 in customer.CustomerRoles.Where(cr => cr.CustomerRole.Active))
                 foreach (var role2Id in GetCustomerRoleIdsWithAccess(entity))
                     if (role1.Id == role2Id)
                         //yes, we have such permission
