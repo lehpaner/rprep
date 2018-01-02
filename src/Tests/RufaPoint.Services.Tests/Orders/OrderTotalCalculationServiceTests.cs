@@ -588,8 +588,8 @@ namespace RufaPoint.Services.Tests.Orders
                 Active = true,
                 FreeShipping = false,
             };
-            customer.CustomerRoles.Add(customerRole1);
-            customer.CustomerRoles.Add(customerRole2);
+            customer.CustomerRoles.Add(new CustomerCustomerRole() { CustomerRole=customerRole1, CustomerRoleId= customerRole1.Id, Customer = customer, CustomerId= customer.Id });
+            customer.CustomerRoles.Add(new CustomerCustomerRole() { CustomerRole = customerRole2, CustomerRoleId = customerRole2.Id, Customer = customer, CustomerId = customer.Id });
             cart.ForEach(sci => sci.Customer = customer);
             cart.ForEach(sci => sci.CustomerId = customer.Id);
 

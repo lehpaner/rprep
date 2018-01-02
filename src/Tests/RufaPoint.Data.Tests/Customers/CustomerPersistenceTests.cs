@@ -22,7 +22,16 @@ namespace RufaPoint.Data.Tests.Customers
         public void Can_save_and_load_customer_with_customerRoles()
         {
             var customer = this.GetTestCustomer();
-            customer.CustomerRoles.Add(this.GetTestCustomerRole());
+            var role = this.GetTestCustomerRole();
+            customer.CustomerRoles.Add(
+                new CustomerCustomerRole()
+                {
+                    Customer = customer,
+                    CustomerId=customer.Id,
+                    CustomerRole=role,
+                    CustomerRoleId= role.Id
+                }
+                );
 
             var fromDb = SaveAndLoadEntity(customer);
             fromDb.ShouldNotBeNull();
@@ -30,7 +39,7 @@ namespace RufaPoint.Data.Tests.Customers
 
             fromDb.CustomerRoles.ShouldNotBeNull();
             (fromDb.CustomerRoles.Count == 1).ShouldBeTrue();
-            fromDb.CustomerRoles.First().PropertiesShouldEqual(this.GetTestCustomerRole());
+            fromDb.CustomerRoles.First().CustomerRole.PropertiesShouldEqual(this.GetTestCustomerRole());
         }
 
         [Fact]
@@ -52,14 +61,20 @@ namespace RufaPoint.Data.Tests.Customers
         public void Can_save_and_load_customer_with_address()
         {
             var customer = this.GetTestCustomer();
-            customer.Addresses.Add(this.GetTestAddress());
+            var address = this.GetTestAddress();
+            customer.Addresses.Add(new CustomerAdresses() {
+                Customer = customer,
+                CustomerId = customer.Id,
+                Address = address,
+                AddressId = address.Id
+            });
 
             var fromDb = SaveAndLoadEntity(customer);
             fromDb.ShouldNotBeNull();
             fromDb.PropertiesShouldEqual(this.GetTestCustomer());
 
             fromDb.Addresses.Count.ShouldEqual(1);
-            fromDb.Addresses.First().PropertiesShouldEqual(this.GetTestAddress());
+            fromDb.Addresses.First().Address.PropertiesShouldEqual(this.GetTestAddress());
         }
 
         [Fact]
@@ -70,8 +85,20 @@ namespace RufaPoint.Data.Tests.Customers
             var address = this.GetTestAddress();
             var address2 = this.GetTestAddress();
             
-            customer.Addresses.Add(address);
-            customer.Addresses.Add(address2);
+            customer.Addresses.Add(new CustomerAdresses()
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                Address = address,
+                AddressId = address.Id
+            });
+            customer.Addresses.Add(new CustomerAdresses()
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                Address = address2,
+                AddressId = address2.Id
+            });
             customer.BillingAddress = address;
             customer.ShippingAddress = address2;
 
@@ -95,7 +122,13 @@ namespace RufaPoint.Data.Tests.Customers
         {
             var customer = this.GetTestCustomer();
             var address = this.GetTestAddress();
-            customer.Addresses.Add(address);
+            customer.Addresses.Add(new CustomerAdresses()
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                Address = address,
+                AddressId = address.Id
+            });
             customer.BillingAddress = address;
 
             var fromDb = SaveAndLoadEntity(customer);

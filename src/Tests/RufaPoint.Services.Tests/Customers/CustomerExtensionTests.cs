@@ -1,10 +1,12 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace RufaPoint.Services.Tests.Customers
 {
 
     public class CustomerExtensionTests : ServiceTest
     {
+        Guid userGID = new Guid("4c976af-b09f-4f58-a3fa-0692fb4df5d8");
         //[Test]
         //public void Can_get_add_remove_giftCardCouponCodes()
         //{

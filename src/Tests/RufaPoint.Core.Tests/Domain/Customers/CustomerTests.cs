@@ -30,18 +30,32 @@ namespace RufaPoint.Core.Tests.Domain.Customers
                     },
                 }*/
             };
-
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole test1 = new CustomerRole
             {
                 Active = true,
                 Name = "Test name 1",
-                SystemName = "Test system name 1",
-            });
-            customer.CustomerRoles.Add(new CustomerRole
+                SystemName = "Test system name 1"
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
             {
-                Active = false,
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = test1,
+                CustomerRoleId = test1.Id
+            });
+
+            CustomerRole test2 = new CustomerRole
+            {
+                Active = true,
                 Name = "Test name 2",
-                SystemName = "Test system name 2",
+                SystemName = "Test system name 2"
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = test2,
+                CustomerRoleId = test2.Id
             });
             customer.IsInCustomerRole("Test system name 1", false).ShouldBeTrue();
             customer.IsInCustomerRole("Test system name 1", true).ShouldBeTrue();
@@ -56,28 +70,47 @@ namespace RufaPoint.Core.Tests.Domain.Customers
         public void Can_check_whether_customer_is_admin()
         {
             var customer = new Customer();
-
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole registred = new CustomerRole
             {
                 Active = true,
                 Name = "Registered",
                 SystemName = SystemCustomerRoleNames.Registered
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = registred,
+                CustomerRoleId = registred.Id
             });
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole guest = new CustomerRole
             {
                 Active = true,
                 Name = "Guests",
                 SystemName = SystemCustomerRoleNames.Guests
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = guest,
+                CustomerRoleId = guest.Id
             });
 
             customer.IsAdmin().ShouldBeFalse();
-
+            CustomerRole admin = new CustomerRole
+            {
+                Active = true,
+                Name = "Administrators",
+                SystemName = SystemCustomerRoleNames.Administrators
+            };
             customer.CustomerRoles.Add(
-                new CustomerRole
+                new CustomerCustomerRole
                 {
-                    Active = true,
-                    Name = "Administrators",
-                    SystemName = SystemCustomerRoleNames.Administrators
+                    Customer = customer,
+                    CustomerId = customer.Id,
+                    CustomerRole = admin,
+                    CustomerRoleId = admin.Id
                 });
             customer.IsAdmin().ShouldBeTrue();
         }
@@ -85,59 +118,96 @@ namespace RufaPoint.Core.Tests.Domain.Customers
         public void Can_check_whether_customer_is_forum_moderator()
         {
             var customer = new Customer();
-
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole registred = new CustomerRole
             {
                 Active = true,
                 Name = "Registered",
                 SystemName = SystemCustomerRoleNames.Registered
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = registred,
+                CustomerRoleId = registred.Id
             });
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole guest = new CustomerRole
             {
                 Active = true,
                 Name = "Guests",
                 SystemName = SystemCustomerRoleNames.Guests
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = guest,
+                CustomerRoleId = guest.Id
             });
 
             customer.IsForumModerator().ShouldBeFalse();
-
+            CustomerRole moderator = new CustomerRole
+            {
+                Active = true,
+                Name = "ForumModerators",
+                SystemName = SystemCustomerRoleNames.ForumModerators
+            };
             customer.CustomerRoles.Add(
-                new CustomerRole
+                new CustomerCustomerRole
                 {
-                    Active = true,
-                    Name = "ForumModerators",
-                    SystemName = SystemCustomerRoleNames.ForumModerators
+                    Customer = customer,
+                    CustomerId = customer.Id,
+                    CustomerRole = moderator,
+                    CustomerRoleId = moderator.Id
                 });
             customer.IsForumModerator().ShouldBeTrue();
         }
+
         [Fact]
         public void Can_check_whether_customer_is_guest()
         {
             var customer = new Customer();
-
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole registred = new CustomerRole
             {
                 Active = true,
                 Name = "Registered",
                 SystemName = SystemCustomerRoleNames.Registered
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = registred,
+                CustomerRoleId = registred.Id
             });
-
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole admin = new CustomerRole
             {
                 Active = true,
                 Name = "Administrators",
                 SystemName = SystemCustomerRoleNames.Administrators
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = admin,
+                CustomerRoleId = admin.Id
             });
 
             customer.IsGuest().ShouldBeFalse();
-
+            CustomerRole guest = new CustomerRole
+            {
+                Active = true,
+                Name = "Guests",
+                SystemName = SystemCustomerRoleNames.Guests
+            };
             customer.CustomerRoles.Add(
-                new CustomerRole
+                new CustomerCustomerRole
                 {
-                    Active = true,
-                    Name = "Guests",
-                    SystemName = SystemCustomerRoleNames.Guests
-
+                    Customer = customer,
+                    CustomerId = customer.Id,
+                    CustomerRole = guest,
+                    CustomerRoleId = guest.Id
                 }
                 );
             customer.IsGuest().ShouldBeTrue();
@@ -146,28 +216,47 @@ namespace RufaPoint.Core.Tests.Domain.Customers
         public void Can_check_whether_customer_is_registered()
         {
             var customer = new Customer();
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole admin = new CustomerRole
             {
                 Active = true,
                 Name = "Administrators",
                 SystemName = SystemCustomerRoleNames.Administrators
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = admin,
+                CustomerRoleId = admin.Id
             });
-
-            customer.CustomerRoles.Add(new CustomerRole
+            CustomerRole guest = new CustomerRole
             {
                 Active = true,
                 Name = "Guests",
                 SystemName = SystemCustomerRoleNames.Guests
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = guest,
+                CustomerRoleId = guest.Id
             });
 
             customer.IsRegistered().ShouldBeFalse();
-
+            CustomerRole registred = new CustomerRole
+            {
+                Active = true,
+                Name = "Registered",
+                SystemName = SystemCustomerRoleNames.Registered
+            };
             customer.CustomerRoles.Add(
-                new CustomerRole
+                new CustomerCustomerRole
                 {
-                    Active = true,
-                    Name = "Registered",
-                    SystemName = SystemCustomerRoleNames.Registered
+                    Customer = customer,
+                    CustomerId = customer.Id,
+                    CustomerRole = registred,
+                    CustomerRoleId= registred.Id
                 });
             customer.IsRegistered().ShouldBeTrue();
         }
@@ -178,7 +267,14 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             var customer = new Customer();
             var address = new Address { Id = 1 };
 
-            customer.Addresses.Add(address);
+            customer.Addresses.Add(new CustomerAdresses()
+            {
+                Id=1,
+                Address = address,
+                AddressId = address.Id,
+                Customer = customer,
+                CustomerId = customer.Id
+            });
 
             customer.Addresses.Count.ShouldEqual(1);
             customer.Addresses.First().Id.ShouldEqual(1);
@@ -190,7 +286,12 @@ namespace RufaPoint.Core.Tests.Domain.Customers
             var customer = new Customer();
             var address = new Address { Id = 1 };
 
-            customer.Addresses.Add(address);
+            customer.Addresses.Add(new CustomerAdresses() {
+                Id=1,
+                Address =address,
+                AddressId =address.Id,
+                Customer = customer,
+                CustomerId =customer.Id });
             customer.BillingAddress  = address;
 
             customer.BillingAddress.ShouldBeTheSameAs(customer.Addresses.First());

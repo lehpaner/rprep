@@ -129,7 +129,8 @@ namespace RufaPoint.Services.Tests.Tax
                 TaxExempt = true,
                 Active = true
             };
-            customer.CustomerRoles.Add(customerRole);
+
+            customer.CustomerRoles.Add(new CustomerCustomerRole() { CustomerRole = customerRole, CustomerRoleId = customerRole.Id, Customer = customer, CustomerId = customer.Id });
             _taxService.IsTaxExempt(null, customer).ShouldEqual(true);
             customerRole.TaxExempt = false;
             _taxService.IsTaxExempt(null, customer).ShouldEqual(false);

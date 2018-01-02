@@ -217,7 +217,7 @@ namespace RufaPoint.Services.Tests.Catalog
 
             //customer
             var customer = new Customer();
-            customer.CustomerRoles.Add(customerRole1);
+            customer.CustomerRoles.Add(new CustomerCustomerRole() { CustomerRole=customerRole1, CustomerRoleId= customerRole1.Id, Customer= customer, CustomerId= customer.Id});
 
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(12.34M);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 2).ShouldEqual(10);

@@ -236,11 +236,18 @@ namespace RufaPoint.Services.Tests.Customers
 
         private void AddCustomerToRegisteredRole(Customer customer)
         {
-            customer.CustomerRoles.Add(new CustomerRole
+            var registred = new CustomerRole
             {
                 Active = true,
                 IsSystemRole = true,
                 SystemName = SystemCustomerRoleNames.Registered
+            };
+            customer.CustomerRoles.Add(new CustomerCustomerRole
+            {
+                Customer = customer,
+                CustomerId = customer.Id,
+                CustomerRole = registred,
+                CustomerRoleId= registred.Id
             });
         }
 
