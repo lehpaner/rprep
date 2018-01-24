@@ -604,6 +604,7 @@ namespace RufaPoint.Web.Factories
             };
 
             //billing info
+            /*Pekmez
             var billingAddress = _workContext.CurrentCustomer.BillingAddress;
             if (billingAddress != null)
             {
@@ -612,7 +613,7 @@ namespace RufaPoint.Web.Factories
                         excludeProperties: false,
                         addressSettings: _addressSettings);
             }
-
+            */
             //shipping info
             if (cart.RequiresShipping(_productService, _productAttributeParser))
             {
@@ -622,13 +623,14 @@ namespace RufaPoint.Web.Factories
                 model.SelectedPickUpInStore = _shippingSettings.AllowPickUpInStore && pickupPoint != null;
                 if (!model.SelectedPickUpInStore)
                 {
+                    /*Pekmez
                     if (_workContext.CurrentCustomer.ShippingAddress != null)
                     {
                         _addressModelFactory.PrepareAddressModel(model.ShippingAddress,
                             address: _workContext.CurrentCustomer.ShippingAddress,
                             excludeProperties: false,
                             addressSettings: _addressSettings);
-                    }
+                    }*/
                 }
                 else
                 {
@@ -687,6 +689,7 @@ namespace RufaPoint.Web.Factories
             };
             if (model.Enabled)
             {
+                /*Pekmez
                 //countries
                 var defaultEstimateCountryId = (setEstimateShippingDefaultAddress && _workContext.CurrentCustomer.ShippingAddress != null)
                     ? _workContext.CurrentCustomer.ShippingAddress.CountryId
@@ -696,7 +699,7 @@ namespace RufaPoint.Web.Factories
                     Text = _localizationService.GetResource("Address.SelectCountry"),
                     Value = "0"
                 });
-
+                
                 foreach (var c in _countryService.GetAllCountriesForShipping(_workContext.WorkingLanguage.Id))
                     model.AvailableCountries.Add(new SelectListItem
                     {
@@ -724,7 +727,7 @@ namespace RufaPoint.Web.Factories
                         });
                     }
                 }
-                else
+                else*/
                 {
                     model.AvailableStates.Add(new SelectListItem
                     {
@@ -732,9 +735,10 @@ namespace RufaPoint.Web.Factories
                         Value = "0"
                     });
                 }
-
+                /*Pekmez
                 if (setEstimateShippingDefaultAddress && _workContext.CurrentCustomer.ShippingAddress != null)
                     model.ZipPostalCode = _workContext.CurrentCustomer.ShippingAddress.ZipPostalCode;
+                    */
             }
 
             return model;

@@ -23,7 +23,7 @@ namespace RufaPoint.Data.Mapping.Affiliates
         protected override void DoConfig(EntityTypeBuilder<Affiliate> builder)
         {
             builder.ToTable("Affiliate").HasKey(a => a.Id);
-            builder.HasOne<Address>(a => a.Address).WithMany().HasForeignKey(x => x.AddressId).OnDelete(DeleteBehavior.ClientSetNull);
+            //builder.HasOne<Address>(a => a.Address).WithMany().HasForeignKey(x => x.AddressId).OnDelete(DeleteBehavior.ClientSetNull);
             //builder.HasRequired(a => a.Address).WithMany().HasForeignKey(x => x.AddressId).WillCascadeOnDelete(false);
         }
     }

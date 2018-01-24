@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RufaPoint.Core.Data;
+using RufaPoint.Core.Domain.Customers;
+using System;
 using Xunit;
 
 namespace RufaPoint.Services.Tests.Customers
@@ -7,6 +9,16 @@ namespace RufaPoint.Services.Tests.Customers
     public class CustomerExtensionTests : ServiceTest
     {
         Guid userGID = new Guid("4c976af-b09f-4f58-a3fa-0692fb4df5d8");
+        private IRepository<Customer> _customerRepo;
+        //public CustomerExtensionTests()
+        //{
+           
+        //}
+        //[Fact]
+        //public void Get_all_customers()
+        //{
+        //    var cusomers= _
+        //}
         //[Test]
         //public void Can_get_add_remove_giftCardCouponCodes()
         //{

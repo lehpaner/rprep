@@ -444,6 +444,7 @@ namespace RufaPoint.Services.Orders
                 details.CustomerLanguage = _workContext.WorkingLanguage;
 
             //billing address
+            /*Pekmez
             if (details.Customer.BillingAddress == null)
                 throw new CoreException("Billing address is not provided");
 
@@ -453,7 +454,7 @@ namespace RufaPoint.Services.Orders
             details.BillingAddress = (Address)details.Customer.BillingAddress.Clone();
             if (details.BillingAddress.Country != null && !details.BillingAddress.Country.AllowsBilling)
                 throw new CoreException($"Country '{details.BillingAddress.Country.Name}' is not allowed for billing");
-
+                */
             //checkout attributes
             details.CheckoutAttributesXml = details.Customer.GetAttribute<string>(SystemCustomerAttributeNames.CheckoutAttributes, processPaymentRequest.StoreId);
             details.CheckoutAttributeDescription = _checkoutAttributeFormatter.FormatAttributes(details.CheckoutAttributesXml, details.Customer);
@@ -539,6 +540,7 @@ namespace RufaPoint.Services.Orders
                 }
                 else
                 {
+                    /*Pekmez
                     if (details.Customer.ShippingAddress == null)
                         throw new CoreException("Shipping address is not provided");
 
@@ -549,6 +551,7 @@ namespace RufaPoint.Services.Orders
                     details.ShippingAddress = (Address)details.Customer.ShippingAddress.Clone();
                     if (details.ShippingAddress.Country != null && !details.ShippingAddress.Country.AllowsShipping)
                         throw new CoreException($"Country '{details.ShippingAddress.Country.Name}' is not allowed for shipping");
+                        */
                 }
 
                 var shippingOption = details.Customer.GetAttribute<ShippingOption>(SystemCustomerAttributeNames.SelectedShippingOption, processPaymentRequest.StoreId);

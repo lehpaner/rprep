@@ -4143,14 +4143,15 @@ namespace RufaPoint.Services.Installation
             };
             adminUser.Addresses.Add(new CustomerAdresses()
             {
-                AddressId = defaultAdminUserAddress.Id,
+                Address_Id = defaultAdminUserAddress.Id,
                 Address = defaultAdminUserAddress,
                 CustomerId = adminUser.Id,
                 Customer = adminUser
             });
+            /*Pekmez
             adminUser.BillingAddress = defaultAdminUserAddress;
             adminUser.ShippingAddress = defaultAdminUserAddress;
-
+            */
             adminUser.CustomerRoles.Add(new CustomerCustomerRole()
             {
                 CustomerId = adminUser.Id,
@@ -4213,14 +4214,15 @@ namespace RufaPoint.Services.Installation
             };
             secondUser.Addresses.Add(new CustomerAdresses()
             {
-                AddressId = defaultSecondUserAddress.Id,
+                Address_Id = defaultSecondUserAddress.Id,
                 Address = defaultSecondUserAddress,
                 CustomerId = secondUser.Id,
                 Customer = secondUser
             });
+            /*Pekmez
             secondUser.BillingAddress = defaultSecondUserAddress;
             secondUser.ShippingAddress = defaultSecondUserAddress;
-
+            */
             secondUser.CustomerRoles.Add(new CustomerCustomerRole()
             {
                 CustomerId = secondUser.Id,
@@ -4272,14 +4274,15 @@ namespace RufaPoint.Services.Installation
             };
             thirdUser.Addresses.Add(new CustomerAdresses()
             {
-                AddressId = defaultThirdUserAddress.Id,
+                Address_Id = defaultThirdUserAddress.Id,
                 Address = defaultThirdUserAddress,
                 CustomerId = thirdUser.Id,
                 Customer = thirdUser
             });
+            /*Pekmez
             thirdUser.BillingAddress = defaultThirdUserAddress;
             thirdUser.ShippingAddress = defaultThirdUserAddress;
-
+            */
             thirdUser.CustomerRoles.Add(new CustomerCustomerRole()
             {
                 CustomerId = thirdUser.Id,
@@ -4332,14 +4335,15 @@ namespace RufaPoint.Services.Installation
             };
             fourthUser.Addresses.Add(new CustomerAdresses()
             {
-                AddressId = defaultFourthUserAddress.Id,
+                Address_Id = defaultFourthUserAddress.Id,
                 Address = defaultFourthUserAddress,
                 CustomerId = fourthUser.Id,
                 Customer = fourthUser
             });
+            /*Pekmez
             fourthUser.BillingAddress = defaultFourthUserAddress;
             fourthUser.ShippingAddress = defaultFourthUserAddress;
-
+            */
             fourthUser.CustomerRoles.Add(new CustomerCustomerRole()
             {
                 CustomerId = fourthUser.Id,
@@ -4392,14 +4396,15 @@ namespace RufaPoint.Services.Installation
                 CreatedOnUtc = DateTime.UtcNow,
             };
             fifthUser.Addresses.Add(new CustomerAdresses() {
-                AddressId = defaultFifthUserAddress.Id,
+                Address_Id = defaultFifthUserAddress.Id,
                 Address = defaultFifthUserAddress,
                 CustomerId = fifthUser.Id,
                 Customer= fifthUser
             });
+            /*Pekmez
             fifthUser.BillingAddress = defaultFifthUserAddress;
             fifthUser.ShippingAddress = defaultFifthUserAddress;
-
+            */
             fifthUser.CustomerRoles.Add(new CustomerCustomerRole()
             {
                 CustomerId = fifthUser.Id,
@@ -4453,14 +4458,15 @@ namespace RufaPoint.Services.Installation
             };
             sixthUser.Addresses.Add(new CustomerAdresses()
             {
-                AddressId = defaultSixthUserAddress.Id,
+                Address_Id = defaultSixthUserAddress.Id,
                 Address = defaultSixthUserAddress,
                 CustomerId = sixthUser.Id,
                 Customer = sixthUser
             });
+            /*Pekmez
             sixthUser.BillingAddress = defaultSixthUserAddress;
             sixthUser.ShippingAddress = defaultSixthUserAddress;
-
+            */
             sixthUser.CustomerRoles.Add(new CustomerCustomerRole()
             {
                 CustomerId = sixthUser.Id,
@@ -4582,8 +4588,10 @@ namespace RufaPoint.Services.Installation
                 SubscriptionTransactionId = string.Empty,
                 PaymentStatus = PaymentStatus.Paid,
                 PaidDateUtc = DateTime.UtcNow,
+                /*Pekmez
                 BillingAddress = (Address)firstCustomer.BillingAddress.Clone(),
                 ShippingAddress = (Address)firstCustomer.ShippingAddress.Clone(),
+                */
                 ShippingStatus = ShippingStatus.NotYetShipped,
                 ShippingMethod = "Ground",
                 PickUpInStore = false,
@@ -4749,8 +4757,10 @@ namespace RufaPoint.Services.Installation
                 SubscriptionTransactionId = string.Empty,
                 PaymentStatus = PaymentStatus.Pending,
                 PaidDateUtc = null,
+                /*Pekmez
                 BillingAddress = (Address)secondCustomer.BillingAddress.Clone(),
                 ShippingAddress = (Address)secondCustomer.ShippingAddress.Clone(),
+                */
                 ShippingStatus = ShippingStatus.NotYetShipped,
                 ShippingMethod = "Next Day Air",
                 PickUpInStore = false,
@@ -4868,8 +4878,10 @@ namespace RufaPoint.Services.Installation
                 SubscriptionTransactionId = string.Empty,
                 PaymentStatus = PaymentStatus.Pending,
                 PaidDateUtc = null,
+                /*Pekmez
                 BillingAddress = (Address)thirdCustomer.BillingAddress.Clone(),
                 ShippingAddress = null,
+                */
                 ShippingStatus = ShippingStatus.ShippingNotRequired,
                 ShippingMethod = string.Empty,
                 PickUpInStore = false,
@@ -5011,13 +5023,17 @@ namespace RufaPoint.Services.Installation
                 SubscriptionTransactionId = string.Empty,
                 PaymentStatus = PaymentStatus.Paid,
                 PaidDateUtc = DateTime.UtcNow,
+                /*Pekmez
                 BillingAddress = (Address)fourthCustomer.BillingAddress.Clone(),
                 ShippingAddress = (Address)fourthCustomer.ShippingAddress.Clone(),
+                */
                 ShippingStatus = ShippingStatus.Shipped,
                 ShippingMethod = "Pickup in store",
                 PickUpInStore = true,
+                /*Pekmez
                 PickupAddress = (Address)fourthCustomer.ShippingAddress.Clone(),
                 ShippingRateComputationMethodSystemName = "Pickup.PickupInStore",
+                */
                 CustomValuesXml = string.Empty,
                 VatNumber = string.Empty,
                 CreatedOnUtc = DateTime.UtcNow,
@@ -5221,8 +5237,10 @@ namespace RufaPoint.Services.Installation
                 SubscriptionTransactionId = string.Empty,
                 PaymentStatus = PaymentStatus.Paid,
                 PaidDateUtc = DateTime.UtcNow,
+                /*Pekmez
                 BillingAddress = (Address)fifthCustomer.BillingAddress.Clone(),
                 ShippingAddress = (Address)fifthCustomer.ShippingAddress.Clone(),
+                */
                 ShippingStatus = ShippingStatus.Delivered,
                 ShippingMethod = "Ground",
                 PickUpInStore = false,

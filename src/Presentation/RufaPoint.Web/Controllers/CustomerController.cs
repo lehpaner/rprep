@@ -713,11 +713,13 @@ namespace RufaPoint.Web.Controllers
                         customer.Addresses.Add(new CustomerAdresses() {
                             Customer = customer,
                             CustomerId = customer.Id,
-                            AddressId = defaultAddress.Id,
+                            Address_Id = defaultAddress.Id,
                             Address = defaultAddress
                         });
+                        /*Pekmez
                         customer.BillingAddress = defaultAddress;
                         customer.ShippingAddress = defaultAddress;
+                        */
                         _customerService.UpdateCustomer(customer);
                     }
 
@@ -1194,7 +1196,7 @@ namespace RufaPoint.Web.Controllers
                     address.CountryId = null;
                 if (address.StateProvinceId == 0)
                     address.StateProvinceId = null;
-                customer.Addresses.Add(new CustomerAdresses() { Customer= customer, CustomerId= customer.Id, AddressId= address.Id, Address= address });
+                customer.Addresses.Add(new CustomerAdresses() { Customer= customer, CustomerId= customer.Id, Address_Id= address.Id, Address= address });
                 _customerService.UpdateCustomer(customer);
 
                 return RedirectToRoute("CustomerAddresses");
@@ -1273,7 +1275,7 @@ namespace RufaPoint.Web.Controllers
                 loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id),
                 overrideAttributesXml: customAttributes);
                 */
-            return View(model);
+                        return View(model);
         }
 
         #endregion

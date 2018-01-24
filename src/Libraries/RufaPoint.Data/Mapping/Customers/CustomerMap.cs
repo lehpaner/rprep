@@ -39,8 +39,8 @@ namespace RufaPoint.Data.Mapping.Customers
             builder.Property(u => u.Email).HasMaxLength(1000);
             builder.Property(u => u.EmailToRevalidate).HasMaxLength(1000);
             builder.Property(u => u.SystemName).HasMaxLength(400);
-            builder.HasMany(c => c.CustomerRoles);
-            builder.HasMany(c => c.Addresses);
+            //builder.HasMany(c => c.CustomerRoles);
+            //builder.HasMany(c => c.Addresses);
 
             //builder.HasMany(c => c.CustomerRoles)
             //    .WithMany()

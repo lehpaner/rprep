@@ -12,9 +12,13 @@ namespace RufaPoint.Data.Tests
         public PersistenceTest()
         {
             var options = new DbContextOptionsBuilder<AppObjectContext>()
-                     .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
-                     .UseInMemoryDatabase(System.Guid.NewGuid().ToString())
-                     .Options;
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
+                .UseSqlServer(@"Data Source=localhost; Initial Catalog=rufa; Integrated Security=True; Persist Security Info=False")
+                .Options;
+            //var options = new DbContextOptionsBuilder<AppObjectContext>()
+            //         .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
+            //         .UseInMemoryDatabase(System.Guid.NewGuid().ToString())
+            //         .Options;
             context = new AppObjectContext(options);
         }
 

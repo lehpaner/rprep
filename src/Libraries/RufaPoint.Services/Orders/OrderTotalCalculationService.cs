@@ -471,6 +471,7 @@ namespace RufaPoint.Services.Orders
                                 _shippingService.LoadActiveShippingRateComputationMethods(_workContext.CurrentCustomer, _storeContext.CurrentStore.Id);
                             if (shippingRateComputationMethods.Any())
                             {
+                                /*Pekmez
                                 var shippingOptionsResponse = _shippingService.GetShippingOptions(restoredCart, customer.ShippingAddress, _workContext.CurrentCustomer, storeId: _storeContext.CurrentStore.Id);
                                 if (shippingOptionsResponse.Success)
                                 {
@@ -484,6 +485,7 @@ namespace RufaPoint.Services.Orders
                                 }
                                 else
                                     updateOrderParameters.Warnings.AddRange(shippingOptionsResponse.Errors);
+                                    */
                             }
                             else
                                 updateOrderParameters.Warnings.Add("Shipping rate computation method could not be loaded");
@@ -1064,8 +1066,10 @@ namespace RufaPoint.Services.Orders
             {
                 //use fixed rate (if possible)
                 Address shippingAddress = null;
+                /*Pekmez
                 if (customer != null)
                     shippingAddress = customer.ShippingAddress;
+                    */
 
                 var shippingRateComputationMethods = _shippingService.LoadActiveShippingRateComputationMethods(_workContext.CurrentCustomer, _storeContext.CurrentStore.Id);
                 if (!shippingRateComputationMethods.Any() && !_shippingSettings.AllowPickUpInStore)

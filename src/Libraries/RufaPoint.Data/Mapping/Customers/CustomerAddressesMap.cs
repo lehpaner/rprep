@@ -11,7 +11,7 @@ namespace RufaPoint.Data.Mapping.Customers
         }
         protected override void DoConfig(EntityTypeBuilder<CustomerAdresses> builder)
         {
-            builder.ToTable("CustomerAdresses").HasKey(c => new { c.CustomerId, c.AddressId });
+            builder.ToTable("CustomerAdresses").HasKey(c => new { c.CustomerId, c.Address_Id });
             builder.HasOne(c => c.Customer).WithMany(cr => cr.Addresses).HasForeignKey(cfk => cfk.CustomerId);
         }
     }

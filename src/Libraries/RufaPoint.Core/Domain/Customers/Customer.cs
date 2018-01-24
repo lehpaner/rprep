@@ -172,17 +172,19 @@ namespace RufaPoint.Core.Domain.Customers
             get { return _returnRequests ?? (_returnRequests = new List<ReturnRequest>()); }
             protected set { _returnRequests = value; }
         }
-
+        /*Pekmez
+        public int BillingAddressId { get; set; }
         /// <summary>
         /// Default billing address
         /// </summary>
         public virtual Address BillingAddress { get; set; }
 
+        public int ShippingAddressId { get; set; }
         /// <summary>
         /// Default shipping address
         /// </summary>
         public virtual Address ShippingAddress { get; set; }
-
+        */
         /// <summary>
         /// Gets or sets customer addresses
         /// </summary>

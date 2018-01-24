@@ -108,7 +108,7 @@ namespace RufaPoint.Data
         public virtual void SetDatabaseInitializer()
         {
             //pass some table names to ensure that we have nopCommerce 2.X installed
-            var tablesToValidate = new[] { "Customer"/*, "Discount", "Order", "Product", "ShoppingCartItem" */};
+            var tablesToValidate = new[] { "Address", /*"Discount", "Order", "Product", "ShoppingCartItem" */};
 
             //custom commands (stored procedures, indexes)
 

@@ -102,11 +102,11 @@ namespace RufaPoint.Services.Tax
                 throw new ArgumentNullException(nameof(customer));
 
             Country country = null;
-
+            /*Pekmez
             //get country from billing address
             if (_addressSettings.CountryEnabled && customer.BillingAddress != null)
                 country = customer.BillingAddress.Country;
-
+*/
             //get country specified during registration?
             if (country == null && _customerSettings.CountryEnabled)
             {
@@ -201,21 +201,23 @@ namespace RufaPoint.Services.Tax
                     return calculateTaxRequest;
                 }
             }
-
+            /*Pekmez
             if (basedOn == TaxBasedOn.BillingAddress && customer.BillingAddress == null ||
                 basedOn == TaxBasedOn.ShippingAddress && customer.ShippingAddress == null)
             {
                 basedOn = TaxBasedOn.DefaultAddress;
             }
-
+            */
             switch (basedOn)
             {
+                /*Pekmez
                 case TaxBasedOn.BillingAddress:
                     calculateTaxRequest.Address = customer.BillingAddress;
                     break;
                 case TaxBasedOn.ShippingAddress:
                     calculateTaxRequest.Address = customer.ShippingAddress;
                     break;
+                    */
                 case TaxBasedOn.DefaultAddress:
                 default:
                     calculateTaxRequest.Address = _addressService.GetAddressById(_taxSettings.DefaultTaxAddressId);

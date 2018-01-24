@@ -150,7 +150,7 @@ namespace RufaPoint.Core.Domain.Customers
         /// <param name="address">Address</param>
         public static void RemoveAddress(this Customer customer, Address address)
         {
-            var adds = customer.Addresses.FirstOrDefault(o => o.AddressId == address.Id);  
+            var adds = customer.Addresses.FirstOrDefault(o => o.Address_Id == address.Id);  
             customer.Addresses.Remove(adds);
             /*Pekmez
             if (customer.Addresses.Contains(address.))

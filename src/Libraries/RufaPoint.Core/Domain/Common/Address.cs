@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using RufaPoint.Core.Domain.Customers;
 using RufaPoint.Core.Domain.Directory;
 
 namespace RufaPoint.Core.Domain.Common
@@ -88,6 +90,7 @@ namespace RufaPoint.Core.Domain.Common
         /// </summary>
         public virtual StateProvince StateProvince { get; set; }
 
+        public virtual ICollection<Customer> Customers { get; set; }
         /// <summary>
         /// Clone
         /// </summary>

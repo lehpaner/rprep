@@ -1,4 +1,5 @@
-﻿using RufaPoint.Tests;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using RufaPoint.Tests;
 using Xunit;
 
 namespace RufaPoint.Data.Tests

@@ -193,8 +193,9 @@ namespace RufaPoint.Web.Factories
                 if (pickupPointProviders.Any())
                 {
                     var languageId = _workContext.WorkingLanguage.Id;
-                    var pickupPointsResponse = _shippingService.GetPickupPoints(_workContext.CurrentCustomer.BillingAddress,
+                    var pickupPointsResponse = _shippingService.GetPickupPoints(null/*Pekmez _workContext.CurrentCustomer.BillingAddress*/,
                         _workContext.CurrentCustomer, storeId: _storeContext.CurrentStore.Id);
+
                     if (pickupPointsResponse.Success)
                         model.PickupPoints = pickupPointsResponse.PickupPoints.Select(point =>
                         {

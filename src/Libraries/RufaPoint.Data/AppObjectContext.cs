@@ -18,24 +18,42 @@ namespace RufaPoint.Data
         #region Ctor
 
         string connectionString { get; set; }
-
+        int dbtype { get; set; }
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="nameOrConnectionString">Connecting string</param>
-        public AppObjectContext(string nameOrConnectionString)
+        public AppObjectContext(string nameOrConnectionString, int db_type=0)
         {
             connectionString = nameOrConnectionString;
+            dbtype = db_type;
         }
 
         public AppObjectContext(DbContextOptions<AppObjectContext> options) : base(options)
         {
+
         }
+        /// <summary>
+        /// On config handler to define storage type
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=localhost; Initial Catalog=rufa; Integrated Security=True; Persist Security Info=False");
-               // .ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning));
-            // optionsBuilder.UseSqlServer(connectionString);
+            //TBD make configurable
+            if (dbtype == 0)
+            {
+                optionsBuilder.UseSqlServer(@"Data Source=localhost; Initial Catalog=rufa; Integrated Security=True; Persist Security Info=False");
+            }
+            else if (dbtype == 1)
+            {
+                optionsBuilder.UseInMemoryDatabase(@"Data.sdf");
+            }
+            else if (dbtype == 2)
+            {
+                optionsBuilder.UseSqlite(@"Data.db");
+            }
+
+            else throw new Exception("Database Provider has to be defined");
         }
         #endregion
 
